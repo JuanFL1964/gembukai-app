@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#8B0000">
+    <title>Gembukai - Club Sportiu Bonavista</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+        html { font-size: 16px; }
+        body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height: 100vh; color: #fff; padding-bottom: 80px; }
+        .splash-screen { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #8B0000 0%, #DC143C 50%, #8B0000 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
+        .splash-screen.hidden { display: none; }
+        .splash-logo { width: 200px; height: 200px; background: white; border-radius: 50%; border: 6px solid #ffd700; overflow: hidden; margin-bottom: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); animation: pulse 2s infinite; }
+        .splash-logo img { width: 100%; height: 100%; object-fit: contain; }
+        .splash-title { font-size: 48px; font-weight: bold; color: white; text-shadow: 3px 3px 6px rgba(0,0,0,0.5); letter-spacing: 4px; margin-bottom: 10px; }
+        .splash-subtitle { font-size: 18px; color: #ffd700; margin-bottom: 50px; text-align: center; }
+        .splash-btn { background: white; color: #8B0000; border: 3px solid #ffd700; padding: 20px 60px; border-radius: 50px; font-size: 24px; font-weight: bold; cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.3); min-width: 250px; }
+        .splash-btn:active { transform: scale(0.95); }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        .header { background: rgba(0,0,0,0.3); padding: 20px 15px; text-align: center; border-bottom: 3px solid #DC143C; }
+        .logo-container { width: 100px; height: 100px; margin: 0 auto 10px; background: white; border-radius: 50%; border: 4px solid #8B0000; overflow: hidden; }
+        .logo-container img { width: 100%; height: 100%; object-fit: contain; }
+        .header h1 { font-size: 28px; color: #fff; margin-bottom: 3px; letter-spacing: 2px; }
+        .header p { font-size: 14px; color: #ffd700; }
+        .main-content { padding: 15px; }
+        .card { background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border-radius: 15px; padding: 15px; margin-bottom: 15px; border: 2px solid rgba(255,255,255,0.3); }
+        .card h2 { font-size: 20px; margin-bottom: 12px; color: #fff; border-bottom: 2px solid #DC143C; padding-bottom: 8px; }
+        .btn { background: linear-gradient(135deg, #DC143C 0%, #8B0000 100%); color: white; border: 2px solid white; padding: 16px 20px; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; min-height: 52px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn:active { transform: scale(0.97); background: #8B0000; }
+        .btn-secondary { background: white; color: #8B0000; border: 2px solid #DC143C; }
+        .btn-small { padding: 10px 15px; font-size: 14px; width: auto; min-height: 44px; }
+        .btn-youtube { background: #FF0000; border-color: #FF0000; }
+        .btn-success { background: #27ae60; border-color: #27ae60; }
+        .btn-warning { background: #f39c12; border-color: #f39c12; }
+        .btn-danger { background: #e74c3c; border-color: #e74c3c; }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.95); display: flex; justify-content: space-around; padding: 8px 0 12px; border-top: 3px solid #DC143C; z-index: 100; }
+        .nav-item { text-align: center; cursor: pointer; padding: 8px 12px; border-radius: 10px; flex: 1; }
+        .nav-item .icon { font-size: 22px; display: block; }
+        .nav-item .label { font-size: 11px; margin-top: 2px; }
+        .nav-item.active { color: #DC143C; background: rgba(255,255,255,0.1); }
+        .screen { display: none; }
+        .screen.active { display: block; animation: fadeIn 0.2s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .muscle-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 12px; }
+        .muscle-btn { background: white; border: 2px solid #DC143C; color: #8B0000; padding: 16px; border-radius: 12px; cursor: pointer; text-align: center; font-size: 15px; font-weight: bold; min-height: 60px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .muscle-btn:active { background: #DC143C; color: white; transform: scale(0.97); }
+        .back-btn { background: rgba(255,255,255,0.2); border: 2px solid white; color: white; padding: 12px 18px; border-radius: 10px; cursor: pointer; margin-bottom: 12px; font-size: 15px; min-height: 48px; display: inline-flex; align-items: center; gap: 8px; }
+        .exercise-list { display: grid; gap: 12px; margin-top: 12px; }
+        .exercise-item { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.3); display: flex; flex-direction: row; align-items: stretch; }
+        .exercise-image { width: 100px; min-width: 100px; background: linear-gradient(135deg, #DC143C 0%, #8B0000 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; font-weight: bold; }
+        .exercise-image .emoji { font-size: 36px; line-height: 1; }
+        .exercise-image .initials { font-size: 20px; margin-top: 4px; letter-spacing: 1px; }
+        .exercise-info { flex: 1; padding: 10px; display: flex; flex-direction: column; justify-content: center; }
+        .exercise-info h3 { color: #8B0000; font-size: 15px; margin-bottom: 4px; line-height: 1.2; }
+        .exercise-info p { color: #666; font-size: 12px; margin-bottom: 8px; line-height: 1.3; }
+        .exercise-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+        .day-card { background: white; color: #333; border-radius: 12px; padding: 15px; margin-bottom: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .day-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 2px solid #DC143C; }
+        .day-title-input { font-size: 16px; font-weight: bold; color: #8B0000; border: 1px solid #DC143C; padding: 5px 8px; border-radius: 6px; flex: 1; }
+        .day-badge { background: #DC143C; color: white; padding: 4px 10px; border-radius: 12px; font-size: 12px; margin-left: 8px; }
+        .day-exercise-item { background: #f5f5f5; padding: 10px; border-radius: 8px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .day-exercise-name { font-weight: bold; color: #8B0000; font-size: 14px; }
+        .day-exercise-data { font-size: 12px; color: #666; margin-top: 2px; }
+        .day-actions { display: flex; gap: 6px; margin-top: 10px; }
+        .day-actions .btn { margin-top: 0; flex: 1; font-size: 13px; padding: 10px; min-height: 44px; }
+        .day-completed { background: #27ae60; }
+        .detail-image { width: 100%; height: 200px; background: linear-gradient(135deg, #DC143C 0%, #8B0000 100%); border-radius: 12px; margin-bottom: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; }
+        .detail-image .emoji-big { font-size: 80px; }
+        .detail-image .initials-big { font-size: 36px; margin-top: 10px; letter-spacing: 2px; }
+        .detail-info h2 { color: #fff; margin-bottom: 8px; font-size: 22px; }
+        .detail-info p { color: rgba(255,255,255,0.9); margin-bottom: 15px; line-height: 1.5; font-size: 14px; }
+        .form-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+        .form-group { margin-bottom: 10px; }
+        .form-group label { display: block; margin-bottom: 5px; font-size: 13px; font-weight: bold; }
+        .form-group input, .form-group select { width: 100%; padding: 12px; border: 2px solid rgba(255,255,255,0.3); border-radius: 8px; font-size: 16px; background: rgba(255,255,255,0.9); color: #333; min-height: 48px; }
+        .day-selector { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 15px; }
+        .day-selector-btn { background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.3); color: white; padding: 12px; border-radius: 10px; cursor: pointer; text-align: center; font-size: 14px; font-weight: bold; min-height: 48px; }
+        .day-selector-btn.selected { background: #DC143C; border-color: white; }
+        .profile-info { background: white; color: #333; padding: 12px; border-radius: 10px; margin-bottom: 8px; }
+        .profile-info .label { font-size: 11px; color: #666; text-transform: uppercase; }
+        .profile-info .value { font-size: 16px; font-weight: bold; color: #8B0000; margin-top: 2px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 12px; }
+        .stat-box { background: rgba(0,0,0,0.3); padding: 12px; border-radius: 10px; text-align: center; }
+        .stat-box .number { font-size: 24px; font-weight: bold; color: #ffd700; }
+        .stat-box .text { font-size: 11px; margin-top: 3px; }
+        .flex-row { display: flex; gap: 8px; }
+        .flex-row > * { flex: 1; }
+        .empty-state { text-align: center; padding: 30px 20px; opacity: 0.9; }
+        .empty-state .icon { font-size: 50px; margin-bottom: 10px; }
+        @media (min-width: 768px) {
+            .main-content { max-width: 800px; margin: 0 auto; padding: 20px; }
+            .muscle-grid { grid-template-columns: repeat(4, 1fr); }
+            .exercise-image { width: 120px; min-width: 120px; }
+            .form-row { grid-template-columns: repeat(3, 1fr); }
+            .day-selector { grid-template-columns: repeat(7, 1fr); }
+            .stats-grid { grid-template-columns: repeat(4, 1fr); }
+            .header h1 { font-size: 36px; }
+            .splash-logo { width: 250px; height: 250px; }
+            .splash-title { font-size: 64px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="splash-screen" class="splash-screen">
+        <div class="splash-logo"><img src="logo.png" alt="Gembukai Logo"></div>
+        <div class="splash-title">GEMBU-KAI</div>
+        <div class="splash-subtitle">Club Sportiu Bonavista</div>
+        <button class="splash-btn" onclick="enterApp()">ENTRAR</button>
+    </div>
+
+    <div class="header">
+        <div class="logo-container"><img src="logo.png" alt="Gembukai Logo"></div>
+        <h1>GEMBU-KAI</h1>
+        <p>Club Sportiu Bonavista</p>
+    </div>
+
+    <div id="screen-register" class="screen">
+        <div class="main-content">
+            <div class="card">
+                <h2>👋 ¡Bienvenido!</h2>
+                <div class="form-group"><label>Nombre</label><input type="text" id="reg-name" placeholder="Tu nombre"></div>
+                <div class="flex-row">
+                    <div class="form-group"><label>Edad</label><input type="number" id="reg-age" placeholder="25"></div>
+                    <div class="form-group"><label>Sexo</label><select id="reg-gender"><option value="">Selecciona</option><option value="hombre">Hombre</option><option value="mujer">Mujer</option></select></div>
+                </div>
+                <div class="flex-row">
+                    <div class="form-group"><label>Peso (kg)</label><input type="number" id="reg-weight" placeholder="75" step="0.1"></div>
+                    <div class="form-group"><label>Altura (cm)</label><input type="number" id="reg-height" placeholder="175"></div>
+                </div>
+                <div class="form-group"><label>Nivel</label><select id="reg-level"><option value="principiante">Principiante</option><option value="intermedio">Intermedio</option><option value="avanzado">Avanzado</option></select></div>
+                <div class="form-group"><label>Objetivo</label><select id="reg-goal"><option value="fuerza"> Fuerza</option><option value="hipertrofia">🏋️ Hipertrofia</option><option value="definicion">✂️ Definición</option><option value="resistencia"> Resistencia</option><option value="salud">❤️ Salud</option><option value="perder_peso">📉 Perder peso</option></select></div>
+                <div class="form-group">
+                    <label>¿Cuántos días entrenar?</label>
+                    <div class="day-selector" id="reg-days-selector">
+                        <div class="day-selector-btn" onclick="selectDays(3, this)">3 días</div>
+                        <div class="day-selector-btn" onclick="selectDays(4, this)">4 días</div>
+                        <div class="day-selector-btn" onclick="selectDays(5, this)">5 días</div>
+                        <div class="day-selector-btn" onclick="selectDays(6, this)">6 días</div>
+                    </div>
+                    <input type="hidden" id="reg-days">
+                </div>
+                <button class="btn" onclick="saveProfile()">✅ Crear perfil</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="screen-home" class="screen">
+        <div class="main-content">
+            <div class="card">
+                <h2 id="welcome-title">¡Bienvenido!</h2>
+                <p id="welcome-msg" style="margin-bottom: 15px;">Vamos a entrenar 💪</p>
+                <div class="stats-grid">
+                    <div class="stat-box"><div class="number" id="stat-days">0</div><div class="text">Días de entreno</div></div>
+                    <div class="stat-box"><div class="number" id="stat-exercises">0</div><div class="text">Ejercicios totales</div></div>
+                </div>
+                <button class="btn" onclick="showScreen('screen-routines')">️ Mis Rutinas</button>
+                <button class="btn btn-secondary" onclick="showScreen('screen-exercises')">📋 Explorar ejercicios</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="screen-exercises" class="screen">
+        <div class="main-content">
+            <div class="card">
+                <h2>Elige grupo muscular</h2>
+                <div class="muscle-grid">
+                    <div class="muscle-btn" onclick="showMuscleGroup('pecho')"> Pecho</div>
+                    <div class="muscle-btn" onclick="showMuscleGroup('espalda')">🔙 Espalda</div>
+                    <div class="muscle-btn" onclick="showMuscleGroup('piernas')"> Piernas</div>
+                    <div class="muscle-btn" onclick="showMuscleGroup('hombros')">🤷 Hombros</div>
+                    <div class="muscle-btn" onclick="showMuscleGroup('biceps')">💪 Bíceps</div>
+                    <div class="muscle-btn" onclick="showMuscleGroup('triceps')">🦾 Tríceps</div>
+                    <div class="muscle-btn" onclick="showMuscleGroup('core')">🎯 Core</div>
+                    <div class="muscle-btn" onclick="showMuscleGroup('cardio')">❤️ Cardio</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="screen-exercise-list" class="screen">
+        <div class="main-content">
+            <button class="back-btn" onclick="goBackFromList()">← Volver</button>
+            <div class="card">
+                <h2 id="muscle-title">Ejercicios</h2>
+                <div id="exercise-list-container" class="exercise-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="screen-exercise-detail" class="screen">
+        <div class="main-content">
+            <button class="back-btn" onclick="backFromDetail()">← Volver</button>
+            <div class="card">
+                <div id="detail-image-container" class="detail-image"></div>
+                <div class="detail-info">
+                    <h2 id="detail-name">Nombre</h2>
+                    <p id="detail-desc">Descripción</p>
+                    <a id="detail-youtube" href="#" target="_blank" class="btn btn-youtube" style="text-decoration: none; margin-bottom: 15px;">▶️ Ver video en YouTube</a>
+                </div>
+                <h3>📊 Tu registro</h3>
+                <div class="form-row">
+                    <div class="form-group"><label>Series</label><input type="number" id="input-sets" placeholder="4" min="1"></div>
+                    <div class="form-group"><label>Reps</label><input type="text" id="input-reps" placeholder="12"></div>
+                    <div class="form-group"><label>Peso (kg)</label><input type="number" id="input-weight" placeholder="0" step="0.5"></div>
+                </div>
+                <button class="btn btn-success" onclick="saveExerciseData()">💾 Guardar datos</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="screen-routines" class="screen">
+        <div class="main-content">
+            <div class="card">
+                <h2>🏋️ Mi Rutina Semanal</h2>
+                <div id="routine-days-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="screen-add-to-day" class="screen">
+        <div class="main-content">
+            <button class="back-btn" onclick="showScreen('screen-routines')">← Volver a rutina</button>
+            <div class="card">
+                <h2 id="add-to-day-title">Añadir ejercicios</h2>
+                <p style="margin-bottom: 15px; font-size: 14px;">Elige un grupo muscular:</p>
+                <div class="muscle-grid">
+                    <div class="muscle-btn" onclick="showMuscleGroupForDay('pecho')">🫁 Pecho</div>
+                    <div class="muscle-btn" onclick="showMuscleGroupForDay('espalda')">🔙 Espalda</div>
+                    <div class="muscle-btn" onclick="showMuscleGroupForDay('piernas')">🦵 Piernas</div>
+                    <div class="muscle-btn" onclick="showMuscleGroupForDay('hombros')">🤷 Hombros</div>
+                    <div class="muscle-btn" onclick="showMuscleGroupForDay('biceps')">💪 Bíceps</div>
+                    <div class="muscle-btn" onclick="showMuscleGroupForDay('triceps')">🦾 Tríceps</div>
+                    <div class="muscle-btn" onclick="showMuscleGroupForDay('core')">🎯 Core</div>
+                    <div class="muscle-btn" onclick="showMuscleGroupForDay('cardio')">❤️ Cardio</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="screen-profile" class="screen">
+        <div class="main-content">
+            <div class="card">
+                <h2>👤 Mi Perfil</h2>
+                <div id="profile-display"></div>
+                <button class="btn btn-danger" onclick="resetProfile()" style="margin-top: 15px;">🔄 Reiniciar todo</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="showScreen('screen-home', this)"><span class="icon">🏠</span><span class="label">Inicio</span></div>
+        <div class="nav-item" onclick="showScreen('screen-exercises', this)"><span class="icon">📋</span><span class="label">Ejercicios</span></div>
+        <div class="nav-item" onclick="showScreen('screen-routines', this)"><span class="icon">🏋️</span><span class="label">Rutinas</span></div>
+        <div class="nav-item" onclick="showScreen('screen-profile', this)"><span class="icon">👤</span><span class="label">Perfil</span></div>
+    </div>
+
+    <script>
+        const muscleEmojis = {
+            pecho: '🫁', espalda: '🔙', piernas: '🦵', hombros: '🤷',
+            biceps: '💪', triceps: '', core: '🎯', cardio: '❤️'
+        };
+
+        // BASE DE DATOS - 105 ejercicios
+        const exercisesDB = [
+            { id: 1, name: "Press de banca", muscle: "pecho", desc: "El ejercicio fundamental", level: "principiante", youtube: "rT7DgCr-3pg" },
+            { id: 2, name: "Press inclinado barra", muscle: "pecho", desc: "Parte superior", level: "principiante", youtube: "8iPEnn-ltC8" },
+            { id: 3, name: "Press declinado", muscle: "pecho", desc: "Parte inferior", level: "intermedio", youtube: "SrqOu55lrYU" },
+            { id: 4, name: "Press mancuernas", muscle: "pecho", desc: "Mayor rango", level: "principiante", youtube: "oyF0Ae9iIYw" },
+            { id: 5, name: "Press inclinado mancuernas", muscle: "pecho", desc: "Superior", level: "principiante", youtube: "Mm5fS0R3iOo" },
+            { id: 6, name: "Aperturas mancuernas", muscle: "pecho", desc: "Aislamiento", level: "principiante", youtube: "eozdVDA78K0" },
+            { id: 7, name: "Cruce de poleas", muscle: "pecho", desc: "Tensión constante", level: "intermedio", youtube: "Iwe6AmxVf7o" },
+            { id: 8, name: "Fondos paralelas", muscle: "pecho", desc: "Inclina torso", level: "intermedio", youtube: "2z8JmcrW-As" },
+            { id: 9, name: "Flexiones", muscle: "pecho", desc: "Peso corporal", level: "principiante", youtube: "IODxDxX7oi4" },
+            { id: 10, name: "Flexiones declinadas", muscle: "pecho", desc: "Pies elevados", level: "intermedio", youtube: "EZXxqGFsR64" },
+            { id: 11, name: "Flexiones inclinadas", muscle: "pecho", desc: "Manos elevadas", level: "principiante", youtube: "vqAfwW0pG0w" },
+            { id: 12, name: "Flexiones diamante", muscle: "pecho", desc: "Manos juntas", level: "intermedio", youtube: "kwG2ipFRgfo" },
+            { id: 13, name: "Press en máquina", muscle: "pecho", desc: "Más seguro", level: "principiante", youtube: "4BOTuRa6m1A" },
+            { id: 14, name: "Pec Deck", muscle: "pecho", desc: "Máquina aperturas", level: "principiante", youtube: "M0uO8o3_tEA" },
+            { id: 15, name: "Pull over", muscle: "pecho", desc: "Pecho y espalda", level: "intermedio", youtube: "Lh2hiazxzWk" },
+            { id: 16, name: "Dominadas", muscle: "espalda", desc: "El rey", level: "intermedio", youtube: "eGo4IYlbE5g" },
+            { id: 17, name: "Dominadas supinas", muscle: "espalda", desc: "Palmas hacia ti", level: "intermedio", youtube: "brFQ0ro7L9s" },
+            { id: 18, name: "Jalón al pecho", muscle: "espalda", desc: "Polea alta", level: "principiante", youtube: "CAwf7n6Luuc" },
+            { id: 19, name: "Remo con barra", muscle: "espalda", desc: "Tira abdomen", level: "principiante", youtube: "kBWAon7ItDw" },
+            { id: 20, name: "Remo mancuerna", muscle: "espalda", desc: "Unilateral", level: "principiante", youtube: "roCP6wCXPqo" },
+            { id: 21, name: "Remo polea baja", muscle: "espalda", desc: "Sentado", level: "principiante", youtube: "GZbfZ033f74" },
+            { id: 22, name: "Peso muerto", muscle: "espalda", desc: "Cadena posterior", level: "avanzado", youtube: "op9kVnS_mQo" },
+            { id: 23, name: "Peso muerto rumano", muscle: "espalda", desc: "Isquiotibiales", level: "intermedio", youtube: "7j-3T8i8sHk" },
+            { id: 24, name: "Hiperextensiones", muscle: "espalda", desc: "Banco romano", level: "principiante", youtube: "Xyd_fa5zoEU" },
+            { id: 25, name: "Face pull", muscle: "espalda", desc: "Deltoides posterior", level: "principiante", youtube: "rep-rWYpHs0" },
+            { id: 26, name: "Remo invertido", muscle: "espalda", desc: "Bajo barra", level: "principiante", youtube: "roCP6wCXPqo" },
+            { id: 27, name: "Superman", muscle: "espalda", desc: "Zona lumbar", level: "principiante", youtube: "Xyd_fa5zoEU" },
+            { id: 28, name: "Sentadilla", muscle: "piernas", desc: "El más completo", level: "intermedio", youtube: "ultWZbUMPL8" },
+            { id: 29, name: "Prensa", muscle: "piernas", desc: "En máquina", level: "principiante", youtube: "IZxyjW7MPJQ" },
+            { id: 30, name: "Zancadas", muscle: "piernas", desc: "Paso largo", level: "principiante", youtube: "QOVaHwm-Q6U" },
+            { id: 31, name: "Peso muerto rumano", muscle: "piernas", desc: "Isquiotibiales", level: "intermedio", youtube: "7j-3T8i8sHk" },
+            { id: 32, name: "Extensión cuádriceps", muscle: "piernas", desc: "En máquina", level: "principiante", youtube: "YyvSfVjQeL0" },
+            { id: 33, name: "Curl femoral", muscle: "piernas", desc: "Isquiotibiales", level: "principiante", youtube: "1Tq3QdYUuHs" },
+            { id: 34, name: "Elevación gemelos", muscle: "piernas", desc: "De pie", level: "principiante", youtube: "gwLzBJYoWlI" },
+            { id: 35, name: "Sentadilla búlgara", muscle: "piernas", desc: "Unilateral", level: "intermedio", youtube: "2C-uNgKwPLE" },
+            { id: 36, name: "Hip thrust", muscle: "piernas", desc: "Glúteos", level: "principiante", youtube: "IoNvvq2DwKE" },
+            { id: 37, name: "Sentadilla frontal", muscle: "piernas", desc: "Más cuádriceps", level: "avanzado", youtube: "ultWZbUMPL8" },
+            { id: 38, name: "Step-ups", muscle: "piernas", desc: "Sube banco", level: "principiante", youtube: "QOVaHwm-Q6U" },
+            { id: 39, name: "Sentadilla sumo", muscle: "piernas", desc: "Piernas separadas", level: "intermedio", youtube: "ultWZbUMPL8" },
+            { id: 40, name: "Sentadilla goblet", muscle: "piernas", desc: "Mancuerna pecho", level: "principiante", youtube: "ultWZbUMPL8" },
+            { id: 41, name: "Glute bridge", muscle: "piernas", desc: "Sin banco", level: "principiante", youtube: "IoNvvq2DwKE" },
+            { id: 42, name: "Caminata granjero", muscle: "piernas", desc: "Core piernas", level: "principiante", youtube: "op9kVnS_mQo" },
+            { id: 43, name: "Press militar", muscle: "hombros", desc: "De pie", level: "intermedio", youtube: "qEwKCR5JCog" },
+            { id: 44, name: "Press mancuernas", muscle: "hombros", desc: "Sentado", level: "principiante", youtube: "qEwKCR5JCog" },
+            { id: 45, name: "Elevaciones laterales", muscle: "hombros", desc: "A los lados", level: "principiante", youtube: "3VcKaXpzqRo" },
+            { id: 46, name: "Elevaciones frontales", muscle: "hombros", desc: "Hacia adelante", level: "principiante", youtube: "sxe4utpZ5e8" },
+            { id: 47, name: "Pájaros", muscle: "hombros", desc: "Deltoides posterior", level: "intermedio", youtube: "ttvfA1Y4ZmM" },
+            { id: 48, name: "Press Arnold", muscle: "hombros", desc: "Rotación", level: "intermedio", youtube: "6Z15_WdXW8w" },
+            { id: 49, name: "Encogimientos", muscle: "hombros", desc: "Trapecio", level: "principiante", youtube: "cJRVVxmytaM" },
+            { id: 50, name: "Remo al mentón", muscle: "hombros", desc: "Codos altos", level: "intermedio", youtube: "qEwKCR5JCog" },
+            { id: 51, name: "Face pull", muscle: "hombros", desc: "Polea alta", level: "principiante", youtube: "rep-rWYpHs0" },
+            { id: 52, name: "Press máquina", muscle: "hombros", desc: "Más seguro", level: "principiante", youtube: "qEwKCR5JCog" },
+            { id: 53, name: "Rotaciones externas", muscle: "hombros", desc: "Manguito", level: "principiante", youtube: "ttvfA1Y4ZmM" },
+            { id: 54, name: "Curl barra", muscle: "biceps", desc: "Clásico", level: "principiante", youtube: "kwG2ipFRgfo" },
+            { id: 55, name: "Curl mancuernas", muscle: "biceps", desc: "Alterna", level: "principiante", youtube: "ykJmrZ5v0Oo" },
+            { id: 56, name: "Curl martillo", muscle: "biceps", desc: "Agarre neutro", level: "principiante", youtube: "zC3nLlEvin4" },
+            { id: 57, name: "Curl banco inclinado", muscle: "biceps", desc: "Mayor estiramiento", level: "intermedio", youtube: "soxrZlIl35U" },
+            { id: 58, name: "Curl polea baja", muscle: "biceps", desc: "Tensión", level: "principiante", youtube: "nfKBxvAqo9o" },
+            { id: 59, name: "Curl predicador", muscle: "biceps", desc: "Banco Scott", level: "intermedio", youtube: "kwG2ipFRgfo" },
+            { id: 60, name: "Curl barra Z", muscle: "biceps", desc: "Menos muñecas", level: "principiante", youtube: "kwG2ipFRgfo" },
+            { id: 61, name: "Curl concentrado", muscle: "biceps", desc: "Pico", level: "principiante", youtube: "ykJmrZ5v0Oo" },
+            { id: 62, name: "Dominadas supinas", muscle: "biceps", desc: "Compuesto", level: "intermedio", youtube: "brFQ0ro7L9s" },
+            { id: 63, name: "Curl invertido", muscle: "biceps", desc: "Antebrazo", level: "principiante", youtube: "kwG2ipFRgfo" },
+            { id: 64, name: "Curl 21s", muscle: "biceps", desc: "Intensidad", level: "avanzado", youtube: "kwG2ipFRgfo" },
+            { id: 65, name: "Curl máquina", muscle: "biceps", desc: "Estable", level: "principiante", youtube: "kwG2ipFRgfo" },
+            { id: 66, name: "Fondos banco", muscle: "triceps", desc: "Manos banco", level: "principiante", youtube: "6kALZikXxLc" },
+            { id: 67, name: "Extensión polea", muscle: "triceps", desc: "Cuerda", level: "principiante", youtube: "2-LAMcpzODU" },
+            { id: 68, name: "Press francés", muscle: "triceps", desc: "Hacia frente", level: "intermedio", youtube: "d_KZxkY_0cM" },
+            { id: 69, name: "Patada tríceps", muscle: "triceps", desc: "Brazo atrás", level: "principiante", youtube: "tyfLhK5N1vQ" },
+            { id: 70, name: "Fondos paralelas", muscle: "triceps", desc: "Torso vertical", level: "intermedio", youtube: "2z8JmcrW-As" },
+            { id: 71, name: "Extensión tras nuca", muscle: "triceps", desc: "Mancuerna", level: "principiante", youtube: "YbX7Wd8jQ-Q" },
+            { id: 72, name: "Press cerrado", muscle: "triceps", desc: "Agarre estrecho", level: "intermedio", youtube: "rT7DgCr-3pg" },
+            { id: 73, name: "Extensión cuerda", muscle: "triceps", desc: "Separa final", level: "principiante", youtube: "2-LAMcpzODU" },
+            { id: 74, name: "Press francés mancuernas", muscle: "triceps", desc: "Mayor rango", level: "intermedio", youtube: "d_KZxkY_0cM" },
+            { id: 75, name: "Extensión máquina", muscle: "triceps", desc: "Estable", level: "principiante", youtube: "2-LAMcpzODU" },
+            { id: 76, name: "Diamond push-ups", muscle: "triceps", desc: "Manos diamante", level: "intermedio", youtube: "6kALZikXxLc" },
+            { id: 77, name: "Plancha", muscle: "core", desc: "Cuerpo recto", level: "principiante", youtube: "pSHjTRCQxIw" },
+            { id: 78, name: "Crunch", muscle: "core", desc: "Eleva hombros", level: "principiante", youtube: "Xyd_fa5zoEU" },
+            { id: 79, name: "Elevación piernas", muscle: "core", desc: "Piernas rectas", level: "intermedio", youtube: "JB2oyawG9KI" },
+            { id: 80, name: "Russian twist", muscle: "core", desc: "Gira torso", level: "intermedio", youtube: "wkD8rjkodUI" },
+            { id: 81, name: "Mountain climbers", muscle: "core", desc: "Rodillas pecho", level: "principiante", youtube: "nmwgirgXLYM" },
+            { id: 82, name: "Plancha lateral", muscle: "core", desc: "De lado", level: "principiante", youtube: "wqzU9Enw9hE" },
+            { id: 83, name: "Ab wheel", muscle: "core", desc: "Rueda", level: "avanzado", youtube: "dFX1k18ALPE" },
+            { id: 84, name: "Bicicleta abdominal", muscle: "core", desc: "Codo rodilla", level: "principiante", youtube: "Xyd_fa5zoEU" },
+            { id: 85, name: "Hanging leg raise", muscle: "core", desc: "Colgado", level: "avanzado", youtube: "JB2oyawG9KI" },
+            { id: 86, name: "Plancha toque hombros", muscle: "core", desc: "Toca hombro", level: "intermedio", youtube: "pSHjTRCQxIw" },
+            { id: 87, name: "Dead bug", muscle: "core", desc: "Control", level: "principiante", youtube: "pSHjTRCQxIw" },
+            { id: 88, name: "Bird dog", muscle: "core", desc: "Cuadrupedia", level: "principiante", youtube: "pSHjTRCQxIw" },
+            { id: 89, name: "Reverse crunch", muscle: "core", desc: "Abdomen inferior", level: "intermedio", youtube: "Xyd_fa5zoEU" },
+            { id: 90, name: "Hollow hold", muscle: "core", desc: "Forma C", level: "avanzado", youtube: "pSHjTRCQxIw" },
+            { id: 91, name: "Cable woodchop", muscle: "core", desc: "Oblicuos", level: "intermedio", youtube: "wkD8rjkodUI" },
+            { id: 92, name: "Cinta correr", muscle: "cardio", desc: "Corre", level: "principiante", youtube: "_kGESn8Arr8" },
+            { id: 93, name: "Bicicleta estática", muscle: "cardio", desc: "Pedalea", level: "principiante", youtube: "3O60Saq1sKs" },
+            { id: 94, name: "Elíptica", muscle: "cardio", desc: "Bajo impacto", level: "principiante", youtube: "jHNOV47BQdA" },
+            { id: 95, name: "Máquina remo", muscle: "cardio", desc: "Todo cuerpo", level: "principiante", youtube: "244VWem2j8o" },
+            { id: 96, name: "Saltar cuerda", muscle: "cardio", desc: "Coordinación", level: "principiante", youtube: "u3zgHI8QnqE" },
+            { id: 97, name: "Burpees", muscle: "cardio", desc: "Completo", level: "avanzado", youtube: "dZgVxmf6jkA" },
+            { id: 98, name: "Jumping jacks", muscle: "cardio", desc: "Abre piernas", level: "principiante", youtube: "c4DAnQ6DtF8" },
+            { id: 99, name: "High knees", muscle: "cardio", desc: "Rodillas altas", level: "principiante", youtube: "nmwgirgXLYM" },
+            { id: 100, name: "Box jumps", muscle: "cardio", desc: "Salta caja", level: "intermedio", youtube: "QOVaHwm-Q6U" },
+            { id: 101, name: "Sprints", muscle: "cardio", desc: "Máxima velocidad", level: "intermedio", youtube: "_kGESn8Arr8" },
+            { id: 102, name: "Kickboxing", muscle: "cardio", desc: "Golpes", level: "intermedio", youtube: "dZgVxmf6jkA" },
+            { id: 103, name: "HIIT", muscle: "cardio", desc: "Intervalos", level: "avanzado", youtube: "dZgVxmf6jkA" },
+            { id: 104, name: "Battle ropes", muscle: "cardio", desc: "Cuerdas", level: "intermedio", youtube: "dZgVxmf6jkA" },
+            { id: 105, name: "Kettlebell swings", muscle: "cardio", desc: "Potencia", level: "intermedio", youtube: "op9kVnS_mQo" }
+        ];
+
+        let profile = null;
+        let routine = null;
+        let currentExerciseDetail = null;
+        let currentDayIndex = null;
+        let currentMuscleForDay = null;
+        let lastScreen = 'screen-exercises';
+
+        function getInitials(name) {
+            const words = name.split(' ');
+            return words.length >= 2 ? words[0].charAt(0).toUpperCase() + words[1].charAt(0).toUpperCase() : name.substring(0, 2).toUpperCase();
+        }
+
+        function createExerciseImage(muscle, name, size) {
+            const emoji = muscleEmojis[muscle] || '🏋️';
+            const initials = getInitials(name);
+            if (size === 'big') {
+                return `<div class="emoji-big">${emoji}</div><div class="initials-big">${initials}</div>`;
+            }
+            return `<div class="emoji">${emoji}</div><div class="initials">${initials}</div>`;
+        }
+
+        function enterApp() {
+            document.getElementById('splash-screen').classList.add('hidden');
+            
+            // Cargar datos
+            const savedProfile = localStorage.getItem('gembukai_profile');
+            const savedRoutine = localStorage.getItem('gembukai_routine');
+            
+            if (savedProfile) {
+                try {
+                    profile = JSON.parse(savedProfile);
+                } catch(e) {
+                    profile = null;
+                }
+            }
+            
+            if (savedRoutine) {
+                try {
+                    routine = JSON.parse(savedRoutine);
+                    // Asegurar estructura correcta
+                    if (!routine.days || !Array.isArray(routine.days)) {
+                        routine = null;
+                    }
+                } catch(e) {
+                    routine = null;
+                }
+            }
+            
+            if (!profile) {
+                showScreen('screen-register');
+                document.querySelector('.bottom-nav').style.display = 'none';
+            } else {
+                if (!routine) {
+                    createRoutineFromProfile();
+                }
+                updateHome();
+                showScreen('screen-home');
+            }
+        }
+
+        function selectDays(days, element) {
+            document.getElementById('reg-days').value = days;
+            document.querySelectorAll('#reg-days-selector .day-selector-btn').forEach(btn => btn.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+
+        function saveProfile() {
+            const name = document.getElementById('reg-name').value.trim();
+            const age = document.getElementById('reg-age').value;
+            const gender = document.getElementById('reg-gender').value;
+            const weight = parseFloat(document.getElementById('reg-weight').value);
+            const height = parseFloat(document.getElementById('reg-height').value);
+            const level = document.getElementById('reg-level').value;
+            const goal = document.getElementById('reg-goal').value;
+            const days = parseInt(document.getElementById('reg-days').value);
+
+            if (!name || !age || !gender || !weight || !height || !days) {
+                alert('️ Rellena todos los campos');
+                return;
+            }
+
+            profile = { name, age: parseInt(age), gender, weight, height, level, goal, days };
+            localStorage.setItem('gembukai_profile', JSON.stringify(profile));
+            createRoutineFromProfile();
+            alert('✅ ¡Perfil creado!');
+            document.querySelector('.bottom-nav').style.display = 'flex';
+            updateHome();
+            showScreen('screen-home');
+        }
+
+        function createRoutineFromProfile() {
+            const dayNames = ['Día 1', 'Día 2', 'Día 3', 'Día 4', 'Día 5', 'Día 6'];
+            routine = { days: [] };
+            for (let i = 0; i < profile.days; i++) {
+                routine.days.push({ name: dayNames[i], exercises: [], completed: false });
+            }
+            saveRoutine();
+        }
+
+        function saveRoutine() {
+            localStorage.setItem('gembukai_routine', JSON.stringify(routine));
+        }
+
+        function updateHome() {
+            if (!profile) return;
+            document.getElementById('welcome-title').textContent = '¡Hola, ' + profile.name + '!';
+            const goals = { fuerza: ' Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
+            document.getElementById('welcome-msg').textContent = 'Objetivo: ' + (goals[profile.goal] || profile.goal);
+            
+            let totalExercises = 0;
+            if (routine && routine.days) {
+                totalExercises = routine.days.reduce((sum, day) => sum + (day.exercises ? day.exercises.length : 0), 0);
+            }
+            
+            document.getElementById('stat-days').textContent = profile.days;
+            document.getElementById('stat-exercises').textContent = totalExercises;
+        }
+
+        function showScreen(screenId, navElement) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            if (navElement) {
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                navElement.classList.add('active');
+            }
+            if (screenId === 'screen-routines') renderRoutineDays();
+            if (screenId === 'screen-profile') renderProfile();
+            if (screenId === 'screen-home') updateHome();
+            window.scrollTo(0, 0);
+        }
+
+        function showMuscleGroup(muscle) {
+            lastScreen = 'screen-exercises';
+            const names = { pecho: '🫁 Pecho', espalda: '🔙 Espalda', piernas: '🦵 Piernas', hombros: '🤷 Hombros', biceps: ' Bíceps', triceps: '🦾 Tríceps', core: '🎯 Core', cardio: '❤️ Cardio' };
+            document.getElementById('muscle-title').textContent = names[muscle];
+            const filtered = exercisesDB.filter(e => e.muscle === muscle);
+            const container = document.getElementById('exercise-list-container');
+            
+            container.innerHTML = '';
+            filtered.forEach(ex => {
+                const div = document.createElement('div');
+                div.className = 'exercise-item';
+                div.innerHTML = `
+                    <div class="exercise-image">${createExerciseImage(ex.muscle, ex.name)}</div>
+                    <div class="exercise-info">
+                        <h3>${ex.name}</h3>
+                        <p>${ex.desc}</p>
+                        <div class="exercise-actions">
+                            <a href="https://www.youtube.com/watch?v=${ex.youtube}" target="_blank" class="btn btn-small btn-youtube">▶️ Ver</a>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+            showScreen('screen-exercise-list');
+        }
+
+        function showMuscleGroupForDay(muscle) {
+            currentMuscleForDay = muscle;
+            const names = { pecho: '🫁 Pecho', espalda: ' Espalda', piernas: ' Piernas', hombros: '🤷 Hombros', biceps: '💪 Bíceps', triceps: '🦾 Tríceps', core: '🎯 Core', cardio: '❤️ Cardio' };
+            document.getElementById('muscle-title').textContent = names[muscle];
+            const filtered = exercisesDB.filter(e => e.muscle === muscle);
+            const container = document.getElementById('exercise-list-container');
+            
+            container.innerHTML = '';
+            filtered.forEach(ex => {
+                const alreadyInDay = routine.days[currentDayIndex].exercises.find(e => e.id === ex.id);
+                const div = document.createElement('div');
+                div.className = 'exercise-item';
+                div.innerHTML = `
+                    <div class="exercise-image">${createExerciseImage(ex.muscle, ex.name)}</div>
+                    <div class="exercise-info">
+                        <h3>${ex.name}</h3>
+                        <p>${ex.desc}</p>
+                        <div class="exercise-actions">
+                            <a href="https://www.youtube.com/watch?v=${ex.youtube}" target="_blank" class="btn btn-small btn-youtube">▶️ Ver</a>
+                            <button class="btn btn-small ${alreadyInDay ? 'btn-warning' : 'btn-success'}" onclick="addExerciseToDay(${ex.id})" ${alreadyInDay ? 'disabled' : ''}>
+                                ${alreadyInDay ? '✓ Añadido' : '➕ Añadir'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+            showScreen('screen-exercise-list');
+        }
+
+        function addExerciseToDay(exerciseId) {
+            const ex = exercisesDB.find(e => e.id === exerciseId);
+            const day = routine.days[currentDayIndex];
+            
+            if (day.exercises.find(e => e.id === exerciseId)) {
+                alert('⚠️ Ya está en este día');
+                return;
+            }
+            
+            day.exercises.push({ 
+                id: ex.id,
+                name: ex.name,
+                muscle: ex.muscle,
+                youtube: ex.youtube,
+                sets: '', 
+                reps: '', 
+                weight: '' 
+            });
+            saveRoutine();
+            alert('✅ Añadido a ' + day.name);
+            showMuscleGroupForDay(currentMuscleForDay);
+        }
+
+        function goBackFromList() {
+            showScreen(lastScreen);
+        }
+
+        function renderRoutineDays() {
+            const container = document.getElementById('routine-days-container');
+            
+            if (!routine || !routine.days || routine.days.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div class="icon">🏋️</div><p>No tienes rutina creada</p></div>';
+                return;
+            }
+
+            let html = '';
+            routine.days.forEach((day, index) => {
+                const exerciseCount = day.exercises ? day.exercises.length : 0;
+                const isCompleted = day.completed ? 'day-completed' : '';
+                
+                html += `
+                    <div class="day-card ${isCompleted}">
+                        <div class="day-header">
+                            <input class="day-title-input" value="${day.name}" onchange="renameDay(${index}, this.value)" onclick="event.stopPropagation()">
+                            <span class="day-badge">${exerciseCount} ejercicios</span>
+                        </div>
+                        <div class="day-exercises">
+                `;
+                
+                if (!day.exercises || day.exercises.length === 0) {
+                    html += '<p style="color:#999;font-size:13px;text-align:center;padding:10px;">Sin ejercicios aún</p>';
+                } else {
+                    day.exercises.forEach((ex, exIndex) => {
+                        const setsReps = [];
+                        if (ex.sets) setsReps.push(ex.sets + ' series');
+                        if (ex.reps) setsReps.push(ex.reps + ' reps');
+                        if (ex.weight) setsReps.push(ex.weight + ' kg');
+                        
+                        html += `
+                            <div class="day-exercise-item" onclick="openExerciseDetailInDay(${index}, ${exIndex})">
+                                <div>
+                                    <div class="day-exercise-name">${ex.name}</div>
+                                    <div class="day-exercise-data">${setsReps.join(' | ')}</div>
+                                </div>
+                                <button class="btn btn-tiny btn-danger" onclick="event.stopPropagation(); removeExerciseFromDay(${index}, ${exIndex})">🗑️</button>
+                            </div>
+                        `;
+                    });
+                }
+                
+                html += `
+                        </div>
+                        <div class="day-actions">
+                            <button class="btn btn-small" onclick="openAddToDay(${index})">➕ Añadir ejercicio</button>
+                            <button class="btn btn-small ${day.completed ? 'btn-warning' : 'btn-success'}" onclick="toggleDayCompleted(${index})">${day.completed ? '️ Desmarcar' : '✅ Completado'}</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function renameDay(index, newName) {
+            routine.days[index].name = newName;
+            saveRoutine();
+        }
+
+        function openAddToDay(dayIndex) {
+            currentDayIndex = dayIndex;
+            document.getElementById('add-to-day-title').textContent = 'Añadir a: ' + routine.days[dayIndex].name;
+            showScreen('screen-add-to-day');
+        }
+
+        function removeExerciseFromDay(dayIndex, exIndex) {
+            if (confirm('¿Quitar este ejercicio?')) {
+                routine.days[dayIndex].exercises.splice(exIndex, 1);
+                saveRoutine();
+                renderRoutineDays();
+            }
+        }
+
+        function toggleDayCompleted(dayIndex) {
+            routine.days[dayIndex].completed = !routine.days[dayIndex].completed;
+            saveRoutine();
+            renderRoutineDays();
+        }
+
+        function openExerciseDetailInDay(dayIndex, exIndex) {
+            const ex = routine.days[dayIndex].exercises[exIndex];
+            currentExerciseDetail = { dayIndex, exIndex, exercise: ex };
+            
+            document.getElementById('detail-image-container').innerHTML = createExerciseImage(ex.muscle || 'pecho', ex.name, 'big');
+            document.getElementById('detail-name').textContent = ex.name;
+            document.getElementById('detail-desc').textContent = 'Ejercicio de tu rutina';
+            document.getElementById('detail-youtube').href = `https://www.youtube.com/watch?v=${ex.youtube}`;
+            document.getElementById('input-sets').value = ex.sets || '';
+            document.getElementById('input-reps').value = ex.reps || '';
+            document.getElementById('input-weight').value = ex.weight || '';
+            
+            showScreen('screen-exercise-detail');
+        }
+
+        function saveExerciseData() {
+            if (!currentExerciseDetail) return;
+            const { dayIndex, exIndex } = currentExerciseDetail;
+            const ex = routine.days[dayIndex].exercises[exIndex];
+            ex.sets = document.getElementById('input-sets').value;
+            ex.reps = document.getElementById('input-reps').value;
+            ex.weight = document.getElementById('input-weight').value;
+            saveRoutine();
+            alert('✅ Datos guardados');
+            backFromDetail();
+        }
+
+        function backFromDetail() {
+            currentExerciseDetail = null;
+            showScreen('screen-routines');
+        }
+
+        function renderProfile() {
+            if (!profile) { document.getElementById('profile-display').innerHTML = '<p>Sin perfil</p>'; return; }
+            const imc = (profile.weight / ((profile.height/100) ** 2)).toFixed(1);
+            let imcText = imc < 18.5 ? 'Bajo peso' : imc < 25 ? 'Normal' : imc < 30 ? 'Sobrepeso' : 'Obesidad';
+            let imcColor = imc < 18.5 ? '#3498db' : imc < 25 ? '#27ae60' : imc < 30 ? '#f39c12' : '#e74c3c';
+            const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
+            
+            document.getElementById('profile-display').innerHTML = `
+                <div class="profile-info"><div class="label">Nombre</div><div class="value">${profile.name}</div></div>
+                <div class="flex-row">
+                    <div class="profile-info"><div class="label">Edad</div><div class="value">${profile.age} años</div></div>
+                    <div class="profile-info"><div class="label">Sexo</div><div class="value">${profile.gender === 'hombre' ? '♂️' : '♀️'}</div></div>
+                </div>
+                <div class="flex-row">
+                    <div class="profile-info"><div class="label">Peso</div><div class="value">${profile.weight} kg</div></div>
+                    <div class="profile-info"><div class="label">Altura</div><div class="value">${profile.height} cm</div></div>
+                </div>
+                <div class="profile-info"><div class="label">IMC</div><div class="value">${imc} <span style="display:inline-block;padding:3px 10px;border-radius:15px;font-size:12px;color:white;background:${imcColor}">${imcText}</span></div></div>
+                <div class="profile-info"><div class="label">Nivel</div><div class="value">${profile.level.charAt(0).toUpperCase() + profile.level.slice(1)}</div></div>
+                <div class="profile-info"><div class="label">Objetivo</div><div class="value">${goals[profile.goal] || profile.goal}</div></div>
+                <div class="profile-info"><div class="label">Días de entreno</div><div class="value">${profile.days} días/semana</div></div>
+            `;
+        }
+
+        function resetProfile() {
+            if (confirm('¿Borrar todo?')) {
+                localStorage.removeItem('gembukai_profile');
+                localStorage.removeItem('gembukai_routine');
+                profile = null;
+                routine = null;
+                document.querySelector('.bottom-nav').style.display = 'none';
+                showScreen('screen-register');
+            }
+        }
+    </script>
+
+</body>
+</html>
