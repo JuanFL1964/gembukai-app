@@ -98,6 +98,23 @@
         .empty-state .icon { font-size: 50px; margin-bottom: 10px; }
         .loading { text-align: center; padding: 20px; color: rgba(255,255,255,0.8); font-size: 16px; }
         .error-msg { text-align: center; padding: 20px; color: #ff6b6b; font-size: 14px; }
+        .login-container { max-width: 400px; margin: 50px auto; text-align: center; }
+        .login-container h2 { font-size: 28px; margin-bottom: 20px; }
+        .login-container p { margin-bottom: 30px; opacity: 0.9; }
+        .login-input { width: 100%; padding: 15px; border: 3px solid white; border-radius: 12px; font-size: 18px; text-align: center; margin-bottom: 20px; background: rgba(255,255,255,0.95); color: #333; letter-spacing: 2px; text-transform: uppercase; }
+        .login-error { color: #ff6b6b; margin-top: 15px; font-size: 14px; display: none; }
+        .admin-panel { background: rgba(0,0,0,0.4); padding: 15px; border-radius: 12px; margin-top: 20px; }
+        .admin-panel h3 { color: #ffd700; margin-bottom: 15px; }
+        .user-list { max-height: 400px; overflow-y: auto; }
+        .user-item { background: rgba(255,255,255,0.1); padding: 12px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .user-item .user-info { flex: 1; }
+        .user-item .user-code { font-weight: bold; font-size: 14px; }
+        .user-item .user-name { font-size: 12px; opacity: 0.8; }
+        .user-item .user-status { font-size: 11px; margin-top: 4px; }
+        .user-item .user-status.active { color: #27ae60; }
+        .user-item .user-status.inactive { color: #e74c3c; }
+        .user-item .user-status.expired { color: #f39c12; }
+        .user-actions { display: flex; gap: 6px; }
         @media (min-width: 768px) {
             .main-content { max-width: 800px; margin: 0 auto; padding: 20px; }
             .muscle-grid { grid-template-columns: repeat(4, 1fr); }
@@ -120,7 +137,21 @@
         <button class="splash-btn" onclick="enterApp()">ENTRAR</button>
     </div>
 
-    <div class="header">
+    <div id="screen-login" class="screen">
+        <div class="main-content">
+            <div class="login-container">
+                <div class="splash-logo" style="margin: 0 auto 20px;"><img src="logo.png" alt="Gembukai Logo"></div>
+                <h2>Acceso restringido</h2>
+                <p>Introduce tu código de acceso para continuar</p>
+                <input type="text" id="login-code" class="login-input" placeholder="GEMBU-XXXX-XXXX" autocomplete="off">
+                <button class="btn" onclick="validateCode()"> Acceder</button>
+                <div id="login-error" class="login-error"></div>
+                <p style="margin-top: 30px; font-size: 12px; opacity: 0.7;">¿No tienes código? Contacta con el gimnasio</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="header" id="main-header" style="display:none;">
         <div class="logo-container"><img src="logo.png" alt="Gembukai Logo"></div>
         <h1>GEMBU-KAI</h1>
         <p>Club Sportiu Bonavista</p>
@@ -140,7 +171,7 @@
                     <div class="form-group"><label>Altura (cm)</label><input type="number" id="reg-height" placeholder="175"></div>
                 </div>
                 <div class="form-group"><label>Nivel</label><select id="reg-level"><option value="principiante">Principiante</option><option value="intermedio">Intermedio</option><option value="avanzado">Avanzado</option></select></div>
-                <div class="form-group"><label>Objetivo</label><select id="reg-goal"><option value="fuerza">💪 Fuerza</option><option value="hipertrofia">🏋️ Hipertrofia</option><option value="definicion">️ Definición</option><option value="resistencia">🏃 Resistencia</option><option value="salud">❤️ Salud</option><option value="perder_peso">📉 Perder peso</option></select></div>
+                <div class="form-group"><label>Objetivo</label><select id="reg-goal"><option value="fuerza">💪 Fuerza</option><option value="hipertrofia">🏋️ Hipertrofia</option><option value="definicion">✂️ Definición</option><option value="resistencia">🏃 Resistencia</option><option value="salud">❤️ Salud</option><option value="perder_peso">📉 Perder peso</option></select></div>
                 <div class="form-group">
                     <label>¿Cuántos días entrenar?</label>
                     <div class="day-selector" id="reg-days-selector">
@@ -165,7 +196,7 @@
                     <div class="stat-box"><div class="number" id="stat-days">0</div><div class="text">Días de entreno</div></div>
                     <div class="stat-box"><div class="number" id="stat-exercises">0</div><div class="text">Ejercicios totales</div></div>
                 </div>
-                <button class="btn" onclick="showScreen('screen-routines')">🏋️ Mis Rutinas</button>
+                <button class="btn" onclick="showScreen('screen-routines')">️ Mis Rutinas</button>
                 <button class="btn btn-secondary" onclick="showScreen('screen-exercises')">📋 Explorar ejercicios</button>
             </div>
         </div>
@@ -177,7 +208,7 @@
                 <h2>Elige grupo muscular</h2>
                 <div class="muscle-grid">
                     <div class="muscle-btn" onclick="showMuscleGroup('chest')">🫁 Pecho</div>
-                    <div class="muscle-btn" onclick="showMuscleGroup('back')"> Espalda</div>
+                    <div class="muscle-btn" onclick="showMuscleGroup('back')">🔙 Espalda</div>
                     <div class="muscle-btn" onclick="showMuscleGroup('upper legs')">🦵 Piernas</div>
                     <div class="muscle-btn" onclick="showMuscleGroup('shoulders')">🤷 Hombros</div>
                     <div class="muscle-btn" onclick="showMuscleGroup('upper arms')">💪 Brazos</div>
@@ -242,7 +273,7 @@
                 <p style="margin-bottom: 15px; font-size: 14px;">Elige un grupo muscular:</p>
                 <div class="muscle-grid">
                     <div class="muscle-btn" onclick="showMuscleGroupForDay('chest')">🫁 Pecho</div>
-                    <div class="muscle-btn" onclick="showMuscleGroupForDay('back')"> Espalda</div>
+                    <div class="muscle-btn" onclick="showMuscleGroupForDay('back')">🔙 Espalda</div>
                     <div class="muscle-btn" onclick="showMuscleGroupForDay('upper legs')">🦵 Piernas</div>
                     <div class="muscle-btn" onclick="showMuscleGroupForDay('shoulders')">🤷 Hombros</div>
                     <div class="muscle-btn" onclick="showMuscleGroupForDay('upper arms')">💪 Brazos</div>
@@ -261,36 +292,46 @@
                 <div id="profile-display"></div>
                 <button class="btn btn-danger" onclick="resetProfile()" style="margin-top: 15px;">🔄 Reiniciar todo</button>
             </div>
+            <div id="admin-section" style="display:none;">
+                <div class="card">
+                    <h2>🔐 Panel de Administración</h2>
+                    <div class="admin-panel">
+                        <h3>Gestión de usuarios</h3>
+                        <button class="btn btn-success" onclick="showAddUserForm()">➕ Añadir nuevo usuario</button>
+                        <div id="add-user-form" style="display:none; margin-top: 15px;">
+                            <div class="form-group"><label>Código</label><input type="text" id="new-user-code" placeholder="GEMBU-XXXX-XXXX"></div>
+                            <div class="form-group"><label>Nombre</label><input type="text" id="new-user-name" placeholder="Nombre del usuario"></div>
+                            <div class="form-group"><label>Fecha de caducidad</label><input type="date" id="new-user-expires"></div>
+                            <button class="btn btn-success" onclick="addNewUser()">✅ Crear usuario</button>
+                            <button class="btn btn-secondary" onclick="hideAddUserForm()">Cancelar</button>
+                        </div>
+                        <h3 style="margin-top: 20px;">Usuarios existentes</h3>
+                        <div id="user-list-container" class="user-list"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="bottom-nav">
+    <div class="bottom-nav" id="bottom-nav" style="display:none;">
         <div class="nav-item active" onclick="showScreen('screen-home', this)"><span class="icon">🏠</span><span class="label">Inicio</span></div>
         <div class="nav-item" onclick="showScreen('screen-exercises', this)"><span class="icon">📋</span><span class="label">Ejercicios</span></div>
         <div class="nav-item" onclick="showScreen('screen-routines', this)"><span class="icon">🏋️</span><span class="label">Rutinas</span></div>
-        <div class="nav-item" onclick="showScreen('screen-profile', this)"><span class="icon"></span><span class="label">Perfil</span></div>
+        <div class="nav-item" onclick="showScreen('screen-profile', this)"><span class="icon">👤</span><span class="label">Perfil</span></div>
     </div>
 
     <script>
-        // Mapeo de body_part a español
         const muscleNames = {
-            'chest': '🫁 Pecho',
-            'back': '🔙 Espalda',
-            'upper legs': '🦵 Piernas',
-            'lower legs': '🦶 Gemelos',
-            'shoulders': '🤷 Hombros',
-            'upper arms': '💪 Brazos',
-            'waist': ' Core',
-            'cardio': '❤️ Cardio'
+            'chest': '🫁 Pecho', 'back': '🔙 Espalda', 'upper legs': '🦵 Piernas', 'lower legs': '🦶 Gemelos',
+            'shoulders': '🤷 Hombros', 'upper arms': '💪 Brazos', 'waist': '🎯 Core', 'cardio': '❤️ Cardio'
         };
-
         const muscleEmojis = {
             'chest': '🫁', 'back': '🔙', 'upper legs': '🦵', 'lower legs': '🦶',
-            'shoulders': '🤷', 'upper arms': '💪', 'waist': '🎯', 'cardio': '❤️'
+            'shoulders': '🤷', 'upper arms': '', 'waist': '🎯', 'cardio': '❤️'
         };
 
-        // Base de datos de ejercicios (se carga desde JSON)
         let exercisesDB = [];
+        let usersDB = [];
         let profile = null;
         let routine = null;
         let currentExerciseDetail = null;
@@ -298,8 +339,9 @@
         let currentMuscleForDay = null;
         let lastScreen = 'screen-exercises';
         let exercisesLoaded = false;
+        let currentUser = null;
+        let isAdmin = false;
 
-        // Cargar ejercicios desde el JSON
         async function loadExercises() {
             if (exercisesLoaded) return;
             try {
@@ -309,8 +351,20 @@
                 exercisesLoaded = true;
                 console.log(`✅ Cargados ${exercisesDB.length} ejercicios`);
             } catch (error) {
-                console.error('❌ Error cargando ejercicios:', error);
+                console.error(' Error cargando ejercicios:', error);
                 exercisesDB = [];
+            }
+        }
+
+        async function loadUsers() {
+            try {
+                const response = await fetch('users.json');
+                if (!response.ok) throw new Error('No se pudo cargar users.json');
+                usersDB = await response.json();
+                console.log(`✅ Cargados ${usersDB.users.length} usuarios`);
+            } catch (error) {
+                console.error('❌ Error cargando usuarios:', error);
+                usersDB = { users: [] };
             }
         }
 
@@ -320,7 +374,7 @@
         }
 
         function createPlaceholder(muscle, name, size) {
-            const emoji = muscleEmojis[muscle] || '️';
+            const emoji = muscleEmojis[muscle] || '🏋️';
             const initials = getInitials(name);
             if (size === 'big') {
                 return `<div class="emoji-big">${emoji}</div><div class="initials-big">${initials}</div>`;
@@ -329,32 +383,117 @@
         }
 
         function getExerciseImage(exerciseId) {
-            // El ID viene como "0001", "0002", etc.
             return `images/${exerciseId}.jpg`;
         }
 
         function enterApp() {
             document.getElementById('splash-screen').classList.add('hidden');
             loadExercises();
+            loadUsers();
             
-            // Cargar datos de localStorage
-            try {
-                const savedProfile = localStorage.getItem('gembukai_profile');
-                const savedRoutine = localStorage.getItem('gembukai_routine');
-                if (savedProfile) profile = JSON.parse(savedProfile);
-                if (savedRoutine) routine = JSON.parse(savedRoutine);
-            } catch(e) {
-                console.error('Error cargando datos:', e);
+            const savedUser = localStorage.getItem('gembukai_current_user');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                checkUserAccess();
+            } else {
+                showScreen('screen-login');
             }
+        }
+
+        function checkUserAccess() {
+            if (!currentUser) {
+                showScreen('screen-login');
+                return;
+            }
+
+            const user = usersDB.users.find(u => u.code === currentUser.code);
+            if (!user) {
+                alert('❌ Código no válido. Contacta con el gimnasio.');
+                logout();
+                return;
+            }
+
+            if (!user.active) {
+                alert('⚠️ Tu acceso ha sido desactivado. Contacta con el gimnasio.');
+                logout();
+                return;
+            }
+
+            const today = new Date();
+            const expires = new Date(user.expires);
+            if (today > expires) {
+                alert('⏰ Tu código ha caducado. Contacta con el gimnasio para renovarlo.');
+                logout();
+                return;
+            }
+
+            isAdmin = user.role === 'admin';
+            showApp();
+        }
+
+        function validateCode() {
+            const code = document.getElementById('login-code').value.trim().toUpperCase();
+            const errorDiv = document.getElementById('login-error');
+
+            if (!code) {
+                errorDiv.textContent = '️ Introduce un código';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            const user = usersDB.users.find(u => u.code === code);
+            if (!user) {
+                errorDiv.textContent = '❌ Código no válido';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            if (!user.active) {
+                errorDiv.textContent = '⚠️ Este código está desactivado';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            const today = new Date();
+            const expires = new Date(user.expires);
+            if (today > expires) {
+                errorDiv.textContent = '⏰ Este código ha caducado';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            currentUser = user;
+            localStorage.setItem('gembukai_current_user', JSON.stringify(user));
+            isAdmin = user.role === 'admin';
+            errorDiv.style.display = 'none';
+            showApp();
+        }
+
+        function showApp() {
+            document.getElementById('main-header').style.display = 'block';
+            document.getElementById('bottom-nav').style.display = 'flex';
+            
+            const savedProfile = localStorage.getItem('gembukai_profile');
+            const savedRoutine = localStorage.getItem('gembukai_routine');
+            if (savedProfile) profile = JSON.parse(savedProfile);
+            if (savedRoutine) routine = JSON.parse(savedRoutine);
             
             if (!profile) {
                 showScreen('screen-register');
-                document.querySelector('.bottom-nav').style.display = 'none';
             } else {
                 if (!routine) createRoutineFromProfile();
                 updateHome();
                 showScreen('screen-home');
             }
+        }
+
+        function logout() {
+            localStorage.removeItem('gembukai_current_user');
+            currentUser = null;
+            isAdmin = false;
+            document.getElementById('main-header').style.display = 'none';
+            document.getElementById('bottom-nav').style.display = 'none';
+            showScreen('screen-login');
         }
 
         function selectDays(days, element) {
@@ -374,7 +513,7 @@
             const days = parseInt(document.getElementById('reg-days').value);
 
             if (!name || !age || !gender || !weight || !height || !days) {
-                alert('⚠️ Rellena todos los campos');
+                alert('️ Rellena todos los campos');
                 return;
             }
 
@@ -382,7 +521,6 @@
             localStorage.setItem('gembukai_profile', JSON.stringify(profile));
             createRoutineFromProfile();
             alert('✅ ¡Perfil creado, ' + name + '!');
-            document.querySelector('.bottom-nav').style.display = 'flex';
             updateHome();
             showScreen('screen-home');
         }
@@ -433,7 +571,6 @@
             document.getElementById('muscle-title').textContent = muscleNames[muscle] || muscle;
             const container = document.getElementById('exercise-list-container');
             
-            // Asegurar que los ejercicios estén cargados
             if (!exercisesLoaded) {
                 container.innerHTML = '<div class="loading">Cargando ejercicios...</div>';
                 await loadExercises();
@@ -534,7 +671,7 @@
             const day = routine.days[currentDayIndex];
             
             if (day.exercises.find(e => e.id === exerciseId)) {
-                alert('️ Ya está en este día');
+                alert('⚠️ Ya está en este día');
                 return;
             }
             
@@ -602,7 +739,7 @@
                 html += `
                         </div>
                         <div class="day-actions">
-                            <button class="btn btn-small" onclick="openAddToDay(${index})">➕ Añadir ejercicio</button>
+                            <button class="btn btn-small" onclick="openAddToDay(${index})"> Añadir ejercicio</button>
                             <button class="btn btn-small ${day.completed ? 'btn-warning' : 'btn-success'}" onclick="toggleDayCompleted(${index})">${day.completed ? '↩️ Desmarcar' : '✅ Completado'}</button>
                         </div>
                     </div>
@@ -659,7 +796,6 @@
             document.getElementById('input-reps').value = ex.reps || '';
             document.getElementById('input-weight').value = ex.weight || '';
             
-            // Ocultar instrucciones (no tenemos el ejercicio completo de la DB en la rutina)
             document.getElementById('detail-instructions-container').style.display = 'none';
             
             showScreen('screen-exercise-detail');
@@ -687,13 +823,13 @@
             const imc = (profile.weight / ((profile.height/100) ** 2)).toFixed(1);
             let imcText = imc < 18.5 ? 'Bajo peso' : imc < 25 ? 'Normal' : imc < 30 ? 'Sobrepeso' : 'Obesidad';
             let imcColor = imc < 18.5 ? '#3498db' : imc < 25 ? '#27ae60' : imc < 30 ? '#f39c12' : '#e74c3c';
-            const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
+            const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: ' Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
             
             document.getElementById('profile-display').innerHTML = `
                 <div class="profile-info"><div class="label">Nombre</div><div class="value">${profile.name}</div></div>
                 <div class="flex-row">
                     <div class="profile-info"><div class="label">Edad</div><div class="value">${profile.age} años</div></div>
-                    <div class="profile-info"><div class="label">Sexo</div><div class="value">${profile.gender === 'hombre' ? '♂️' : '♀️'}</div></div>
+                    <div class="profile-info"><div class="label">Sexo</div><div class="value">${profile.gender === 'hombre' ? '️' : '♀️'}</div></div>
                 </div>
                 <div class="flex-row">
                     <div class="profile-info"><div class="label">Peso</div><div class="value">${profile.weight} kg</div></div>
@@ -703,7 +839,105 @@
                 <div class="profile-info"><div class="label">Nivel</div><div class="value">${profile.level.charAt(0).toUpperCase() + profile.level.slice(1)}</div></div>
                 <div class="profile-info"><div class="label">Objetivo</div><div class="value">${goals[profile.goal] || profile.goal}</div></div>
                 <div class="profile-info"><div class="label">Días de entreno</div><div class="value">${profile.days} días/semana</div></div>
+                <div class="profile-info"><div class="label">Código de acceso</div><div class="value">${currentUser ? currentUser.code : 'N/A'}</div></div>
             `;
+
+            if (isAdmin) {
+                document.getElementById('admin-section').style.display = 'block';
+                renderUserList();
+            } else {
+                document.getElementById('admin-section').style.display = 'none';
+            }
+        }
+
+        function renderUserList() {
+            const container = document.getElementById('user-list-container');
+            if (!usersDB.users || usersDB.users.length === 0) {
+                container.innerHTML = '<p style="text-align:center;padding:20px;">No hay usuarios</p>';
+                return;
+            }
+
+            let html = '';
+            usersDB.users.forEach((user, index) => {
+                const today = new Date();
+                const expires = new Date(user.expires);
+                let statusClass = 'active';
+                let statusText = '✅ Activo';
+                
+                if (!user.active) {
+                    statusClass = 'inactive';
+                    statusText = ' Desactivado';
+                } else if (today > expires) {
+                    statusClass = 'expired';
+                    statusText = '⏰ Caducado';
+                }
+
+                html += `
+                    <div class="user-item">
+                        <div class="user-info">
+                            <div class="user-code">${user.code}</div>
+                            <div class="user-name">${user.name}</div>
+                            <div class="user-status ${statusClass}">${statusText} | Caduca: ${user.expires}</div>
+                        </div>
+                        <div class="user-actions">
+                            ${user.role !== 'admin' ? `
+                                <button class="btn btn-tiny ${user.active ? 'btn-warning' : 'btn-success'}" onclick="toggleUserStatus(${index})">
+                                    ${user.active ? '⏸️' : '▶️'}
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function toggleUserStatus(index) {
+            if (confirm('¿Cambiar estado del usuario?')) {
+                usersDB.users[index].active = !usersDB.users[index].active;
+                alert(`✅ Usuario ${usersDB.users[index].active ? 'activado' : 'desactivado'}`);
+                renderUserList();
+            }
+        }
+
+        function showAddUserForm() {
+            document.getElementById('add-user-form').style.display = 'block';
+        }
+
+        function hideAddUserForm() {
+            document.getElementById('add-user-form').style.display = 'none';
+        }
+
+        function addNewUser() {
+            const code = document.getElementById('new-user-code').value.trim().toUpperCase();
+            const name = document.getElementById('new-user-name').value.trim();
+            const expires = document.getElementById('new-user-expires').value;
+
+            if (!code || !name || !expires) {
+                alert('⚠️ Rellena todos los campos');
+                return;
+            }
+
+            if (usersDB.users.find(u => u.code === code)) {
+                alert('⚠️ Este código ya existe');
+                return;
+            }
+
+            usersDB.users.push({
+                code: code,
+                name: name,
+                active: true,
+                role: 'user',
+                expires: expires
+            });
+
+            alert('✅ Usuario creado correctamente');
+            hideAddUserForm();
+            renderUserList();
+            
+            document.getElementById('new-user-code').value = '';
+            document.getElementById('new-user-name').value = '';
+            document.getElementById('new-user-expires').value = '';
         }
 
         function resetProfile() {
@@ -712,7 +946,7 @@
                 localStorage.removeItem('gembukai_routine');
                 profile = null;
                 routine = null;
-                document.querySelector('.bottom-nav').style.display = 'none';
+                updateHome();
                 showScreen('screen-register');
             }
         }
