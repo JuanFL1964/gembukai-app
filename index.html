@@ -411,20 +411,20 @@
             return `images/${exerciseId}.jpg`;
         }
 
-        function enterApp() {
-            document.getElementById('splash-screen').classList.add('hidden');
-            loadExercises();
-            loadUsers();
-            loadTranslations();
-            
-            const savedUser = localStorage.getItem('gembukai_current_user');
-            if (savedUser) {
-                currentUser = JSON.parse(savedUser);
-                checkUserAccess();
-            } else {
-                showScreen('screen-login');
-            }
-        }
+        async function enterApp() {
+    document.getElementById('splash-screen').classList.add('hidden');
+    await loadExercises();
+    await loadUsers();
+    await loadTranslations();
+    
+    const savedUser = localStorage.getItem('gembukai_current_user');
+    if (savedUser) {
+        currentUser = JSON.parse(savedUser);
+        checkUserAccess();
+    } else {
+        showScreen('screen-login');
+    }
+}
 
         function checkUserAccess() {
             if (!currentUser) {
