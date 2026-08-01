@@ -1,0 +1,18 @@
+{
+  "users": [
+    {
+      "code": "GEMBU-ADMIN-2026",
+      "name": "Administrador",
+      "active": true,
+      "role": "admin",
+      "expires": "2099-12-31"
+    },
+    {
+      "code": "GEMBU-TEST-001",
+      "name": "Usuario de prueba",
+      "active": true,
+      "role": "user",
+      "expires": "2026-09-01"
+    }
+  ]
+}
