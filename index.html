@@ -160,7 +160,7 @@
     <div id="screen-register" class="screen">
         <div class="main-content">
             <div class="card">
-                <h2> ¡Bienvenido!</h2>
+                <h2>👋 ¡Bienvenido!</h2>
                 <div class="form-group"><label>Nombre</label><input type="text" id="reg-name" placeholder="Tu nombre"></div>
                 <div class="flex-row">
                     <div class="form-group"><label>Edad</label><input type="number" id="reg-age" placeholder="25"></div>
@@ -171,7 +171,7 @@
                     <div class="form-group"><label>Altura (cm)</label><input type="number" id="reg-height" placeholder="175"></div>
                 </div>
                 <div class="form-group"><label>Nivel</label><select id="reg-level"><option value="principiante">Principiante</option><option value="intermedio">Intermedio</option><option value="avanzado">Avanzado</option></select></div>
-                <div class="form-group"><label>Objetivo</label><select id="reg-goal"><option value="fuerza">💪 Fuerza</option><option value="hipertrofia">🏋️ Hipertrofia</option><option value="definicion">✂️ Definición</option><option value="resistencia">🏃 Resistencia</option><option value="salud">❤️ Salud</option><option value="perder_peso">📉 Perder peso</option></select></div>
+                <div class="form-group"><label>Objetivo</label><select id="reg-goal"><option value="fuerza">💪 Fuerza</option><option value="hipertrofia">🏋️ Hipertrofia</option><option value="definicion">✂️ Definición</option><option value="resistencia"> Resistencia</option><option value="salud">❤️ Salud</option><option value="perder_peso">📉 Perder peso</option></select></div>
                 <div class="form-group">
                     <label>¿Cuántos días entrenar?</label>
                     <div class="day-selector" id="reg-days-selector">
@@ -191,7 +191,7 @@
         <div class="main-content">
             <div class="card">
                 <h2 id="welcome-title">¡Bienvenido!</h2>
-                <p id="welcome-msg" style="margin-bottom: 15px;">Vamos a entrenar 💪</p>
+                <p id="welcome-msg" style="margin-bottom: 15px;">Vamos a entrenar </p>
                 <div class="stats-grid">
                     <div class="stat-box"><div class="number" id="stat-days">0</div><div class="text">Días de entreno</div></div>
                     <div class="stat-box"><div class="number" id="stat-exercises">0</div><div class="text">Ejercicios totales</div></div>
@@ -207,14 +207,14 @@
             <div class="card">
                 <h2>Elige grupo muscular</h2>
                 <div class="muscle-grid">
-                    <div class="muscle-btn" onclick="showMuscleGroup('chest')">🫁 Pecho</div>
+                    <div class="muscle-btn" onclick="showMuscleGroup('chest')"> Pecho</div>
                     <div class="muscle-btn" onclick="showMuscleGroup('back')">🔙 Espalda</div>
                     <div class="muscle-btn" onclick="showMuscleGroup('upper legs')">🦵 Piernas</div>
                     <div class="muscle-btn" onclick="showMuscleGroup('shoulders')">🤷 Hombros</div>
                     <div class="muscle-btn" onclick="showMuscleGroup('upper arms')">💪 Brazos</div>
                     <div class="muscle-btn" onclick="showMuscleGroup('waist')">🎯 Core</div>
                     <div class="muscle-btn" onclick="showMuscleGroup('cardio')">❤️ Cardio</div>
-                    <div class="muscle-btn" onclick="showMuscleGroup('lower legs')">🦶 Gemelos</div>
+                    <div class="muscle-btn" onclick="showMuscleGroup('lower legs')"> Gemelos</div>
                 </div>
             </div>
         </div>
@@ -294,7 +294,7 @@
             </div>
             <div id="admin-section" style="display:none;">
                 <div class="card">
-                    <h2>🔐 Panel de Administración</h2>
+                    <h2> Panel de Administración</h2>
                     <div class="admin-panel">
                         <h3>Gestión de usuarios</h3>
                         <button class="btn btn-success" onclick="showAddUserForm()">➕ Añadir nuevo usuario</button>
@@ -315,23 +315,24 @@
 
     <div class="bottom-nav" id="bottom-nav" style="display:none;">
         <div class="nav-item active" onclick="showScreen('screen-home', this)"><span class="icon">🏠</span><span class="label">Inicio</span></div>
-        <div class="nav-item" onclick="showScreen('screen-exercises', this)"><span class="icon">📋</span><span class="label">Ejercicios</span></div>
-        <div class="nav-item" onclick="showScreen('screen-routines', this)"><span class="icon">🏋️</span><span class="label">Rutinas</span></div>
-        <div class="nav-item" onclick="showScreen('screen-profile', this)"><span class="icon">👤</span><span class="label">Perfil</span></div>
+        <div class="nav-item" onclick="showScreen('screen-exercises', this)"><span class="icon"></span><span class="label">Ejercicios</span></div>
+        <div class="nav-item" onclick="showScreen('screen-routines', this)"><span class="icon">️</span><span class="label">Rutinas</span></div>
+        <div class="nav-item" onclick="showScreen('screen-profile', this)"><span class="icon"></span><span class="label">Perfil</span></div>
     </div>
 
     <script>
         const muscleNames = {
-            'chest': '🫁 Pecho', 'back': '🔙 Espalda', 'upper legs': '🦵 Piernas', 'lower legs': '🦶 Gemelos',
-            'shoulders': '🤷 Hombros', 'upper arms': '💪 Brazos', 'waist': '🎯 Core', 'cardio': '❤️ Cardio'
+            'chest': '🫁 Pecho', 'back': '🔙 Espalda', 'upper legs': ' Piernas', 'lower legs': ' Gemelos',
+            'shoulders': ' Hombros', 'upper arms': '💪 Brazos', 'waist': ' Core', 'cardio': '❤️ Cardio'
         };
         const muscleEmojis = {
-            'chest': '🫁', 'back': '🔙', 'upper legs': '🦵', 'lower legs': '🦶',
-            'shoulders': '🤷', 'upper arms': '', 'waist': '🎯', 'cardio': '❤️'
+            'chest': '', 'back': '🔙', 'upper legs': '🦵', 'lower legs': '🦶',
+            'shoulders': '🤷', 'upper arms': '💪', 'waist': '', 'cardio': '❤️'
         };
 
         let exercisesDB = [];
         let usersDB = [];
+        let translationsDB = {};
         let profile = null;
         let routine = null;
         let currentExerciseDetail = null;
@@ -351,7 +352,7 @@
                 exercisesLoaded = true;
                 console.log(`✅ Cargados ${exercisesDB.length} ejercicios`);
             } catch (error) {
-                console.error(' Error cargando ejercicios:', error);
+                console.error('❌ Error cargando ejercicios:', error);
                 exercisesDB = [];
             }
         }
@@ -366,6 +367,30 @@
                 console.error('❌ Error cargando usuarios:', error);
                 usersDB = { users: [] };
             }
+        }
+
+        async function loadTranslations() {
+            try {
+                const response = await fetch('translations.json');
+                if (!response.ok) throw new Error('No se pudo cargar translations.json');
+                translationsDB = await response.json();
+                console.log('✅ Traducciones cargadas');
+            } catch (error) {
+                console.error(' Error cargando traducciones:', error);
+                translationsDB = { exercises: {}, muscles: {}, equipment: {} };
+            }
+        }
+
+        function translateExerciseName(englishName) {
+            if (!translationsDB.exercises) return englishName;
+            const lowerName = englishName.toLowerCase();
+            return translationsDB.exercises[lowerName] || englishName;
+        }
+
+        function translateEquipment(equipment) {
+            if (!equipment || !translationsDB.equipment) return equipment || '';
+            const lowerEquip = equipment.toLowerCase();
+            return translationsDB.equipment[lowerEquip] || equipment;
         }
 
         function getInitials(name) {
@@ -390,6 +415,7 @@
             document.getElementById('splash-screen').classList.add('hidden');
             loadExercises();
             loadUsers();
+            loadTranslations();
             
             const savedUser = localStorage.getItem('gembukai_current_user');
             if (savedUser) {
@@ -513,7 +539,7 @@
             const days = parseInt(document.getElementById('reg-days').value);
 
             if (!name || !age || !gender || !weight || !height || !days) {
-                alert('️ Rellena todos los campos');
+                alert('⚠️ Rellena todos los campos');
                 return;
             }
 
@@ -603,8 +629,8 @@
                 
                 div.innerHTML += `
                     <div class="exercise-info">
-                        <h3>${ex.name}</h3>
-                        <p>${ex.equipment || ''}</p>
+                        <h3>${translateExerciseName(ex.name)}</h3>
+                        <p>${translateEquipment(ex.equipment) || ''}</p>
                         <div class="exercise-actions">
                             <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(ex.name + ' exercise')}" target="_blank" class="btn btn-small btn-youtube">▶️ Ver</a>
                         </div>
@@ -649,8 +675,8 @@
                 
                 div.innerHTML += `
                     <div class="exercise-info">
-                        <h3>${ex.name}</h3>
-                        <p>${ex.equipment || ''}</p>
+                        <h3>${translateExerciseName(ex.name)}</h3>
+                        <p>${translateEquipment(ex.equipment) || ''}</p>
                         <div class="exercise-actions">
                             <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(ex.name + ' exercise')}" target="_blank" class="btn btn-small btn-youtube">▶️ Ver</a>
                             <button class="btn btn-small ${alreadyInDay ? 'btn-warning' : 'btn-success'}" onclick="addExerciseToDay('${ex.id}')" ${alreadyInDay ? 'disabled' : ''}>
@@ -727,10 +753,10 @@
                         html += `
                             <div class="day-exercise-item" onclick="openExerciseDetailInDay(${index}, ${exIndex})">
                                 <div>
-                                    <div class="day-exercise-name">${ex.name}</div>
+                                    <div class="day-exercise-name">${translateExerciseName(ex.name)}</div>
                                     <div class="day-exercise-data">${setsReps.join(' | ')}</div>
                                 </div>
-                                <button class="btn btn-tiny btn-danger" onclick="event.stopPropagation(); removeExerciseFromDay(${index}, ${exIndex})">🗑️</button>
+                                <button class="btn btn-tiny btn-danger" onclick="event.stopPropagation(); removeExerciseFromDay(${index}, ${exIndex})">️</button>
                             </div>
                         `;
                     });
@@ -739,7 +765,7 @@
                 html += `
                         </div>
                         <div class="day-actions">
-                            <button class="btn btn-small" onclick="openAddToDay(${index})"> Añadir ejercicio</button>
+                            <button class="btn btn-small" onclick="openAddToDay(${index})">➕ Añadir ejercicio</button>
                             <button class="btn btn-small ${day.completed ? 'btn-warning' : 'btn-success'}" onclick="toggleDayCompleted(${index})">${day.completed ? '↩️ Desmarcar' : '✅ Completado'}</button>
                         </div>
                     </div>
@@ -788,8 +814,8 @@
             imgContainer.innerHTML = '';
             imgContainer.appendChild(img);
             
-            document.getElementById('detail-name').textContent = ex.name;
-            document.getElementById('detail-equipment').textContent = ex.equipment ? 'Equipo: ' + ex.equipment : '';
+            document.getElementById('detail-name').textContent = translateExerciseName(ex.name);
+            document.getElementById('detail-equipment').textContent = ex.equipment ? 'Equipo: ' + translateEquipment(ex.equipment) : '';
             document.getElementById('detail-desc').textContent = 'Ejercicio de tu rutina';
             document.getElementById('detail-youtube').href = `https://www.youtube.com/results?search_query=${encodeURIComponent(ex.name + ' exercise')}`;
             document.getElementById('input-sets').value = ex.sets || '';
@@ -823,13 +849,13 @@
             const imc = (profile.weight / ((profile.height/100) ** 2)).toFixed(1);
             let imcText = imc < 18.5 ? 'Bajo peso' : imc < 25 ? 'Normal' : imc < 30 ? 'Sobrepeso' : 'Obesidad';
             let imcColor = imc < 18.5 ? '#3498db' : imc < 25 ? '#27ae60' : imc < 30 ? '#f39c12' : '#e74c3c';
-            const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: ' Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
+            const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
             
             document.getElementById('profile-display').innerHTML = `
                 <div class="profile-info"><div class="label">Nombre</div><div class="value">${profile.name}</div></div>
                 <div class="flex-row">
                     <div class="profile-info"><div class="label">Edad</div><div class="value">${profile.age} años</div></div>
-                    <div class="profile-info"><div class="label">Sexo</div><div class="value">${profile.gender === 'hombre' ? '️' : '♀️'}</div></div>
+                    <div class="profile-info"><div class="label">Sexo</div><div class="value">${profile.gender === 'hombre' ? '♂️' : '♀️'}</div></div>
                 </div>
                 <div class="flex-row">
                     <div class="profile-info"><div class="label">Peso</div><div class="value">${profile.weight} kg</div></div>
@@ -866,10 +892,10 @@
                 
                 if (!user.active) {
                     statusClass = 'inactive';
-                    statusText = ' Desactivado';
+                    statusText = '❌ Desactivado';
                 } else if (today > expires) {
                     statusClass = 'expired';
-                    statusText = '⏰ Caducado';
+                    statusText = ' Caducado';
                 }
 
                 html += `
