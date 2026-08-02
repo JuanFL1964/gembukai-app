@@ -191,12 +191,12 @@
         <div class="main-content">
             <div class="card">
                 <h2 id="welcome-title">¡Bienvenido!</h2>
-                <p id="welcome-msg" style="margin-bottom: 15px;">Vamos a entrenar </p>
+                <p id="welcome-msg" style="margin-bottom: 15px;">Vamos a entrenar 💪</p>
                 <div class="stats-grid">
                     <div class="stat-box"><div class="number" id="stat-days">0</div><div class="text">Días de entreno</div></div>
                     <div class="stat-box"><div class="number" id="stat-exercises">0</div><div class="text">Ejercicios totales</div></div>
                 </div>
-                <button class="btn" onclick="showScreen('screen-routines')">️ Mis Rutinas</button>
+                <button class="btn" onclick="showScreen('screen-routines')">🏋️ Mis Rutinas</button>
                 <button class="btn btn-secondary" onclick="showScreen('screen-exercises')">📋 Explorar ejercicios</button>
             </div>
         </div>
@@ -207,14 +207,14 @@
             <div class="card">
                 <h2>Elige grupo muscular</h2>
                 <div class="muscle-grid">
-                    <div class="muscle-btn" onclick="showMuscleGroup('chest')"> Pecho</div>
+                    <div class="muscle-btn" onclick="showMuscleGroup('chest')">🫁 Pecho</div>
                     <div class="muscle-btn" onclick="showMuscleGroup('back')">🔙 Espalda</div>
-                    <div class="muscle-btn" onclick="showMuscleGroup('upper legs')">🦵 Piernas</div>
+                    <div class="muscle-btn" onclick="showMuscleGroup('upper legs')"> Piernas</div>
                     <div class="muscle-btn" onclick="showMuscleGroup('shoulders')">🤷 Hombros</div>
                     <div class="muscle-btn" onclick="showMuscleGroup('upper arms')">💪 Brazos</div>
-                    <div class="muscle-btn" onclick="showMuscleGroup('waist')">🎯 Core</div>
+                    <div class="muscle-btn" onclick="showMuscleGroup('waist')"> Core</div>
                     <div class="muscle-btn" onclick="showMuscleGroup('cardio')">❤️ Cardio</div>
-                    <div class="muscle-btn" onclick="showMuscleGroup('lower legs')"> Gemelos</div>
+                    <div class="muscle-btn" onclick="showMuscleGroup('lower legs')">🦶 Gemelos</div>
                 </div>
             </div>
         </div>
@@ -240,7 +240,7 @@
                     <p id="detail-equipment" style="font-size: 12px; opacity: 0.8; margin-bottom: 10px;"></p>
                     <p id="detail-desc">Descripción</p>
                     <div id="detail-instructions-container" class="detail-instructions" style="display:none;">
-                        <h4>📝 Instrucciones</h4>
+                        <h4> Instrucciones</h4>
                         <ol id="detail-instructions-list"></ol>
                     </div>
                     <a id="detail-youtube" href="#" target="_blank" class="btn btn-youtube" style="text-decoration: none; margin-top: 15px;">▶️ Ver video en YouTube</a>
@@ -274,7 +274,7 @@
                 <div class="muscle-grid">
                     <div class="muscle-btn" onclick="showMuscleGroupForDay('chest')">🫁 Pecho</div>
                     <div class="muscle-btn" onclick="showMuscleGroupForDay('back')">🔙 Espalda</div>
-                    <div class="muscle-btn" onclick="showMuscleGroupForDay('upper legs')">🦵 Piernas</div>
+                    <div class="muscle-btn" onclick="showMuscleGroupForDay('upper legs')"> Piernas</div>
                     <div class="muscle-btn" onclick="showMuscleGroupForDay('shoulders')">🤷 Hombros</div>
                     <div class="muscle-btn" onclick="showMuscleGroupForDay('upper arms')">💪 Brazos</div>
                     <div class="muscle-btn" onclick="showMuscleGroupForDay('waist')">🎯 Core</div>
@@ -294,7 +294,7 @@
             </div>
             <div id="admin-section" style="display:none;">
                 <div class="card">
-                    <h2> Panel de Administración</h2>
+                    <h2>🔐 Panel de Administración</h2>
                     <div class="admin-panel">
                         <h3>Gestión de usuarios</h3>
                         <button class="btn btn-success" onclick="showAddUserForm()">➕ Añadir nuevo usuario</button>
@@ -316,18 +316,18 @@
     <div class="bottom-nav" id="bottom-nav" style="display:none;">
         <div class="nav-item active" onclick="showScreen('screen-home', this)"><span class="icon">🏠</span><span class="label">Inicio</span></div>
         <div class="nav-item" onclick="showScreen('screen-exercises', this)"><span class="icon"></span><span class="label">Ejercicios</span></div>
-        <div class="nav-item" onclick="showScreen('screen-routines', this)"><span class="icon">️</span><span class="label">Rutinas</span></div>
-        <div class="nav-item" onclick="showScreen('screen-profile', this)"><span class="icon"></span><span class="label">Perfil</span></div>
+        <div class="nav-item" onclick="showScreen('screen-routines', this)"><span class="icon">🏋️</span><span class="label">Rutinas</span></div>
+        <div class="nav-item" onclick="showScreen('screen-profile', this)"><span class="icon">👤</span><span class="label">Perfil</span></div>
     </div>
 
     <script>
         const muscleNames = {
-            'chest': '🫁 Pecho', 'back': '🔙 Espalda', 'upper legs': ' Piernas', 'lower legs': ' Gemelos',
-            'shoulders': ' Hombros', 'upper arms': '💪 Brazos', 'waist': ' Core', 'cardio': '❤️ Cardio'
+            'chest': ' Pecho', 'back': '🔙 Espalda', 'upper legs': '🦵 Piernas', 'lower legs': '🦶 Gemelos',
+            'shoulders': '🤷 Hombros', 'upper arms': '💪 Brazos', 'waist': '🎯 Core', 'cardio': '❤️ Cardio'
         };
         const muscleEmojis = {
-            'chest': '', 'back': '🔙', 'upper legs': '🦵', 'lower legs': '🦶',
-            'shoulders': '🤷', 'upper arms': '💪', 'waist': '', 'cardio': '❤️'
+            'chest': '🫁', 'back': '🔙', 'upper legs': '🦵', 'lower legs': '🦶',
+            'shoulders': '🤷', 'upper arms': '💪', 'waist': '🎯', 'cardio': '❤️'
         };
 
         let exercisesDB = [];
@@ -376,7 +376,7 @@
                 translationsDB = await response.json();
                 console.log('✅ Traducciones cargadas');
             } catch (error) {
-                console.error(' Error cargando traducciones:', error);
+                console.error('❌ Error cargando traducciones:', error);
                 translationsDB = { exercises: {}, muscles: {}, equipment: {} };
             }
         }
@@ -412,19 +412,19 @@
         }
 
         async function enterApp() {
-    document.getElementById('splash-screen').classList.add('hidden');
-    await loadExercises();
-    await loadUsers();
-    await loadTranslations();
-    
-    const savedUser = localStorage.getItem('gembukai_current_user');
-    if (savedUser) {
-        currentUser = JSON.parse(savedUser);
-        checkUserAccess();
-    } else {
-        showScreen('screen-login');
-    }
-}
+            document.getElementById('splash-screen').classList.add('hidden');
+            await loadExercises();
+            await loadUsers();
+            await loadTranslations();
+            
+            const savedUser = localStorage.getItem('gembukai_current_user');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                checkUserAccess();
+            } else {
+                showScreen('screen-login');
+            }
+        }
 
         function checkUserAccess() {
             if (!currentUser) {
@@ -462,7 +462,7 @@
             const errorDiv = document.getElementById('login-error');
 
             if (!code) {
-                errorDiv.textContent = '️ Introduce un código';
+                errorDiv.textContent = '⚠️ Introduce un código';
                 errorDiv.style.display = 'block';
                 return;
             }
@@ -539,7 +539,7 @@
             const days = parseInt(document.getElementById('reg-days').value);
 
             if (!name || !age || !gender || !weight || !height || !days) {
-                alert('⚠️ Rellena todos los campos');
+                alert('️ Rellena todos los campos');
                 return;
             }
 
@@ -567,7 +567,7 @@
         function updateHome() {
             if (!profile) return;
             document.getElementById('welcome-title').textContent = '¡Hola, ' + profile.name + '!';
-            const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
+            const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: ' Perder peso' };
             document.getElementById('welcome-msg').textContent = 'Objetivo: ' + (goals[profile.goal] || profile.goal);
             
             let totalExercises = 0;
@@ -602,7 +602,11 @@
                 await loadExercises();
             }
             
-            const filtered = exercisesDB.filter(ex => ex.body_part === muscle);
+            // Solo mostrar ejercicios que tengan traducción
+            const filtered = exercisesDB.filter(ex => {
+                const hasTranslation = ex.body_part === muscle && translationsDB.exercises[ex.name.toLowerCase()];
+                return hasTranslation;
+            });
             
             if (filtered.length === 0) {
                 container.innerHTML = '<p style="text-align:center;padding:20px;color:#fff;">No hay ejercicios disponibles para este grupo</p>';
@@ -633,6 +637,7 @@
                         <p>${translateEquipment(ex.equipment) || ''}</p>
                         <div class="exercise-actions">
                             <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(ex.name + ' exercise')}" target="_blank" class="btn btn-small btn-youtube">▶️ Ver</a>
+                            <button class="btn btn-small btn-success" onclick="showAddToDaySelector('${ex.id}', '${ex.name.replace(/'/g, "\\'")}')">➕ Añadir</button>
                         </div>
                     </div>
                 `;
@@ -641,6 +646,57 @@
                 container.appendChild(div);
             });
             showScreen('screen-exercise-list');
+        }
+
+        function showAddToDaySelector(exerciseId, exerciseName) {
+            // Crear modal con selector de días
+            const modal = document.createElement('div');
+            modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:2000;display:flex;align-items:center;justify-content:center;padding:20px;';
+            
+            let daysHtml = '';
+            routine.days.forEach((day, index) => {
+                daysHtml += `
+                    <button class="btn" onclick="addExerciseToSpecificDay('${exerciseId}', ${index})" style="margin-bottom:10px;">
+                        ${day.name} (${day.exercises.length} ejercicios)
+                    </button>
+                `;
+            });
+            
+            modal.innerHTML = `
+                <div style="background:#8B0000;padding:30px;border-radius:15px;max-width:400px;width:100%;max-height:80vh;overflow-y:auto;">
+                    <h2 style="color:white;margin-bottom:20px;text-align:center;">Añadir a:</h2>
+                    <p style="color:white;margin-bottom:20px;text-align:center;font-size:14px;">${exerciseName}</p>
+                    ${daysHtml}
+                    <button class="btn btn-secondary" onclick="this.parentElement.parentElement.remove()" style="margin-top:15px;">Cancelar</button>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+
+        function addExerciseToSpecificDay(exerciseId, dayIndex) {
+            const ex = exercisesDB.find(e => e.id === exerciseId);
+            const day = routine.days[dayIndex];
+            
+            if (day.exercises.find(e => e.id === exerciseId)) {
+                alert('⚠️ Ya está en este día');
+                return;
+            }
+            
+            day.exercises.push({ 
+                id: ex.id,
+                name: ex.name,
+                body_part: ex.body_part,
+                equipment: ex.equipment,
+                sets: '', 
+                reps: '', 
+                weight: '' 
+            });
+            saveRoutine();
+            alert('✅ Añadido a ' + day.name);
+            
+            // Cerrar modal
+            document.querySelector('div[style*="z-index:2000"]').remove();
         }
 
         async function showMuscleGroupForDay(muscle) {
@@ -653,7 +709,11 @@
                 await loadExercises();
             }
             
-            const filtered = exercisesDB.filter(ex => ex.body_part === muscle);
+            // Solo mostrar ejercicios que tengan traducción
+            const filtered = exercisesDB.filter(ex => {
+                const hasTranslation = ex.body_part === muscle && translationsDB.exercises[ex.name.toLowerCase()];
+                return hasTranslation;
+            });
             
             container.innerHTML = '';
             filtered.forEach(ex => {
@@ -723,7 +783,7 @@
             const container = document.getElementById('routine-days-container');
             
             if (!routine || !routine.days || routine.days.length === 0) {
-                container.innerHTML = '<div class="empty-state"><div class="icon">🏋️</div><p>No tienes rutina creada</p></div>';
+                container.innerHTML = '<div class="empty-state"><div class="icon">️</div><p>No tienes rutina creada</p></div>';
                 return;
             }
 
@@ -756,7 +816,7 @@
                                     <div class="day-exercise-name">${translateExerciseName(ex.name)}</div>
                                     <div class="day-exercise-data">${setsReps.join(' | ')}</div>
                                 </div>
-                                <button class="btn btn-tiny btn-danger" onclick="event.stopPropagation(); removeExerciseFromDay(${index}, ${exIndex})">️</button>
+                                <button class="btn btn-tiny btn-danger" onclick="event.stopPropagation(); removeExerciseFromDay(${index}, ${exIndex})">🗑️</button>
                             </div>
                         `;
                     });
@@ -849,7 +909,7 @@
             const imc = (profile.weight / ((profile.height/100) ** 2)).toFixed(1);
             let imcText = imc < 18.5 ? 'Bajo peso' : imc < 25 ? 'Normal' : imc < 30 ? 'Sobrepeso' : 'Obesidad';
             let imcColor = imc < 18.5 ? '#3498db' : imc < 25 ? '#27ae60' : imc < 30 ? '#f39c12' : '#e74c3c';
-            const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
+            const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: ' Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
             
             document.getElementById('profile-display').innerHTML = `
                 <div class="profile-info"><div class="label">Nombre</div><div class="value">${profile.name}</div></div>
@@ -895,7 +955,7 @@
                     statusText = '❌ Desactivado';
                 } else if (today > expires) {
                     statusClass = 'expired';
-                    statusText = ' Caducado';
+                    statusText = '⏰ Caducado';
                 }
 
                 html += `
@@ -940,7 +1000,7 @@
             const expires = document.getElementById('new-user-expires').value;
 
             if (!code || !name || !expires) {
-                alert('⚠️ Rellena todos los campos');
+                alert('️ Rellena todos los campos');
                 return;
             }
 
