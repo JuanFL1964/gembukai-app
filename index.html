@@ -62,12 +62,9 @@
         .day-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 2px solid #DC143C; }
         .day-title-input { font-size: 16px; font-weight: bold; color: #8B0000; border: 1px solid #DC143C; padding: 5px 8px; border-radius: 6px; flex: 1; }
         .day-badge { background: #DC143C; color: white; padding: 4px 10px; border-radius: 12px; font-size: 12px; margin-left: 8px; }
-        
-        /* NUEVO: Estilos para la foto en la rutina */
         .day-exercise-item { background: #f5f5f5; padding: 10px; border-radius: 8px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
         .routine-exercise-img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; background: #ddd; flex-shrink: 0; }
         .routine-exercise-info { flex: 1; }
-        
         .day-exercise-name { font-weight: bold; color: #8B0000; font-size: 14px; }
         .day-exercise-data { font-size: 12px; color: #666; margin-top: 2px; }
         .day-actions { display: flex; gap: 6px; margin-top: 10px; }
@@ -120,21 +117,9 @@
         .user-item .user-status.inactive { color: #e74c3c; }
         .user-item .user-status.expired { color: #f39c12; }
         .user-actions { display: flex; gap: 6px; }
-        @media (min-width: 768px) {
-            .main-content { max-width: 800px; margin: 0 auto; padding: 20px; }
-            .muscle-grid { grid-template-columns: repeat(4, 1fr); }
-            .exercise-image { width: 120px; min-width: 120px; }
-            .form-row { grid-template-columns: repeat(3, 1fr); }
-            .day-selector { grid-template-columns: repeat(7, 1fr); }
-            .stats-grid { grid-template-columns: repeat(4, 1fr); }
-            .header h1 { font-size: 36px; }
-            .splash-logo { width: 250px; height: 250px; }
-            .splash-title { font-size: 64px; }
-        }
     </style>
 </head>
 <body>
-
     <div id="splash-screen" class="splash-screen">
         <div class="splash-logo"><img src="logo.png" alt="Gembukai Logo"></div>
         <div class="splash-title">GEMBU-KAI</div>
@@ -149,7 +134,7 @@
                 <h2>Acceso restringido</h2>
                 <p>Introduce tu código de acceso para continuar</p>
                 <input type="text" id="login-code" class="login-input" placeholder="GEMBU-XXXX-XXXX" autocomplete="off">
-                <button class="btn" onclick="validateCode()"> Acceder</button>
+                <button class="btn" onclick="validateCode()">Acceder</button>
                 <div id="login-error" class="login-error"></div>
                 <p style="margin-top: 30px; font-size: 12px; opacity: 0.7;">¿No tienes código? Contacta con el gimnasio</p>
             </div>
@@ -176,7 +161,7 @@
                     <div class="form-group"><label>Altura (cm)</label><input type="number" id="reg-height" placeholder="175"></div>
                 </div>
                 <div class="form-group"><label>Nivel</label><select id="reg-level"><option value="principiante">Principiante</option><option value="intermedio">Intermedio</option><option value="avanzado">Avanzado</option></select></div>
-                <div class="form-group"><label>Objetivo</label><select id="reg-goal"><option value="fuerza">💪 Fuerza</option><option value="hipertrofia">🏋️ Hipertrofia</option><option value="definicion">✂️ Definición</option><option value="resistencia"> Resistencia</option><option value="salud">❤️ Salud</option><option value="perder_peso">📉 Perder peso</option></select></div>
+                <div class="form-group"><label>Objetivo</label><select id="reg-goal"><option value="fuerza">💪 Fuerza</option><option value="hipertrofia">🏋️ Hipertrofia</option><option value="definicion">✂️ Definición</option><option value="resistencia">🏃 Resistencia</option><option value="salud">❤️ Salud</option><option value="perder_peso">📉 Perder peso</option></select></div>
                 <div class="form-group">
                     <label>¿Cuántos días entrenar?</label>
                     <div class="day-selector" id="reg-days-selector">
@@ -213,10 +198,10 @@
                 <h2>Elige grupo muscular</h2>
                 <div class="muscle-grid">
                     <div class="muscle-btn" onclick="showMuscleGroup('chest')">🫁 Pecho</div>
-                    <div class="muscle-btn" onclick="showMuscleGroup('back')"> Espalda</div>
+                    <div class="muscle-btn" onclick="showMuscleGroup('back')">🔙 Espalda</div>
                     <div class="muscle-btn" onclick="showMuscleGroup('upper legs')">🦵 Piernas</div>
                     <div class="muscle-btn" onclick="showMuscleGroup('shoulders')">🤷 Hombros</div>
-                    <div class="muscle-btn" onclick="showMuscleGroup('upper arms')"> Brazos</div>
+                    <div class="muscle-btn" onclick="showMuscleGroup('upper arms')">💪 Brazos</div>
                     <div class="muscle-btn" onclick="showMuscleGroup('waist')">🎯 Core</div>
                     <div class="muscle-btn" onclick="showMuscleGroup('cardio')">❤️ Cardio</div>
                     <div class="muscle-btn" onclick="showMuscleGroup('lower legs')">🦶 Gemelos</div>
@@ -265,9 +250,8 @@
         <div class="main-content">
             <div class="card">
                 <h2>🏋️ Mi Rutina Semanal</h2>
-                <!-- NUEVOS BOTONES PARA COMPARTIR/IMPORTAR -->
                 <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                    <button class="btn btn-small btn-warning" onclick="shareRoutine()" style="flex:1;"> Compartir</button>
+                    <button class="btn btn-small btn-warning" onclick="shareRoutine()" style="flex:1;">📤 Compartir</button>
                     <button class="btn btn-small btn-success" onclick="importRoutine()" style="flex:1;">📥 Importar</button>
                 </div>
                 <div id="routine-days-container"></div>
@@ -304,10 +288,10 @@
             </div>
             <div id="admin-section" style="display:none;">
                 <div class="card">
-                    <h2> Panel de Administración</h2>
+                    <h2>🔐 Panel de Administración</h2>
                     <div class="admin-panel">
                         <h3>Gestión de usuarios</h3>
-                        <button class="btn btn-success" onclick="showAddUserForm()"> Añadir nuevo usuario</button>
+                        <button class="btn btn-success" onclick="showAddUserForm()">➕ Añadir nuevo usuario</button>
                         <div id="add-user-form" style="display:none; margin-top: 15px;">
                             <div class="form-group"><label>Nombre del usuario</label><input type="text" id="new-user-name" placeholder="Nombre del usuario"></div>
                             <div class="form-group"><label>Fecha de caducidad</label><input type="date" id="new-user-expires"></div>
@@ -324,19 +308,23 @@
 
     <div class="bottom-nav" id="bottom-nav" style="display:none;">
         <div class="nav-item active" onclick="showScreen('screen-home', this)"><span class="icon">🏠</span><span class="label">Inicio</span></div>
-        <div class="nav-item" onclick="showScreen('screen-exercises', this)"><span class="icon"></span><span class="label">Ejercicios</span></div>
-        <div class="nav-item" onclick="showScreen('screen-routines', this)"><span class="icon">️</span><span class="label">Rutinas</span></div>
+        <div class="nav-item" onclick="showScreen('screen-exercises', this)"><span class="icon">📋</span><span class="label">Ejercicios</span></div>
+        <div class="nav-item" onclick="showScreen('screen-routines', this)"><span class="icon">🏋️</span><span class="label">Rutinas</span></div>
         <div class="nav-item" onclick="showScreen('screen-profile', this)"><span class="icon">👤</span><span class="label">Perfil</span></div>
     </div>
 
     <script>
+        // ⚠️ TU URL DE APPS SCRIPT YA ESTÁ INSERTADA AQUÍ
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyR-C5PKEq6Hr_M21I35jlE5S8gSU1nsy3RypxXcufcWWQDrtVgJVKvf5bPRPAyARkK/exec";
+        const SHEET_ID = "1Ngui-rgC76dPioIy4XLUo5Ene0QtoHl42rhntK5T6Po";
+
         const muscleNames = {
-            'chest': ' Pecho', 'back': '🔙 Espalda', 'upper legs': '🦵 Piernas', 'lower legs': '🦶 Gemelos',
+            'chest': '🫁 Pecho', 'back': '🔙 Espalda', 'upper legs': '🦵 Piernas', 'lower legs': '🦶 Gemelos',
             'shoulders': '🤷 Hombros', 'upper arms': '💪 Brazos', 'waist': '🎯 Core', 'cardio': '❤️ Cardio'
         };
         const muscleEmojis = {
             'chest': '🫁', 'back': '🔙', 'upper legs': '🦵', 'lower legs': '🦶',
-            'shoulders': '🤷', 'upper arms': '', 'waist': '🎯', 'cardio': '❤️'
+            'shoulders': '🤷', 'upper arms': '💪', 'waist': '🎯', 'cardio': '❤️'
         };
 
         let exercisesDB = [];
@@ -368,21 +356,29 @@
 
         async function loadUsers() {
             try {
-                const savedUsers = localStorage.getItem('gembukai_users');
-                if (savedUsers) {
-                    usersDB = JSON.parse(savedUsers);
-                    console.log(`✅ Cargados ${usersDB.users.length} usuarios desde memoria`);
-                    return;
-                }
+                const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+                const response = await fetch(url);
+                const text = await response.text();
+                const jsonString = text.substring(47).slice(0, -2);
+                const data = JSON.parse(jsonString);
                 
-                const response = await fetch('users.json');
-                if (!response.ok) throw new Error('No se pudo cargar users.json');
-                usersDB = await response.json();
+                usersDB = { users: [] };
+                const rows = data.table.rows;
                 
-                localStorage.setItem('gembukai_users', JSON.stringify(usersDB));
-                console.log(`✅ Cargados ${usersDB.users.length} usuarios desde archivo`);
+                rows.forEach(row => {
+                    if (row.c && row.c.length >= 4) {
+                        usersDB.users.push({
+                            code: row.c[0] ? String(row.c[0].v) : '',
+                            name: row.c[1] ? String(row.c[1].v) : '',
+                            active: row.c[2] ? row.c[2].v : true,
+                            role: row.c[3] ? String(row.c[3].v) : 'user',
+                            expires: row.c[4] ? String(row.c[4].v) : '2099-12-31'
+                        });
+                    }
+                });
+                console.log(`✅ Cargados ${usersDB.users.length} usuarios desde Google Sheets`);
             } catch (error) {
-                console.error('❌ Error cargando usuarios:', error);
+                console.error('❌ Error cargando usuarios desde Google Sheets:', error);
                 usersDB = { users: [] };
             }
         }
@@ -462,28 +458,24 @@
                 showScreen('screen-login');
                 return;
             }
-
             const user = usersDB.users.find(u => u.code === currentUser.code);
             if (!user) {
                 alert('❌ Código no válido. Contacta con el gimnasio.');
                 logout();
                 return;
             }
-
             if (!user.active) {
                 alert('⚠️ Tu acceso ha sido desactivado. Contacta con el gimnasio.');
                 logout();
                 return;
             }
-
             const today = new Date();
             const expires = new Date(user.expires);
             if (today > expires) {
-                alert(' Tu código ha caducado. Contacta con el gimnasio para renovarlo.');
+                alert('⏰ Tu código ha caducado. Contacta con el gimnasio para renovarlo.');
                 logout();
                 return;
             }
-
             isAdmin = user.role === 'admin';
             showApp();
         }
@@ -491,26 +483,22 @@
         function validateCode() {
             const code = document.getElementById('login-code').value.trim().toUpperCase();
             const errorDiv = document.getElementById('login-error');
-
             if (!code) {
                 errorDiv.textContent = '⚠️ Introduce un código';
                 errorDiv.style.display = 'block';
                 return;
             }
-
             const user = usersDB.users.find(u => u.code === code);
             if (!user) {
                 errorDiv.textContent = '❌ Código no válido';
                 errorDiv.style.display = 'block';
                 return;
             }
-
             if (!user.active) {
-                errorDiv.textContent = '️ Este código está desactivado';
+                errorDiv.textContent = '⚠️ Este código está desactivado';
                 errorDiv.style.display = 'block';
                 return;
             }
-
             const today = new Date();
             const expires = new Date(user.expires);
             if (today > expires) {
@@ -518,7 +506,6 @@
                 errorDiv.style.display = 'block';
                 return;
             }
-
             currentUser = user;
             localStorage.setItem('gembukai_current_user', JSON.stringify(user));
             isAdmin = user.role === 'admin';
@@ -529,12 +516,10 @@
         function showApp() {
             document.getElementById('main-header').style.display = 'block';
             document.getElementById('bottom-nav').style.display = 'flex';
-            
             const savedProfile = localStorage.getItem('gembukai_profile');
             const savedRoutine = localStorage.getItem('gembukai_routine');
             if (savedProfile) profile = JSON.parse(savedProfile);
             if (savedRoutine) routine = JSON.parse(savedRoutine);
-            
             if (!profile) {
                 showScreen('screen-register');
             } else {
@@ -568,12 +553,10 @@
             const level = document.getElementById('reg-level').value;
             const goal = document.getElementById('reg-goal').value;
             const days = parseInt(document.getElementById('reg-days').value);
-
             if (!name || !age || !gender || !weight || !height || !days) {
                 alert('⚠️ Rellena todos los campos');
                 return;
             }
-
             profile = { name, age: parseInt(age), gender, weight, height, level, goal, days };
             localStorage.setItem('gembukai_profile', JSON.stringify(profile));
             createRoutineFromProfile();
@@ -598,14 +581,12 @@
         function updateHome() {
             if (!profile) return;
             document.getElementById('welcome-title').textContent = '¡Hola, ' + profile.name + '!';
-            const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: ' Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
+            const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
             document.getElementById('welcome-msg').textContent = 'Objetivo: ' + (goals[profile.goal] || profile.goal);
-            
             let totalExercises = 0;
             if (routine && routine.days) {
                 totalExercises = routine.days.reduce((sum, day) => sum + (day.exercises ? day.exercises.length : 0), 0);
             }
-            
             document.getElementById('stat-days').textContent = profile.days;
             document.getElementById('stat-exercises').textContent = totalExercises;
         }
@@ -627,37 +608,29 @@
             lastScreen = 'screen-exercises';
             document.getElementById('muscle-title').textContent = muscleNames[muscle] || muscle;
             const container = document.getElementById('exercise-list-container');
-            
             if (!exercisesLoaded) {
                 container.innerHTML = '<div class="loading">Cargando ejercicios...</div>';
                 await loadExercises();
             }
-            
             const filtered = exercisesDB.filter(ex => ex.body_part === muscle);
-            
             if (filtered.length === 0) {
                 container.innerHTML = '<p style="text-align:center;padding:20px;color:#fff;">No hay ejercicios disponibles para este grupo</p>';
                 showScreen('screen-exercise-list');
                 return;
             }
-
             container.innerHTML = '';
             filtered.forEach(ex => {
                 const div = document.createElement('div');
                 div.className = 'exercise-item';
-                
                 const imgContainer = document.createElement('div');
                 imgContainer.className = 'exercise-image';
-                
                 const img = document.createElement('img');
                 img.src = getExerciseImage(ex.id);
                 img.alt = ex.name;
                 img.onerror = function() {
                     this.parentElement.innerHTML = `<div class="placeholder">${createPlaceholder(ex.body_part, ex.name)}</div>`;
                 };
-                
                 imgContainer.appendChild(img);
-                
                 div.innerHTML += `
                     <div class="exercise-info">
                         <h3>${translateExerciseName(ex.name)}</h3>
@@ -668,7 +641,6 @@
                         </div>
                     </div>
                 `;
-                
                 div.insertBefore(imgContainer, div.firstChild);
                 container.appendChild(div);
             });
@@ -678,16 +650,10 @@
         function showAddToDaySelector(exerciseId, exerciseName) {
             const modal = document.createElement('div');
             modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:2000;display:flex;align-items:center;justify-content:center;padding:20px;';
-            
             let daysHtml = '';
             routine.days.forEach((day, index) => {
-                daysHtml += `
-                    <button class="btn" onclick="addExerciseToSpecificDay('${exerciseId}', ${index})" style="margin-bottom:10px;">
-                        ${day.name} (${day.exercises.length} ejercicios)
-                    </button>
-                `;
+                daysHtml += `<button class="btn" onclick="addExerciseToSpecificDay('${exerciseId}', ${index})" style="margin-bottom:10px;">${day.name} (${day.exercises.length} ejercicios)</button>`;
             });
-            
             modal.innerHTML = `
                 <div style="background:#8B0000;padding:30px;border-radius:15px;max-width:400px;width:100%;max-height:80vh;overflow-y:auto;">
                     <h2 style="color:white;margin-bottom:20px;text-align:center;">Añadir a:</h2>
@@ -696,70 +662,47 @@
                     <button class="btn btn-secondary" onclick="this.parentElement.parentElement.remove()" style="margin-top:15px;">Cancelar</button>
                 </div>
             `;
-            
             document.body.appendChild(modal);
         }
 
         function addExerciseToSpecificDay(exerciseId, dayIndex) {
             const ex = exercisesDB.find(e => e.id === exerciseId);
             const day = routine.days[dayIndex];
-            
             if (day.exercises.find(e => e.id === exerciseId)) {
                 alert('⚠️ Ya está en este día');
                 return;
             }
-            
             const scrollPosition = window.scrollY;
-            
-            day.exercises.push({ 
-                id: ex.id,
-                name: ex.name,
-                body_part: ex.body_part,
-                equipment: ex.equipment,
-                sets: '', 
-                reps: '', 
-                weight: '' 
-            });
+            day.exercises.push({ id: ex.id, name: ex.name, body_part: ex.body_part, equipment: ex.equipment, sets: '', reps: '', weight: '' });
             saveRoutine();
             alert('✅ Añadido a ' + day.name);
-            
             document.querySelector('div[style*="z-index:2000"]').remove();
-            
-            setTimeout(() => {
-                window.scrollTo(0, scrollPosition);
-            }, 100);
+            setTimeout(() => { window.scrollTo(0, scrollPosition); }, 100);
         }
 
         async function showMuscleGroupForDay(muscle) {
             currentMuscleForDay = muscle;
             document.getElementById('muscle-title').textContent = muscleNames[muscle] || muscle;
             const container = document.getElementById('exercise-list-container');
-            
             if (!exercisesLoaded) {
                 container.innerHTML = '<div class="loading">Cargando ejercicios...</div>';
                 await loadExercises();
             }
-            
             const filtered = exercisesDB.filter(ex => ex.body_part === muscle);
-            
             container.innerHTML = '';
             filtered.forEach(ex => {
                 const alreadyInDay = routine.days[currentDayIndex].exercises.find(e => e.id === ex.id);
                 const div = document.createElement('div');
                 div.className = 'exercise-item';
-                
                 const imgContainer = document.createElement('div');
                 imgContainer.className = 'exercise-image';
-                
                 const img = document.createElement('img');
                 img.src = getExerciseImage(ex.id);
                 img.alt = ex.name;
                 img.onerror = function() {
                     this.parentElement.innerHTML = `<div class="placeholder">${createPlaceholder(ex.body_part, ex.name)}</div>`;
                 };
-                
                 imgContainer.appendChild(img);
-                
                 div.innerHTML += `
                     <div class="exercise-info">
                         <h3>${translateExerciseName(ex.name)}</h3>
@@ -772,7 +715,6 @@
                         </div>
                     </div>
                 `;
-                
                 div.insertBefore(imgContainer, div.firstChild);
                 container.appendChild(div);
             });
@@ -782,51 +724,32 @@
         function addExerciseToDay(exerciseId) {
             const ex = exercisesDB.find(e => e.id === exerciseId);
             const day = routine.days[currentDayIndex];
-            
             if (day.exercises.find(e => e.id === exerciseId)) {
                 alert('⚠️ Ya está en este día');
                 return;
             }
-            
             const scrollPosition = window.scrollY;
-            
-            day.exercises.push({ 
-                id: ex.id,
-                name: ex.name,
-                body_part: ex.body_part,
-                equipment: ex.equipment,
-                sets: '', 
-                reps: '', 
-                weight: '' 
-            });
+            day.exercises.push({ id: ex.id, name: ex.name, body_part: ex.body_part, equipment: ex.equipment, sets: '', reps: '', weight: '' });
             saveRoutine();
             alert('✅ Añadido a ' + day.name);
             showMuscleGroupForDay(currentMuscleForDay);
-            
-            setTimeout(() => {
-                window.scrollTo(0, scrollPosition);
-            }, 100);
+            setTimeout(() => { window.scrollTo(0, scrollPosition); }, 100);
         }
 
         function goBackFromList() {
             showScreen(lastScreen);
         }
 
-        // NUEVAS FUNCIONES: COMPARTIR E IMPORTAR RUTINA
         function shareRoutine() {
             if (!routine || !routine.days || routine.days.length === 0) {
                 alert('⚠️ No tienes ninguna rutina para compartir');
                 return;
             }
             const routineData = JSON.stringify(routine);
-            // Codificar a Base64 para crear un "código"
             const encoded = btoa(encodeURIComponent(routineData));
-            
-            // Intentar copiar al portapapeles
             navigator.clipboard.writeText(encoded).then(() => {
-                alert('✅ Código de rutina copiado al portapapeles.\n\nPégalo en WhatsApp o Email para enviárselo al cliente.\n\nEl cliente deberá pulsar " Importar" y pegar este código.');
+                alert('✅ Código de rutina copiado al portapapeles.\n\nPégalo en WhatsApp o Email para enviárselo al cliente.');
             }).catch(() => {
-                // Si falla, mostrar en un prompt para que lo copie manualmente
                 prompt('Copia este código de rutina y envíalo:', encoded);
             });
         }
@@ -855,26 +778,20 @@
 
         function renderRoutineDays() {
             const container = document.getElementById('routine-days-container');
-            
             if (!routine || !routine.days || routine.days.length === 0) {
-                container.innerHTML = '<div class="empty-state"><div class="icon">️</div><p>No tienes rutina creada</p></div>';
+                container.innerHTML = '<div class="empty-state"><div class="icon">🏋️</div><p>No tienes rutina creada</p></div>';
                 return;
             }
-
             let html = '';
             routine.days.forEach((day, index) => {
                 const exerciseCount = day.exercises ? day.exercises.length : 0;
                 const isCompleted = day.completed ? 'day-completed' : '';
-                
-                html += `
-                    <div class="day-card ${isCompleted}">
-                        <div class="day-header">
-                            <input class="day-title-input" value="${day.name}" onchange="renameDay(${index}, this.value)" onclick="event.stopPropagation()">
-                            <span class="day-badge">${exerciseCount} ejercicios</span>
-                        </div>
-                        <div class="day-exercises">
-                `;
-                
+                html += `<div class="day-card ${isCompleted}">
+                    <div class="day-header">
+                        <input class="day-title-input" value="${day.name}" onchange="renameDay(${index}, this.value)" onclick="event.stopPropagation()">
+                        <span class="day-badge">${exerciseCount} ejercicios</span>
+                    </div>
+                    <div class="day-exercises">`;
                 if (!day.exercises || day.exercises.length === 0) {
                     html += '<p style="color:#999;font-size:13px;text-align:center;padding:10px;">Sin ejercicios aún</p>';
                 } else {
@@ -883,8 +800,6 @@
                         if (ex.sets) setsReps.push(ex.sets + ' series');
                         if (ex.reps) setsReps.push(ex.reps + ' reps');
                         if (ex.weight) setsReps.push(ex.weight + ' kg');
-                        
-                        // NUEVO: Mostrar imagen junto al ejercicio
                         html += `
                             <div class="day-exercise-item" onclick="openExerciseDetailInDay(${index}, ${exIndex})">
                                 <img class="routine-exercise-img" src="images/${ex.id}.jpg" alt="${ex.name}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'60\' height=\'60\'><rect width=\'60\' height=\'60\' fill=\'%23ddd\'/><text x=\'30\' y=\'35\' font-size=\'24\' text-anchor=\'middle\'>🏋️</text></svg>'">
@@ -897,17 +812,13 @@
                         `;
                     });
                 }
-                
-                html += `
-                        </div>
-                        <div class="day-actions">
-                            <button class="btn btn-small" onclick="openAddToDay(${index})">➕ Añadir ejercicio</button>
-                            <button class="btn btn-small ${day.completed ? 'btn-warning' : 'btn-success'}" onclick="toggleDayCompleted(${index})">${day.completed ? '↩️ Desmarcar' : '✅ Completado'}</button>
-                        </div>
+                html += `</div>
+                    <div class="day-actions">
+                        <button class="btn btn-small" onclick="openAddToDay(${index})">➕ Añadir ejercicio</button>
+                        <button class="btn btn-small ${day.completed ? 'btn-warning' : 'btn-success'}" onclick="toggleDayCompleted(${index})">${day.completed ? '↩️ Desmarcar' : '✅ Completado'}</button>
                     </div>
-                `;
+                </div>`;
             });
-            
             container.innerHTML = html;
         }
 
@@ -939,7 +850,6 @@
         function openExerciseDetailInDay(dayIndex, exIndex) {
             const ex = routine.days[dayIndex].exercises[exIndex];
             currentExerciseDetail = { dayIndex, exIndex, exercise: ex };
-            
             const imgContainer = document.getElementById('detail-image-container');
             const img = document.createElement('img');
             img.src = getExerciseImage(ex.id);
@@ -949,7 +859,6 @@
             };
             imgContainer.innerHTML = '';
             imgContainer.appendChild(img);
-            
             document.getElementById('detail-name').textContent = translateExerciseName(ex.name);
             document.getElementById('detail-equipment').textContent = ex.equipment ? 'Equipo: ' + translateEquipment(ex.equipment) : '';
             document.getElementById('detail-desc').textContent = 'Ejercicio de tu rutina';
@@ -957,9 +866,7 @@
             document.getElementById('input-sets').value = ex.sets || '';
             document.getElementById('input-reps').value = ex.reps || '';
             document.getElementById('input-weight').value = ex.weight || '';
-            
             document.getElementById('detail-instructions-container').style.display = 'none';
-            
             showScreen('screen-exercise-detail');
         }
 
@@ -985,8 +892,7 @@
             const imc = (profile.weight / ((profile.height/100) ** 2)).toFixed(1);
             let imcText = imc < 18.5 ? 'Bajo peso' : imc < 25 ? 'Normal' : imc < 30 ? 'Sobrepeso' : 'Obesidad';
             let imcColor = imc < 18.5 ? '#3498db' : imc < 25 ? '#27ae60' : imc < 30 ? '#f39c12' : '#e74c3c';
-            const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: ' Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
-            
+            const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
             document.getElementById('profile-display').innerHTML = `
                 <div class="profile-info"><div class="label">Nombre</div><div class="value">${profile.name}</div></div>
                 <div class="flex-row">
@@ -1003,7 +909,6 @@
                 <div class="profile-info"><div class="label">Días de entreno</div><div class="value">${profile.days} días/semana</div></div>
                 <div class="profile-info"><div class="label">Código de acceso</div><div class="value">${currentUser ? currentUser.code : 'N/A'}</div></div>
             `;
-
             if (isAdmin) {
                 document.getElementById('admin-section').style.display = 'block';
                 renderUserList();
@@ -1018,22 +923,19 @@
                 container.innerHTML = '<p style="text-align:center;padding:20px;">No hay usuarios</p>';
                 return;
             }
-
             let html = '';
             usersDB.users.forEach((user, index) => {
                 const today = new Date();
                 const expires = new Date(user.expires);
                 let statusClass = 'active';
                 let statusText = '✅ Activo';
-                
                 if (!user.active) {
                     statusClass = 'inactive';
                     statusText = '❌ Desactivado';
                 } else if (today > expires) {
                     statusClass = 'expired';
-                    statusText = ' Caducado';
+                    statusText = '⏰ Caducado';
                 }
-
                 html += `
                     <div class="user-item">
                         <div class="user-info">
@@ -1055,12 +957,7 @@
         }
 
         function toggleUserStatus(index) {
-            if (confirm('¿Cambiar estado del usuario?')) {
-                usersDB.users[index].active = !usersDB.users[index].active;
-                localStorage.setItem('gembukai_users', JSON.stringify(usersDB));
-                alert(`✅ Usuario ${usersDB.users[index].active ? 'activado' : 'desactivado'}`);
-                renderUserList();
-            }
+            alert('⚠️ Para activar/desactivar usuarios, hazlo directamente en la hoja de Google Sheets cambiando "TRUE" por "FALSE" en la columna "active". La app lo leerá automáticamente la próxima vez.');
         }
 
         function showAddUserForm() {
@@ -1071,7 +968,7 @@
             document.getElementById('add-user-form').style.display = 'none';
         }
 
-        function addNewUser() {
+        async function addNewUser() {
             const name = document.getElementById('new-user-name').value.trim();
             const expires = document.getElementById('new-user-expires').value;
 
@@ -1081,22 +978,31 @@
             }
 
             const code = generateRandomCode();
-
-            usersDB.users.push({
+            const newUser = {
                 code: code,
                 name: name,
                 active: true,
                 role: 'user',
                 expires: expires
-            });
+            };
 
-            localStorage.setItem('gembukai_users', JSON.stringify(usersDB));
-
-            alert(`✅ Usuario creado correctamente\n\n Código de acceso: ${code}\n\nCopia este código y dáselo al usuario.`);
-            
-            hideAddUserForm();
+            usersDB.users.push(newUser);
             renderUserList();
             
+            try {
+                await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newUser)
+                });
+                alert(`✅ Usuario creado y guardado en la nube.\n\n🔑 Código de acceso: ${code}\n\nCopia este código y dáselo al usuario.`);
+            } catch (error) {
+                console.error('Error guardando en Sheets:', error);
+                alert(`✅ Usuario generado.\n\n🔑 Código: ${code}\n⚠️ Nota: No se pudo conectar con la hoja de cálculo. Verifica la URL del Apps Script.`);
+            }
+            
+            hideAddUserForm();
             document.getElementById('new-user-name').value = '';
             document.getElementById('new-user-expires').value = '';
         }
@@ -1112,6 +1018,5 @@
             }
         }
     </script>
-
 </body>
 </html>
