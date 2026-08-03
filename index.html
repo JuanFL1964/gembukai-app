@@ -171,7 +171,7 @@
                     <div class="form-group"><label>Altura (cm)</label><input type="number" id="reg-height" placeholder="175"></div>
                 </div>
                 <div class="form-group"><label>Nivel</label><select id="reg-level"><option value="principiante">Principiante</option><option value="intermedio">Intermedio</option><option value="avanzado">Avanzado</option></select></div>
-                <div class="form-group"><label>Objetivo</label><select id="reg-goal"><option value="fuerza">💪 Fuerza</option><option value="hipertrofia">🏋️ Hipertrofia</option><option value="definicion">✂️ Definición</option><option value="resistencia">🏃 Resistencia</option><option value="salud">❤️ Salud</option><option value="perder_peso">📉 Perder peso</option></select></div>
+                <div class="form-group"><label>Objetivo</label><select id="reg-goal"><option value="fuerza">💪 Fuerza</option><option value="hipertrofia">🏋️ Hipertrofia</option><option value="definicion">✂️ Definición</option><option value="resistencia"> Resistencia</option><option value="salud">❤️ Salud</option><option value="perder_peso">📉 Perder peso</option></select></div>
                 <div class="form-group">
                     <label>¿Cuántos días entrenar?</label>
                     <div class="day-selector" id="reg-days-selector">
@@ -197,7 +197,7 @@
                     <div class="stat-box"><div class="number" id="stat-exercises">0</div><div class="text">Ejercicios totales</div></div>
                 </div>
                 <button class="btn" onclick="showScreen('screen-routines')">🏋️ Mis Rutinas</button>
-                <button class="btn btn-secondary" onclick="showScreen('screen-exercises')">📋 Explorar ejercicios</button>
+                <button class="btn btn-secondary" onclick="showScreen('screen-exercises')"> Explorar ejercicios</button>
             </div>
         </div>
     </div>
@@ -207,14 +207,14 @@
             <div class="card">
                 <h2>Elige grupo muscular</h2>
                 <div class="muscle-grid">
-                    <div class="muscle-btn" onclick="showMuscleGroup('chest')"> Pecho</div>
+                    <div class="muscle-btn" onclick="showMuscleGroup('chest')">🫁 Pecho</div>
                     <div class="muscle-btn" onclick="showMuscleGroup('back')">🔙 Espalda</div>
                     <div class="muscle-btn" onclick="showMuscleGroup('upper legs')">🦵 Piernas</div>
-                    <div class="muscle-btn" onclick="showMuscleGroup('shoulders')"> Hombros</div>
+                    <div class="muscle-btn" onclick="showMuscleGroup('shoulders')">🤷 Hombros</div>
                     <div class="muscle-btn" onclick="showMuscleGroup('upper arms')">💪 Brazos</div>
                     <div class="muscle-btn" onclick="showMuscleGroup('waist')">🎯 Core</div>
                     <div class="muscle-btn" onclick="showMuscleGroup('cardio')">❤️ Cardio</div>
-                    <div class="muscle-btn" onclick="showMuscleGroup('lower legs')"> Gemelos</div>
+                    <div class="muscle-btn" onclick="showMuscleGroup('lower legs')">🦶 Gemelos</div>
                 </div>
             </div>
         </div>
@@ -273,11 +273,11 @@
                 <p style="margin-bottom: 15px; font-size: 14px;">Elige un grupo muscular:</p>
                 <div class="muscle-grid">
                     <div class="muscle-btn" onclick="showMuscleGroupForDay('chest')">🫁 Pecho</div>
-                    <div class="muscle-btn" onclick="showMuscleGroupForDay('back')"> Espalda</div>
+                    <div class="muscle-btn" onclick="showMuscleGroupForDay('back')">🔙 Espalda</div>
                     <div class="muscle-btn" onclick="showMuscleGroupForDay('upper legs')">🦵 Piernas</div>
-                    <div class="muscle-btn" onclick="showMuscleGroupForDay('shoulders')"> Hombros</div>
+                    <div class="muscle-btn" onclick="showMuscleGroupForDay('shoulders')">🤷 Hombros</div>
                     <div class="muscle-btn" onclick="showMuscleGroupForDay('upper arms')">💪 Brazos</div>
-                    <div class="muscle-btn" onclick="showMuscleGroupForDay('waist')"> Core</div>
+                    <div class="muscle-btn" onclick="showMuscleGroupForDay('waist')">🎯 Core</div>
                     <div class="muscle-btn" onclick="showMuscleGroupForDay('cardio')">❤️ Cardio</div>
                     <div class="muscle-btn" onclick="showMuscleGroupForDay('lower legs')">🦶 Gemelos</div>
                 </div>
@@ -313,20 +313,20 @@
     </div>
 
     <div class="bottom-nav" id="bottom-nav" style="display:none;">
-        <div class="nav-item active" onclick="showScreen('screen-home', this)"><span class="icon"></span><span class="label">Inicio</span></div>
-        <div class="nav-item" onclick="showScreen('screen-exercises', this)"><span class="icon">📋</span><span class="label">Ejercicios</span></div>
-        <div class="nav-item" onclick="showScreen('screen-routines', this)"><span class="icon">🏋️</span><span class="label">Rutinas</span></div>
+        <div class="nav-item active" onclick="showScreen('screen-home', this)"><span class="icon">🏠</span><span class="label">Inicio</span></div>
+        <div class="nav-item" onclick="showScreen('screen-exercises', this)"><span class="icon"></span><span class="label">Ejercicios</span></div>
+        <div class="nav-item" onclick="showScreen('screen-routines', this)"><span class="icon">️</span><span class="label">Rutinas</span></div>
         <div class="nav-item" onclick="showScreen('screen-profile', this)"><span class="icon">👤</span><span class="label">Perfil</span></div>
     </div>
 
     <script>
         const muscleNames = {
-            'chest': '🫁 Pecho', 'back': '🔙 Espalda', 'upper legs': '🦵 Piernas', 'lower legs': '🦶 Gemelos',
-            'shoulders': '🤷 Hombros', 'upper arms': '💪 Brazos', 'waist': '🎯 Core', 'cardio': '❤️ Cardio'
+            'chest': '🫁 Pecho', 'back': '🔙 Espalda', 'upper legs': ' Piernas', 'lower legs': ' Gemelos',
+            'shoulders': ' Hombros', 'upper arms': ' Brazos', 'waist': '🎯 Core', 'cardio': '❤️ Cardio'
         };
         const muscleEmojis = {
-            'chest': '🫁', 'back': '🔙', 'upper legs': '🦵', 'lower legs': '🦶',
-            'shoulders': '🤷', 'upper arms': '💪', 'waist': '🎯', 'cardio': '❤️'
+            'chest': '🫁', 'back': '🔙', 'upper legs': '', 'lower legs': '',
+            'shoulders': '', 'upper arms': '💪', 'waist': '🎯', 'cardio': '❤️'
         };
 
         let exercisesDB = [];
@@ -351,7 +351,7 @@
                 exercisesLoaded = true;
                 console.log(`✅ Cargados ${exercisesDB.length} ejercicios`);
             } catch (error) {
-                console.error(' Error cargando ejercicios:', error);
+                console.error('❌ Error cargando ejercicios:', error);
                 exercisesDB = [];
             }
         }
@@ -383,6 +383,7 @@
                 if (!response.ok) throw new Error('No se pudo cargar translations.json');
                 translationsDB = await response.json();
                 console.log('✅ Traducciones cargadas');
+                console.log('Ejercicios traducidos:', Object.keys(translationsDB.exercises || {}).length);
             } catch (error) {
                 console.error('❌ Error cargando traducciones:', error);
                 translationsDB = { exercises: {}, muscles: {}, equipment: {} };
@@ -469,7 +470,7 @@
             const today = new Date();
             const expires = new Date(user.expires);
             if (today > expires) {
-                alert('⏰ Tu código ha caducado. Contacta con el gimnasio para renovarlo.');
+                alert(' Tu código ha caducado. Contacta con el gimnasio para renovarlo.');
                 logout();
                 return;
             }
@@ -490,7 +491,7 @@
 
             const user = usersDB.users.find(u => u.code === code);
             if (!user) {
-                errorDiv.textContent = '❌ Código no válido';
+                errorDiv.textContent = ' Código no válido';
                 errorDiv.style.display = 'block';
                 return;
             }
@@ -588,7 +589,7 @@
         function updateHome() {
             if (!profile) return;
             document.getElementById('welcome-title').textContent = '¡Hola, ' + profile.name + '!';
-            const goals = { fuerza: ' Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
+            const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
             document.getElementById('welcome-msg').textContent = 'Objetivo: ' + (goals[profile.goal] || profile.goal);
             
             let totalExercises = 0;
@@ -623,10 +624,8 @@
                 await loadExercises();
             }
             
-            const filtered = exercisesDB.filter(ex => {
-                const hasTranslation = ex.body_part === muscle && translationsDB.exercises[ex.name.toLowerCase()];
-                return hasTranslation;
-            });
+            // Filtrar ejercicios por grupo muscular
+            const filtered = exercisesDB.filter(ex => ex.body_part === muscle);
             
             if (filtered.length === 0) {
                 container.innerHTML = '<p style="text-align:center;padding:20px;color:#fff;">No hay ejercicios disponibles para este grupo</p>';
@@ -702,7 +701,6 @@
                 return;
             }
             
-            // Guardar posición del scroll
             const scrollPosition = window.scrollY;
             
             day.exercises.push({ 
@@ -717,10 +715,8 @@
             saveRoutine();
             alert('✅ Añadido a ' + day.name);
             
-            // Cerrar modal
             document.querySelector('div[style*="z-index:2000"]').remove();
             
-            // Restaurar posición del scroll
             setTimeout(() => {
                 window.scrollTo(0, scrollPosition);
             }, 100);
@@ -736,10 +732,7 @@
                 await loadExercises();
             }
             
-            const filtered = exercisesDB.filter(ex => {
-                const hasTranslation = ex.body_part === muscle && translationsDB.exercises[ex.name.toLowerCase()];
-                return hasTranslation;
-            });
+            const filtered = exercisesDB.filter(ex => ex.body_part === muscle);
             
             container.innerHTML = '';
             filtered.forEach(ex => {
@@ -787,7 +780,6 @@
                 return;
             }
             
-            // Guardar posición del scroll
             const scrollPosition = window.scrollY;
             
             day.exercises.push({ 
@@ -803,7 +795,6 @@
             alert('✅ Añadido a ' + day.name);
             showMuscleGroupForDay(currentMuscleForDay);
             
-            // Restaurar posición del scroll
             setTimeout(() => {
                 window.scrollTo(0, scrollPosition);
             }, 100);
@@ -859,7 +850,7 @@
                 html += `
                         </div>
                         <div class="day-actions">
-                            <button class="btn btn-small" onclick="openAddToDay(${index})"> Añadir ejercicio</button>
+                            <button class="btn btn-small" onclick="openAddToDay(${index})">➕ Añadir ejercicio</button>
                             <button class="btn btn-small ${day.completed ? 'btn-warning' : 'btn-success'}" onclick="toggleDayCompleted(${index})">${day.completed ? '↩️ Desmarcar' : '✅ Completado'}</button>
                         </div>
                     </div>
@@ -943,7 +934,7 @@
             const imc = (profile.weight / ((profile.height/100) ** 2)).toFixed(1);
             let imcText = imc < 18.5 ? 'Bajo peso' : imc < 25 ? 'Normal' : imc < 30 ? 'Sobrepeso' : 'Obesidad';
             let imcColor = imc < 18.5 ? '#3498db' : imc < 25 ? '#27ae60' : imc < 30 ? '#f39c12' : '#e74c3c';
-            const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
+            const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
             
             document.getElementById('profile-display').innerHTML = `
                 <div class="profile-info"><div class="label">Nombre</div><div class="value">${profile.name}</div></div>
@@ -1034,7 +1025,7 @@
             const expires = document.getElementById('new-user-expires').value;
 
             if (!name || !expires) {
-                alert('⚠️ Rellena todos los campos');
+                alert('️ Rellena todos los campos');
                 return;
             }
 
