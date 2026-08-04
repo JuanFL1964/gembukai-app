@@ -1,0 +1,18 @@
+{
+  "name": "Gembukai - Club Sportiu Bonavista",
+  "short_name": "Gembukai",
+  "description": "App de entrenamiento del Club Sportiu Bonavista",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#8B0000",
+  "theme_color": "#8B0000",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
