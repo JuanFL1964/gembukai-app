@@ -203,8 +203,8 @@
                     <div class="stat-box"><div class="number" id="stat-days">0</div><div class="text">Días de entreno</div></div>
                     <div class="stat-box"><div class="number" id="stat-exercises">0</div><div class="text">Ejercicios totales</div></div>
                 </div>
-                <button class="btn" onclick="showScreen('screen-routines')">️ Mis Rutinas</button>
-                <button class="btn btn-secondary" onclick="showScreen('screen-exercises')">📋 Explorar ejercicios</button>
+                <button class="btn" onclick="showScreen('screen-routines')">🏋️ Mis Rutinas</button>
+                <button class="btn btn-secondary" onclick="showScreen('screen-exercises')"> Explorar ejercicios</button>
             </div>
         </div>
     </div>
@@ -252,13 +252,13 @@
                     </div>
                     <a id="detail-youtube" href="#" target="_blank" class="btn btn-youtube" style="text-decoration: none; margin-top: 15px;">▶️ Ver video en YouTube</a>
                 </div>
-                <h3 style="margin-top: 15px;"> Tu registro</h3>
+                <h3 style="margin-top: 15px;">📊 Tu registro</h3>
                 <div class="form-row">
                     <div class="form-group"><label>Series</label><input type="number" id="input-sets" placeholder="4" min="1"></div>
                     <div class="form-group"><label>Reps</label><input type="text" id="input-reps" placeholder="12"></div>
                     <div class="form-group"><label>Peso (kg)</label><input type="number" id="input-weight" placeholder="0" step="0.5"></div>
                 </div>
-                <button class="btn btn-success" onclick="saveExerciseData()">💾 Guardar datos</button>
+                <button class="btn btn-success" onclick="saveExerciseData()"> Guardar datos</button>
             </div>
         </div>
     </div>
@@ -266,10 +266,10 @@
     <div id="screen-routines" class="screen">
         <div class="main-content">
             <div class="card">
-                <h2>🏋️ Mi Rutina Semanal</h2>
+                <h2>️ Mi Rutina Semanal</h2>
                 <div style="display: flex; gap: 10px; margin-bottom: 15px;">
                     <button class="btn btn-small btn-warning" onclick="shareRoutine()" style="flex:1;">📤 Compartir</button>
-                    <button class="btn btn-small btn-success" onclick="importRoutine()" style="flex:1;"> Importar</button>
+                    <button class="btn btn-small btn-success" onclick="importRoutine()" style="flex:1;">📥 Importar</button>
                 </div>
                 <div id="routine-days-container"></div>
             </div>
@@ -290,7 +290,7 @@
                     <div class="muscle-btn" onclick="showMuscleGroupForDay('upper arms')">💪 Brazos</div>
                     <div class="muscle-btn" onclick="showMuscleGroupForDay('waist')">🎯 Core</div>
                     <div class="muscle-btn" onclick="showMuscleGroupForDay('cardio')">❤️ Cardio</div>
-                    <div class="muscle-btn" onclick="showMuscleGroupForDay('lower legs')"> Gemelos</div>
+                    <div class="muscle-btn" onclick="showMuscleGroupForDay('lower legs')">🦶 Gemelos</div>
                 </div>
             </div>
         </div>
@@ -366,7 +366,7 @@
             <div class="form-group" style="margin-bottom:12px;">
                 <label style="color:white; font-weight:bold;">Objetivo</label>
                 <select id="edit-goal" style="width:100%; padding:12px; border-radius:8px; border:none; font-size:16px; background:white; color:#333;">
-                    <option value="fuerza">💪 Fuerza</option>
+                    <option value="fuerza"> Fuerza</option>
                     <option value="hipertrofia">🏋️ Hipertrofia</option>
                     <option value="definicion">✂️ Definición</option>
                     <option value="resistencia">🏃 Resistencia</option>
@@ -393,7 +393,7 @@
     <div class="bottom-nav" id="bottom-nav" style="display:none;">
         <div class="nav-item active" onclick="showScreen('screen-home', this)"><span class="icon">🏠</span><span class="label">Inicio</span></div>
         <div class="nav-item" onclick="showScreen('screen-exercises', this)"><span class="icon">📋</span><span class="label">Ejercicios</span></div>
-        <div class="nav-item" onclick="showScreen('screen-routines', this)"><span class="icon">️</span><span class="label">Rutinas</span></div>
+        <div class="nav-item" onclick="showScreen('screen-routines', this)"><span class="icon">🏋️</span><span class="label">Rutinas</span></div>
         <div class="nav-item" onclick="showScreen('screen-profile', this)"><span class="icon">👤</span><span class="label">Perfil</span></div>
     </div>
 
@@ -406,7 +406,7 @@
             'shoulders': '🤷 Hombros', 'upper arms': '💪 Brazos', 'waist': '🎯 Core', 'cardio': '❤️ Cardio'
         };
         const muscleEmojis = {
-            'chest': '', 'back': '🔙', 'upper legs': '🦵', 'lower legs': '🦶',
+            'chest': '🫁', 'back': '🔙', 'upper legs': '🦵', 'lower legs': '',
             'shoulders': '🤷', 'upper arms': '💪', 'waist': '🎯', 'cardio': '❤️'
         };
 
@@ -500,7 +500,8 @@
         function translateExerciseName(englishName) {
             if (!translationsDB.exercises) return englishName;
             const lowerName = englishName.toLowerCase();
-            return translationsDB.exercises[lowerName] || englishName;
+            // SI NO ENCUENTRA TRADUCCIÓN, DEVUELVE EL NOMBRE EN INGLÉS (NO LO OCULTA)
+            return translationsDB.exercises[lowerName] || englishName; 
         }
 
         function translateEquipment(equipment) {
@@ -515,7 +516,7 @@
         }
 
         function createPlaceholder(muscle, name, size) {
-            const emoji = muscleEmojis[muscle] || '🏋️';
+            const emoji = muscleEmojis[muscle] || '️';
             const initials = getInitials(name);
             if (size === 'big') {
                 return `<div class="emoji-big">${emoji}</div><div class="initials-big">${initials}</div>`;
@@ -705,36 +706,37 @@
             window.scrollTo(0, 0);
         }
 
+        // --- AQUÍ ESTÁ LA CORRECCIÓN DEL BUG ---
         async function showMuscleGroup(muscle) {
             lastScreen = 'screen-exercises';
             document.getElementById('muscle-title').textContent = muscleNames[muscle] || muscle;
             const container = document.getElementById('exercise-list-container');
+            
             if (!exercisesLoaded) {
                 container.innerHTML = '<div class="loading">Cargando ejercicios...</div>';
                 await loadExercises();
             }
-            const filtered = exercisesDB.filter(ex => {
-                const hasTranslation = ex.body_part === muscle && translationsDB.exercises[ex.name.toLowerCase()];
-                return hasTranslation;
-            });
-            if (filtered.length === 0) {
-                container.innerHTML = '<p style="text-align:center;padding:20px;color:#fff;">No hay ejercicios disponibles para este grupo</p>';
-                showScreen('screen-exercise-list');
-                return;
-            }
+            
+            // CAMBIO IMPORTANTE: Ya no filtra por si tiene traducción. Muestra TODOS los del grupo.
+            const filtered = exercisesDB.filter(ex => ex.body_part === muscle);
+            
             container.innerHTML = '';
             filtered.forEach(ex => {
                 const div = document.createElement('div');
                 div.className = 'exercise-item';
+                
                 const imgContainer = document.createElement('div');
                 imgContainer.className = 'exercise-image';
+                
                 const img = document.createElement('img');
                 img.src = getExerciseImage(ex.id);
                 img.alt = ex.name;
                 img.onerror = function() {
                     this.parentElement.innerHTML = `<div class="placeholder">${createPlaceholder(ex.body_part, ex.name)}</div>`;
                 };
+                
                 imgContainer.appendChild(img);
+                
                 div.innerHTML += `
                     <div class="exercise-info">
                         <h3>${translateExerciseName(ex.name)}</h3>
@@ -745,6 +747,7 @@
                         </div>
                     </div>
                 `;
+                
                 div.insertBefore(imgContainer, div.firstChild);
                 container.appendChild(div);
             });
@@ -754,10 +757,12 @@
         function showAddToDaySelector(exerciseId, exerciseName) {
             const modal = document.createElement('div');
             modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:2000;display:flex;align-items:center;justify-content:center;padding:20px;';
+            
             let daysHtml = '';
             routine.days.forEach((day, index) => {
                 daysHtml += `<button class="btn" onclick="addExerciseToSpecificDay('${exerciseId}', ${index})" style="margin-bottom:10px;">${day.name} (${day.exercises.length} ejercicios)</button>`;
             });
+            
             modal.innerHTML = `
                 <div style="background:#8B0000;padding:30px;border-radius:15px;max-width:400px;width:100%;max-height:80vh;overflow-y:auto;">
                     <h2 style="color:white;margin-bottom:20px;text-align:center;">Añadir a:</h2>
@@ -766,50 +771,72 @@
                     <button class="btn btn-secondary" onclick="this.parentElement.parentElement.remove()" style="margin-top:15px;">Volver</button>
                 </div>
             `;
+            
             document.body.appendChild(modal);
         }
 
         function addExerciseToSpecificDay(exerciseId, dayIndex) {
             const ex = exercisesDB.find(e => e.id === exerciseId);
             const day = routine.days[dayIndex];
+            
             if (day.exercises.find(e => e.id === exerciseId)) {
                 alert('⚠️ Ya está en este día');
                 return;
             }
+            
             const scrollPosition = window.scrollY;
-            day.exercises.push({ id: ex.id, name: ex.name, body_part: ex.body_part, equipment: ex.equipment, sets: '', reps: '', weight: '' });
+            
+            day.exercises.push({ 
+                id: ex.id,
+                name: ex.name,
+                body_part: ex.body_part,
+                equipment: ex.equipment,
+                sets: '', 
+                reps: '', 
+                weight: '' 
+            });
             saveRoutine();
             alert('✅ Añadido a ' + day.name);
+            
             document.querySelector('div[style*="z-index:2000"]').remove();
-            setTimeout(() => { window.scrollTo(0, scrollPosition); }, 100);
+            
+            setTimeout(() => {
+                window.scrollTo(0, scrollPosition);
+            }, 100);
         }
 
+        // --- AQUÍ ESTÁ LA OTRA CORRECCIÓN DEL BUG ---
         async function showMuscleGroupForDay(muscle) {
             currentMuscleForDay = muscle;
             document.getElementById('muscle-title').textContent = muscleNames[muscle] || muscle;
             const container = document.getElementById('exercise-list-container');
+            
             if (!exercisesLoaded) {
                 container.innerHTML = '<div class="loading">Cargando ejercicios...</div>';
                 await loadExercises();
             }
-            const filtered = exercisesDB.filter(ex => {
-                const hasTranslation = ex.body_part === muscle && translationsDB.exercises[ex.name.toLowerCase()];
-                return hasTranslation;
-            });
+            
+            // CAMBIO IMPORTANTE: Ya no filtra por si tiene traducción. Muestra TODOS los del grupo.
+            const filtered = exercisesDB.filter(ex => ex.body_part === muscle);
+            
             container.innerHTML = '';
             filtered.forEach(ex => {
                 const alreadyInDay = routine.days[currentDayIndex].exercises.find(e => e.id === ex.id);
                 const div = document.createElement('div');
                 div.className = 'exercise-item';
+                
                 const imgContainer = document.createElement('div');
                 imgContainer.className = 'exercise-image';
+                
                 const img = document.createElement('img');
                 img.src = getExerciseImage(ex.id);
                 img.alt = ex.name;
                 img.onerror = function() {
                     this.parentElement.innerHTML = `<div class="placeholder">${createPlaceholder(ex.body_part, ex.name)}</div>`;
                 };
+                
                 imgContainer.appendChild(img);
+                
                 div.innerHTML += `
                     <div class="exercise-info">
                         <h3>${translateExerciseName(ex.name)}</h3>
@@ -822,6 +849,7 @@
                         </div>
                     </div>
                 `;
+                
                 div.insertBefore(imgContainer, div.firstChild);
                 container.appendChild(div);
             });
@@ -831,16 +859,30 @@
         function addExerciseToDay(exerciseId) {
             const ex = exercisesDB.find(e => e.id === exerciseId);
             const day = routine.days[currentDayIndex];
+            
             if (day.exercises.find(e => e.id === exerciseId)) {
                 alert('⚠️ Ya está en este día');
                 return;
             }
+            
             const scrollPosition = window.scrollY;
-            day.exercises.push({ id: ex.id, name: ex.name, body_part: ex.body_part, equipment: ex.equipment, sets: '', reps: '', weight: '' });
+            
+            day.exercises.push({ 
+                id: ex.id,
+                name: ex.name,
+                body_part: ex.body_part,
+                equipment: ex.equipment,
+                sets: '', 
+                reps: '', 
+                weight: '' 
+            });
             saveRoutine();
             alert('✅ Añadido a ' + day.name);
             showMuscleGroupForDay(currentMuscleForDay);
-            setTimeout(() => { window.scrollTo(0, scrollPosition); }, 100);
+            
+            setTimeout(() => {
+                window.scrollTo(0, scrollPosition);
+            }, 100);
         }
 
         function goBackFromList() {
@@ -875,7 +917,7 @@
                             alert('✅ ¡Rutina importada correctamente!');
                         }
                     } else {
-                        alert('❌ El código no contiene una rutina válida.');
+                        alert(' El código no contiene una rutina válida.');
                     }
                 } catch (e) {
                     alert('❌ Código no válido. Asegúrate de copiarlo completo.');
@@ -885,20 +927,24 @@
 
         function renderRoutineDays() {
             const container = document.getElementById('routine-days-container');
+            
             if (!routine || !routine.days || routine.days.length === 0) {
-                container.innerHTML = '<div class="empty-state"><div class="icon">🏋️</div><p>No tienes rutina creada</p></div>';
+                container.innerHTML = '<div class="empty-state"><div class="icon">️</div><p>No tienes rutina creada</p></div>';
                 return;
             }
+
             let html = '';
             routine.days.forEach((day, index) => {
                 const exerciseCount = day.exercises ? day.exercises.length : 0;
                 const isCompleted = day.completed ? 'day-completed' : '';
+                
                 html += `<div class="day-card ${isCompleted}">
                     <div class="day-header">
                         <input class="day-title-input" value="${day.name}" onchange="renameDay(${index}, this.value)" onclick="event.stopPropagation()">
                         <span class="day-badge">${exerciseCount} ejercicios</span>
                     </div>
                     <div class="day-exercises">`;
+                
                 if (!day.exercises || day.exercises.length === 0) {
                     html += '<p style="color:#999;font-size:13px;text-align:center;padding:10px;">Sin ejercicios aún</p>';
                 } else {
@@ -907,6 +953,7 @@
                         if (ex.sets) setsReps.push(ex.sets + ' series');
                         if (ex.reps) setsReps.push(ex.reps + ' reps');
                         if (ex.weight) setsReps.push(ex.weight + ' kg');
+                        
                         html += `
                             <div class="day-exercise-item" onclick="openExerciseDetailInDay(${index}, ${exIndex})">
                                 <img class="routine-exercise-img" src="images/${ex.id}.jpg" alt="${ex.name}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'60\' height=\'60\'><rect width=\'60\' height=\'60\' fill=\'%23ddd\'/><text x=\'30\' y=\'35\' font-size=\'24\' text-anchor=\'middle\'>🏋️</text></svg>'">
@@ -919,6 +966,7 @@
                         `;
                     });
                 }
+                
                 html += `</div>
                     <div class="day-actions">
                         <button class="btn btn-small" onclick="openAddToDay(${index})">➕ Añadir ejercicio</button>
@@ -926,6 +974,7 @@
                     </div>
                 </div>`;
             });
+            
             container.innerHTML = html;
         }
 
@@ -957,6 +1006,7 @@
         function openExerciseDetailInDay(dayIndex, exIndex) {
             const ex = routine.days[dayIndex].exercises[exIndex];
             currentExerciseDetail = { dayIndex, exIndex, exercise: ex };
+            
             const imgContainer = document.getElementById('detail-image-container');
             const img = document.createElement('img');
             img.src = getExerciseImage(ex.id);
@@ -966,6 +1016,7 @@
             };
             imgContainer.innerHTML = '';
             imgContainer.appendChild(img);
+            
             document.getElementById('detail-name').textContent = translateExerciseName(ex.name);
             document.getElementById('detail-equipment').textContent = ex.equipment ? 'Equipo: ' + translateEquipment(ex.equipment) : '';
             document.getElementById('detail-desc').textContent = 'Ejercicio de tu rutina';
@@ -973,7 +1024,9 @@
             document.getElementById('input-sets').value = ex.sets || '';
             document.getElementById('input-reps').value = ex.reps || '';
             document.getElementById('input-weight').value = ex.weight || '';
+            
             document.getElementById('detail-instructions-container').style.display = 'none';
+            
             showScreen('screen-exercise-detail');
         }
 
@@ -1001,6 +1054,7 @@
             let imcText = imc < 18.5 ? 'Bajo peso' : imc < 25 ? 'Normal' : imc < 30 ? 'Sobrepeso' : 'Obesidad';
             let imcColor = imc < 18.5 ? '#3498db' : imc < 25 ? '#27ae60' : imc < 30 ? '#f39c12' : '#e74c3c';
             const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
+            
             document.getElementById('profile-display').innerHTML = `
                 <div class="profile-info"><div class="label">Nombre</div><div class="value">${profile.name}</div></div>
                 <div class="profile-info"><div class="label">Fecha de nacimiento</div><div class="value">${profile.birthdate}</div></div>
@@ -1015,6 +1069,7 @@
                 <div class="profile-info"><div class="label">Días de entreno</div><div class="value">${profile.days} días/semana</div></div>
                 <div class="profile-info"><div class="label">Código de acceso</div><div class="value">${currentUser ? currentUser.code : 'N/A'}</div></div>
             `;
+
             if (isAdmin) {
                 document.getElementById('admin-section').style.display = 'block';
                 renderUserList();
@@ -1049,12 +1104,14 @@
             const level = document.getElementById('edit-level').value;
             const goal = document.getElementById('edit-goal').value;
             const days = parseInt(document.getElementById('edit-days').value);
+            
             if (!name) { alert('⚠️ El nombre es obligatorio'); return; }
-            if (!birthdate) { alert('⚠️ La fecha de nacimiento es obligatoria'); return; }
-            if (!gender) { alert('⚠️ Selecciona un sexo'); return; }
+            if (!birthdate) { alert('️ La fecha de nacimiento es obligatoria'); return; }
+            if (!gender) { alert('️ Selecciona un sexo'); return; }
             if (!weight || weight <= 0) { alert('⚠️ Introduce un peso válido'); return; }
             if (!height || height <= 0) { alert('⚠️ Introduce una altura válida'); return; }
-            if (days < 3 || days > 6) { alert('⚠️ Los días de entreno deben ser entre 3 y 6'); return; }
+            if (days < 3 || days > 6) { alert('️ Los días de entreno deben ser entre 3 y 6'); return; }
+            
             profile.name = name;
             profile.birthdate = birthdate;
             profile.gender = gender;
@@ -1063,7 +1120,9 @@
             profile.level = level;
             profile.goal = goal;
             profile.days = days;
+            
             localStorage.setItem('gembukai_profile', JSON.stringify(profile));
+            
             if (days !== routine.days.length) {
                 const dayNames = ['Día 1', 'Día 2', 'Día 3', 'Día 4', 'Día 5', 'Día 6'];
                 const newRoutine = { days: [] };
@@ -1077,6 +1136,7 @@
                 routine = newRoutine;
                 saveRoutine();
             }
+            
             closeEditModal();
             alert('✅ Perfil actualizado correctamente');
             renderProfile();
@@ -1084,7 +1144,7 @@
         }
 
         function resetProfile() {
-            if (confirm('⚠️ ¿ESTÁS SEGURO DE QUE QUIERES REINICIAR TODO?\n\nSe borrará:\n- Tu perfil completo\n- Tu rutina de ejercicios\n- Todos los datos guardados\n\nEsta acción NO se puede deshacer.')) {
+            if (confirm('️ ¿ESTÁS SEGURO DE QUE QUIERES REINICIAR TODO?\n\nSe borrará:\n- Tu perfil completo\n- Tu rutina de ejercicios\n- Todos los datos guardados\n\nEsta acción NO se puede deshacer.')) {
                 if (confirm('⚠️ ÚLTIMA ADVERTENCIA: ¿Realmente quieres borrar todo?')) {
                     localStorage.removeItem('gembukai_profile');
                     localStorage.removeItem('gembukai_routine');
@@ -1103,19 +1163,22 @@
                 container.innerHTML = '<p style="text-align:center;padding:20px;">No hay usuarios</p>';
                 return;
             }
+
             let html = '';
             usersDB.users.forEach((user, index) => {
                 const today = new Date();
                 const expires = new Date(user.expires);
                 let statusClass = 'active';
                 let statusText = '✅ Activo';
+                
                 if (!user.active) {
                     statusClass = 'inactive';
                     statusText = '❌ Desactivado';
                 } else if (today > expires) {
                     statusClass = 'expired';
-                    statusText = '⏰ Caducado';
+                    statusText = ' Caducado';
                 }
+
                 html += `
                     <div class="user-item">
                         <div class="user-info">
@@ -1151,14 +1214,24 @@
         async function addNewUser() {
             const name = document.getElementById('new-user-name').value.trim();
             const expires = document.getElementById('new-user-expires').value;
+
             if (!name || !expires) {
                 alert('⚠️ Rellena todos los campos');
                 return;
             }
+
             const code = generateRandomCode();
-            const newUser = { code: code, name: name, active: true, role: 'user', expires: expires };
+            const newUser = {
+                code: code,
+                name: name,
+                active: true,
+                role: 'user',
+                expires: expires
+            };
+
             usersDB.users.push(newUser);
             renderUserList();
+            
             try {
                 await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
@@ -1169,8 +1242,9 @@
                 alert(`✅ Usuario creado y guardado en la nube.\n\n🔑 Código de acceso: ${code}\n\nCopia este código y dáselo al usuario.`);
             } catch (error) {
                 console.error('Error guardando en Sheets:', error);
-                alert(`✅ Usuario generado.\n\n🔑 Código: ${code}\n⚠️ Nota: No se pudo conectar con la hoja de cálculo. Verifica la URL del Apps Script.`);
+                alert(`✅ Usuario generado.\n\n Código: ${code}\n⚠️ Nota: No se pudo conectar con la hoja de cálculo. Verifica la URL del Apps Script.`);
             }
+            
             hideAddUserForm();
             document.getElementById('new-user-name').value = '';
             document.getElementById('new-user-expires').value = '';
@@ -1180,8 +1254,9 @@
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./service-worker.js')
                     .then(reg => console.log('✅ Service Worker registrado', reg.scope))
-                    .catch(err => console.log('❌ Error registrando SW:', err));
+                    .catch(err => console.log(' Error registrando SW:', err));
             });
+            
             history.pushState(null, null, location.href);
             window.onpopstate = function () {
                 history.go(1);
