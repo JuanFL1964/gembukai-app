@@ -607,12 +607,13 @@
     document.getElementById('main-header').style.display = 'block';
     document.getElementById('bottom-nav').style.display = 'flex';
     
-    // Si es admin, crear perfil automático y saltar registro
+    const savedProfile = localStorage.getItem('gembukai_profile');
+    const savedRoutine = localStorage.getItem('gembukai_routine');
+    if (savedProfile) profile = JSON.parse(savedProfile);
+    if (savedRoutine) routine = JSON.parse(savedRoutine);
+    
+    // Si es admin, crear perfil automático si no existe y saltar registro
     if (isAdmin) {
-        const savedProfile = localStorage.getItem('gembukai_profile');
-        const savedRoutine = localStorage.getItem('gembukai_routine');
-        if (savedProfile) profile = JSON.parse(savedProfile);
-        if (savedRoutine) routine = JSON.parse(savedRoutine);
         if (!profile) {
             profile = { 
                 name: currentUser.name || 'Administrador', 
@@ -629,6 +630,18 @@
         }
         updateHome();
         showScreen('screen-home');
+        return;
+    }
+    
+    // Para usuarios normales, flujo habitual
+    if (!profile) { 
+        showScreen('screen-register'); 
+    } else { 
+        if (!routine) createRoutineFromProfile(); 
+        updateHome(); 
+        showScreen('screen-home'); 
+    }
+}
         return;
     }
     
