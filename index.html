@@ -604,24 +604,42 @@
         }
 
         function showApp() {
-            document.getElementById('main-header').style.display = 'block';
-            document.getElementById('bottom-nav').style.display = 'flex';
-            const savedProfile = localStorage.getItem('gembukai_profile');
-            const savedRoutine = localStorage.getItem('gembukai_routine');
-            if (savedProfile) profile = JSON.parse(savedProfile);
-            if (savedRoutine) routine = JSON.parse(savedRoutine);
-            if (!profile) { showScreen('screen-register'); }
-            else { if (!routine) createRoutineFromProfile(); updateHome(); showScreen('screen-home'); }
+    document.getElementById('main-header').style.display = 'block';
+    document.getElementById('bottom-nav').style.display = 'flex';
+    
+    // Si es admin, crear perfil automático y saltar registro
+    if (isAdmin) {
+        const savedProfile = localStorage.getItem('gembukai_profile');
+        const savedRoutine = localStorage.getItem('gembukai_routine');
+        if (savedProfile) profile = JSON.parse(savedProfile);
+        if (savedRoutine) routine = JSON.parse(savedRoutine);
+        if (!profile) {
+            profile = { 
+                name: currentUser.name || 'Administrador', 
+                birthdate: '1990-01-01',
+                gender: 'hombre', 
+                weight: 75, 
+                height: 175, 
+                level: 'intermedio', 
+                goal: 'fuerza', 
+                days: 4 
+            };
+            localStorage.setItem('gembukai_profile', JSON.stringify(profile));
+            createRoutineFromProfile();
         }
-
-        function logout() {
-            localStorage.removeItem('gembukai_current_user');
-            currentUser = null; isAdmin = false;
-            document.getElementById('main-header').style.display = 'none';
-            document.getElementById('bottom-nav').style.display = 'none';
-            showScreen('screen-login');
-        }
-
+        updateHome();
+        showScreen('screen-home');
+        return;
+    }
+    
+    // Para usuarios normales, flujo habitual
+    const savedProfile = localStorage.getItem('gembukai_profile');
+    const savedRoutine = localStorage.getItem('gembukai_routine');
+    if (savedProfile) profile = JSON.parse(savedProfile);
+    if (savedRoutine) routine = JSON.parse(savedRoutine);
+    if (!profile) { showScreen('screen-register'); }
+    else { if (!routine) createRoutineFromProfile(); updateHome(); showScreen('screen-home'); }
+}
         function selectDays(days, element) {
             document.getElementById('reg-days').value = days;
             document.querySelectorAll('#reg-days-selector .day-selector-btn').forEach(btn => btn.classList.remove('selected'));
