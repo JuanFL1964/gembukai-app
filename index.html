@@ -152,7 +152,7 @@
                 <div class="splash-logo" style="margin: 0 auto 20px;"><img src="logo.png" alt="Gembukai Logo"></div>
                 <h2>Acceso restringido</h2>
                 <p>Introduce tu código de acceso para continuar</p>
-                <input type="text" id="login-code" class="login-input" placeholder="GEMBU-XXXX-XXXX" autocomplete="off">
+                <input type="text" id="login-code" class="login-input" placeholder="GEMBU-XXXX-XXXX" autocomplete="off" onkeypress="if(event.key === 'Enter') validateCode()">
                 <button class="btn" onclick="validateCode()">Acceder</button>
                 <div id="login-error" class="login-error"></div>
                 <p style="margin-top: 30px; font-size: 12px; opacity: 0.7;">¿No tienes código? Contacta con el gimnasio</p>
