@@ -692,30 +692,31 @@ async function validateCode() {
             }
         }
 
-        async function logout() {
-            if (currentUser && currentUser.code) {
-                try {
-                    await fetch(APPS_SCRIPT_URL, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                        body: JSON.stringify({ 
-                            action: 'logout', 
-                            code: currentUser.code 
-                        })
-                    });
-                } catch (error) {
-                    console.error('Error liberando código:', error);
-                }
-            }
-            
-            localStorage.removeItem('gembukai_current_user');
-            currentUser = null;
-            isAdmin = false;
-            document.getElementById('main-header').style.display = 'none';
-            document.getElementById('bottom-nav').style.display = 'none';
-            showScreen('screen-login');
+async function logout() {
+    // Intentar liberar el código en Apps Script (pero si falla, no importa)
+    if (currentUser && currentUser.code) {
+        try {
+            await fetch(APPS_SCRIPT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({ 
+                    action: 'logout', 
+                    code: currentUser.code 
+                })
+            });
+            console.log('✅ Código liberado en Apps Script');
+        } catch (error) {
+            console.log('⚠️ Apps Script no disponible al cerrar sesión');
         }
-
+    }
+    
+    localStorage.removeItem('gembukai_current_user');
+    currentUser = null;
+    isAdmin = false;
+    document.getElementById('main-header').style.display = 'none';
+    document.getElementById('bottom-nav').style.display = 'none';
+    showScreen('screen-login');
+}
         async function confirmLogout() {
             if (confirm('🚪 ¿Quieres cerrar la sesión?')) {
                 await logout();
