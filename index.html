@@ -16,7 +16,7 @@
         html { font-size: 16px; }
         body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height: 100vh; color: #fff; padding-bottom: 90px; }
         .splash-screen { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #8B0000 0%, #DC143C 50%, #8B0000 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
-        .splash-screen.hidden { display: none !important; }
+        .splash-screen.hidden { display: none; }
         .splash-logo { width: 200px; height: 200px; background: white; border-radius: 50%; border: 6px solid #ffd700; overflow: hidden; margin-bottom: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); animation: pulse 2s infinite; }
         .splash-logo img { width: 100%; height: 100%; object-fit: contain; }
         .splash-title { font-size: 48px; font-weight: bold; color: white; text-shadow: 3px 3px 6px rgba(0,0,0,0.5); letter-spacing: 4px; margin-bottom: 10px; }
@@ -41,46 +41,45 @@
         .btn-warning { background: #f39c12; border-color: #f39c12; }
         .btn-danger { background: #e74c3c; border-color: #e74c3c; }
         .btn-tiny { padding: 8px 12px; font-size: 13px; min-height: 38px; }
-        .btn-delete-exercise { padding: 4px 8px !important; font-size: 11px !important; min-height: 28px !important; width: auto !important; flex: none !important; line-height: 1 !important; }
+        .btn-delete-exercise { padding: 4px 8px; font-size: 11px; min-height: 28px; width: auto; flex: none; line-height: 1; }
         
-        /* MENÚ INFERIOR - CSS ROBUSTO */
+        /* MENÚ INFERIOR - SIN !important PARA QUE JS LO CONTROLE */
         .bottom-nav { 
-            position: fixed !important; 
-            bottom: 0 !important; 
-            left: 0 !important; 
-            right: 0 !important; 
-            background: rgba(0,0,0,0.95) !important; 
-            justify-content: space-around !important; 
-            padding: 8px 0 12px !important; 
-            border-top: 3px solid #DC143C !important; 
-            z-index: 10000 !important;
-            min-height: 70px !important;
-            height: auto !important;
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            right: 0; 
+            background: rgba(0,0,0,0.95); 
+            justify-content: space-around; 
+            padding: 8px 0 12px; 
+            border-top: 3px solid #DC143C; 
+            z-index: 10000;
+            min-height: 70px;
         }
         .nav-item { 
-            text-align: center !important; 
-            cursor: pointer !important; 
-            padding: 6px 8px !important; 
-            border-radius: 10px !important; 
-            flex: 1 !important;
-            min-height: 50px !important;
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: center !important;
-            justify-content: center !important;
+            text-align: center; 
+            cursor: pointer; 
+            padding: 6px 8px; 
+            border-radius: 10px; 
+            flex: 1;
+            min-height: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
         .nav-item .icon { 
-            font-size: 24px !important; 
-            display: block !important;
-            line-height: 1.2 !important;
-            margin-bottom: 2px !important;
+            font-size: 24px; 
+            display: block;
+            line-height: 1.2;
+            margin-bottom: 2px;
         }
         .nav-item .label { 
-            font-size: 11px !important; 
-            display: block !important;
-            line-height: 1 !important;
+            font-size: 11px; 
+            display: block;
+            line-height: 1;
         }
-        .nav-item.active { color: #DC143C !important; background: rgba(255,255,255,0.1) !important; }
+        .nav-item.active { color: #DC143C; background: rgba(255,255,255,0.1); }
         
         .screen { display: none; }
         .screen.active { display: block; animation: fadeIn 0.2s; }
@@ -213,7 +212,7 @@
                     <div class="form-group"><label>Altura (cm)</label><input type="number" id="reg-height" placeholder="175"></div>
                 </div>
                 <div class="form-group"><label>Nivel</label><select id="reg-level"><option value="principiante">Principiante</option><option value="intermedio">Intermedio</option><option value="avanzado">Avanzado</option></select></div>
-                <div class="form-group"><label>Objetivo</label><select id="reg-goal"><option value="fuerza">💪 Fuerza</option><option value="hipertrofia">🏋️ Hipertrofia</option><option value="definicion">✂️ Definición</option><option value="resistencia">🏃 Resistencia</option><option value="salud">❤️ Salud</option><option value="perder_peso">📉 Perder peso</option></select></div>
+                <div class="form-group"><label>Objetivo</label><select id="reg-goal"><option value="fuerza">💪 Fuerza</option><option value="hipertrofia">🏋️ Hipertrofia</option><option value="definicion">✂️ Definición</option><option value="resistencia"> Resistencia</option><option value="salud">❤️ Salud</option><option value="perder_peso">📉 Perder peso</option></select></div>
                 <div class="form-group">
                     <label>¿Cuántos días entrenar?</label>
                     <div class="day-selector" id="reg-days-selector">
@@ -238,7 +237,7 @@
                     <div class="stat-box"><div class="number" id="stat-days">0</div><div class="text">Días de entreno</div></div>
                     <div class="stat-box"><div class="number" id="stat-exercises">0</div><div class="text">Ejercicios totales</div></div>
                 </div>
-                <button class="btn" onclick="showScreen('screen-routines')">️ Mis Rutinas</button>
+                <button class="btn" onclick="showScreen('screen-routines')">🏋️ Mis Rutinas</button>
                 <button class="btn btn-secondary" onclick="showScreen('screen-exercises')">📋 Explorar ejercicios</button>
             </div>
         </div>
@@ -281,12 +280,12 @@
                     <p id="detail-equipment" style="font-size: 12px; opacity: 0.8; margin-bottom: 10px;"></p>
                     <p id="detail-desc">Descripción</p>
                     <div id="detail-instructions-container" class="detail-instructions" style="display:none;">
-                        <h4>📝 Instrucciones</h4>
+                        <h4> Instrucciones</h4>
                         <ol id="detail-instructions-list"></ol>
                     </div>
                     <a id="detail-youtube" href="#" target="_blank" class="btn btn-youtube" style="text-decoration: none; margin-top: 15px;">▶️ Ver video en YouTube</a>
                 </div>
-                <h3 style="margin-top: 15px;"> Tu registro</h3>
+                <h3 style="margin-top: 15px;">📊 Tu registro</h3>
                 <div class="form-row">
                     <div class="form-group"><label>Series</label><input type="number" id="input-sets" placeholder="4" min="1"></div>
                     <div class="form-group"><label>Reps</label><input type="text" id="input-reps" placeholder="12"></div>
@@ -303,7 +302,7 @@
                 <h2>🏋️ Mi Rutina Semanal</h2>
                 <div style="display: flex; gap: 10px; margin-bottom: 15px;">
                     <button class="btn btn-small btn-warning" onclick="shareRoutine()" style="flex:1;">📤 Compartir</button>
-                    <button class="btn btn-small btn-success" onclick="importRoutine()" style="flex:1;"> Importar</button>
+                    <button class="btn btn-small btn-success" onclick="importRoutine()" style="flex:1;">📥 Importar</button>
                 </div>
                 <div id="routine-days-container"></div>
             </div>
@@ -361,7 +360,7 @@
 
     <div id="edit-profile-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.8); z-index:2000; overflow-y:auto; padding:20px;">
         <div style="background:linear-gradient(135deg, #8B0000 0%, #DC143C 100%); max-width:500px; margin:30px auto; border-radius:15px; padding:25px; border:2px solid white;">
-            <h2 style="color:white; text-align:center; margin-bottom:20px;">✏️ Editar perfil</h2>
+            <h2 style="color:white; text-align:center; margin-bottom:20px;">️ Editar perfil</h2>
             <div class="form-group" style="margin-bottom:12px;">
                 <label style="color:white; font-weight:bold;">Nombre</label>
                 <input type="text" id="edit-name" style="width:100%; padding:12px; border-radius:8px; border:none; font-size:16px;">
@@ -425,7 +424,7 @@
     <div class="bottom-nav" id="bottom-nav" style="display:none;">
         <div class="nav-item active" onclick="showScreen('screen-home', this)"><span class="icon">🏠</span><span class="label">Inicio</span></div>
         <div class="nav-item" onclick="showScreen('screen-exercises', this)"><span class="icon"></span><span class="label">Ejercicios</span></div>
-        <div class="nav-item" onclick="showScreen('screen-routines', this)"><span class="icon">🏋️</span><span class="label">Rutinas</span></div>
+        <div class="nav-item" onclick="showScreen('screen-routines', this)"><span class="icon">️</span><span class="label">Rutinas</span></div>
         <div class="nav-item" onclick="showScreen('screen-profile', this)"><span class="icon">👤</span><span class="label">Perfil</span></div>
     </div>
 
@@ -438,7 +437,7 @@
             'legs': '🦵 Piernas y Gemelos',
             'shoulders': '🤷 Hombros',
             'upper arms': '💪 Brazos',
-            'waist': ' Core',
+            'waist': '🎯 Core',
             'cardio': '❤️ Cardio'
         };
         const muscleEmojis = {
@@ -529,7 +528,7 @@
                 const count = translationsDB.exercises ? Object.keys(translationsDB.exercises).length : 0;
                 console.log('✅ Traducciones cargadas: ' + count + ' ejercicios');
             } catch (error) {
-                console.error('❌ Error cargando traducciones:', error);
+                console.error(' Error cargando traducciones:', error);
                 translationsDB = { exercises: {}, muscles: {}, equipment: {} };
             }
         }
@@ -614,7 +613,7 @@
             if (!user.active) { alert('⚠️ Tu acceso ha sido desactivado.'); logout(); return; }
             const today = new Date();
             const expires = new Date(user.expires);
-            if (today > expires) { alert(' Tu código ha caducado.'); logout(); return; }
+            if (today > expires) { alert('⏰ Tu código ha caducado.'); logout(); return; }
             isAdmin = user.role === 'admin';
             showApp();
         }
@@ -638,7 +637,7 @@
             }
             
             if (!user.active) { 
-                errorDiv.textContent = '️ Este código está desactivado'; 
+                errorDiv.textContent = '⚠️ Este código está desactivado'; 
                 errorDiv.style.display = 'block'; 
                 return; 
             }
@@ -744,7 +743,7 @@
         function updateHome() {
             if (!profile) return;
             document.getElementById('welcome-title').textContent = '¡Hola, ' + profile.name + '!';
-            const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: ' Perder peso' };
+            const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
             document.getElementById('welcome-msg').textContent = 'Objetivo: ' + (goals[profile.goal] || profile.goal);
             let totalExercises = 0;
             if (routine && routine.days) { totalExercises = routine.days.reduce((sum, day) => sum + (day.exercises ? day.exercises.length : 0), 0); }
@@ -802,7 +801,7 @@
         function addExerciseToSpecificDay(exerciseId, dayIndex) {
             const ex = exercisesDB.find(e => e.id === exerciseId);
             const day = routine.days[dayIndex];
-            if (day.exercises.find(e => e.id === exerciseId)) { alert('⚠️ Ya está en este día'); return; }
+            if (day.exercises.find(e => e.id === exerciseId)) { alert('️ Ya está en este día'); return; }
             const scrollPosition = window.scrollY;
             day.exercises.push({ id: ex.id, name: ex.name, body_part: ex.body_part, equipment: ex.equipment, sets: '', reps: '', weight: '' });
             saveRoutine();
@@ -857,7 +856,7 @@
         function goBackFromList() { showScreen(lastScreen); }
 
         function shareRoutine() {
-            if (!routine || !routine.days || routine.days.length === 0) { alert('⚠️ No tienes rutina'); return; }
+            if (!routine || !routine.days || routine.days.length === 0) { alert('️ No tienes rutina'); return; }
             const encoded = btoa(encodeURIComponent(JSON.stringify(routine)));
             navigator.clipboard.writeText(encoded).then(() => { alert('✅ Código copiado. Pégalo en WhatsApp.'); }).catch(() => { prompt('Copia este código:', encoded); });
         }
@@ -876,7 +875,7 @@
 
         function renderRoutineDays() {
             const container = document.getElementById('routine-days-container');
-            if (!routine || !routine.days || routine.days.length === 0) { container.innerHTML = '<div class="empty-state"><div class="icon">🏋️</div><p>No tienes rutina</p></div>'; return; }
+            if (!routine || !routine.days || routine.days.length === 0) { container.innerHTML = '<div class="empty-state"><div class="icon">️</div><p>No tienes rutina</p></div>'; return; }
             let html = '';
             routine.days.forEach((day, index) => {
                 const exerciseCount = day.exercises ? day.exercises.length : 0;
@@ -889,7 +888,7 @@
                         if (ex.sets) setsReps.push(ex.sets + ' series');
                         if (ex.reps) setsReps.push(ex.reps + ' reps');
                         if (ex.weight) setsReps.push(ex.weight + ' kg');
-                        html += '<div class="day-exercise-item" onclick="openExerciseDetailInDay(' + index + ', ' + exIndex + ')"><img class="routine-exercise-img" src="images/' + ex.id + '.jpg" alt="' + ex.name + '" onerror="this.src=\'data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'60\' height=\'60\'><rect width=\'60\' height=\'60\' fill=\'%23ddd\'/><text x=\'30\' y=\'35\' font-size=\'24\' text-anchor=\'middle\'>🏋️</text></svg>\'"><div class="routine-exercise-info"><div class="day-exercise-name">' + translateExerciseName(ex.name) + '</div><div class="day-exercise-data">' + (setsReps.join(' | ') || 'Sin datos') + '</div></div><button class="btn btn-delete-exercise" onclick="event.stopPropagation(); removeExerciseFromDay(' + index + ', ' + exIndex + ')">️</button></div>';
+                        html += '<div class="day-exercise-item" onclick="openExerciseDetailInDay(' + index + ', ' + exIndex + ')"><img class="routine-exercise-img" src="images/' + ex.id + '.jpg" alt="' + ex.name + '" onerror="this.src=\'data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'60\' height=\'60\'><rect width=\'60\' height=\'60\' fill=\'%23ddd\'/><text x=\'30\' y=\'35\' font-size=\'24\' text-anchor=\'middle\'>🏋️</text></svg>\'"><div class="routine-exercise-info"><div class="day-exercise-name">' + translateExerciseName(ex.name) + '</div><div class="day-exercise-data">' + (setsReps.join(' | ') || 'Sin datos') + '</div></div><button class="btn btn-delete-exercise" onclick="event.stopPropagation(); removeExerciseFromDay(' + index + ', ' + exIndex + ')">🗑️</button></div>';
                     });
                 }
                 html += '</div><div class="day-actions"><button class="btn btn-small" onclick="openAddToDay(' + index + ')">➕ Añadir</button><button class="btn btn-small ' + (day.completed ? 'btn-warning' : 'btn-success') + '" onclick="toggleDayCompleted(' + index + ')">' + (day.completed ? '️ Desmarcar' : '✅ Completado') + '</button></div></div>';
@@ -943,7 +942,7 @@
             const imc = (profile.weight / ((profile.height/100) ** 2)).toFixed(1);
             let imcText = imc < 18.5 ? 'Bajo peso' : imc < 25 ? 'Normal' : imc < 30 ? 'Sobrepeso' : 'Obesidad';
             let imcColor = imc < 18.5 ? '#3498db' : imc < 25 ? '#27ae60' : imc < 30 ? '#f39c12' : '#e74c3c';
-            const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: ' Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
+            const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
             document.getElementById('profile-display').innerHTML = 
                 '<div class="profile-info"><div class="label">Nombre</div><div class="value">' + profile.name + '</div></div>' +
                 '<div class="profile-info"><div class="label">Fecha de nacimiento</div><div class="value">' + profile.birthdate + '</div></div>' +
@@ -987,8 +986,8 @@
             const days = parseInt(document.getElementById('edit-days').value);
             if (!name) { alert('⚠️ Nombre obligatorio'); return; }
             if (!birthdate) { alert('⚠️ Fecha obligatoria'); return; }
-            if (!weight || weight <= 0) { alert('⚠️ Peso válido'); return; }
-            if (!height || height <= 0) { alert('⚠️ Altura válida'); return; }
+            if (!weight || weight <= 0) { alert('️ Peso válido'); return; }
+            if (!height || height <= 0) { alert('️ Altura válida'); return; }
             profile.name = name; profile.birthdate = birthdate; profile.gender = gender;
             profile.weight = weight; profile.height = height; profile.level = level;
             profile.goal = goal; profile.days = days;
@@ -1008,7 +1007,7 @@
         }
 
         function resetProfile() {
-            if (confirm('️ ¿ESTÁS SEGURO?\n\nSe borrará:\n- Perfil\n- Rutina\n- Todos los datos\n\nNO se puede deshacer.')) {
+            if (confirm('⚠️ ¿ESTÁS SEGURO?\n\nSe borrará:\n- Perfil\n- Rutina\n- Todos los datos\n\nNO se puede deshacer.')) {
                 if (confirm('⚠️ ÚLTIMA ADVERTENCIA: ¿Realmente borrar todo?')) {
                     localStorage.removeItem('gembukai_profile');
                     localStorage.removeItem('gembukai_routine');
@@ -1028,7 +1027,7 @@
                 const expires = new Date(user.expires);
                 let statusClass = 'active', statusText = '✅ Activo';
                 if (!user.active) { statusClass = 'inactive'; statusText = '❌ Desactivado'; }
-                else if (today > expires) { statusClass = 'expired'; statusText = ' Caducado'; }
+                else if (today > expires) { statusClass = 'expired'; statusText = '⏰ Caducado'; }
                 html += '<div class="user-item"><div class="user-info"><div class="user-code">' + user.code + '</div><div class="user-name">' + user.name + '</div><div class="user-status ' + statusClass + '">' + statusText + ' | Caduca: ' + user.expires + '</div></div><div class="user-actions">' + (user.role !== 'admin' ? '<button class="btn btn-tiny ' + (user.active ? 'btn-warning' : 'btn-success') + '" onclick="toggleUserStatus(' + index + ')">' + (user.active ? '⏸️' : '▶️') + '</button>' : '') + '</div></div>';
             });
             container.innerHTML = html;
