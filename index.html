@@ -7,6 +7,7 @@
     <title>Gembukai - Club Sportiu Bonavista</title>
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Gembukai">
     <link rel="apple-touch-icon" href="logo.png">
@@ -198,13 +199,13 @@
         <div class="main-content">
             <div class="card">
                 <h2 id="welcome-title">¡Bienvenido!</h2>
-                <p id="welcome-msg" style="margin-bottom: 15px;">Vamos a entrenar </p>
+                <p id="welcome-msg" style="margin-bottom: 15px;">Vamos a entrenar 💪</p>
                 <div class="stats-grid">
                     <div class="stat-box"><div class="number" id="stat-days">0</div><div class="text">Días de entreno</div></div>
                     <div class="stat-box"><div class="number" id="stat-exercises">0</div><div class="text">Ejercicios totales</div></div>
                 </div>
                 <button class="btn" onclick="showScreen('screen-routines')">🏋️ Mis Rutinas</button>
-                <button class="btn btn-secondary" onclick="showScreen('screen-exercises')"> Explorar ejercicios</button>
+                <button class="btn btn-secondary" onclick="showScreen('screen-exercises')">📋 Explorar ejercicios</button>
             </div>
         </div>
     </div>
@@ -268,7 +269,7 @@
                 <h2>🏋️ Mi Rutina Semanal</h2>
                 <div style="display: flex; gap: 10px; margin-bottom: 15px;">
                     <button class="btn btn-small btn-warning" onclick="shareRoutine()" style="flex:1;">📤 Compartir</button>
-                    <button class="btn btn-small btn-success" onclick="importRoutine()" style="flex:1;">📥 Importar</button>
+                    <button class="btn btn-small btn-success" onclick="importRoutine()" style="flex:1;"> Importar</button>
                 </div>
                 <div id="routine-days-container"></div>
             </div>
@@ -282,10 +283,10 @@
                 <h2 id="add-to-day-title">Añadir ejercicios</h2>
                 <p style="margin-bottom: 15px; font-size: 14px;">Elige un grupo muscular:</p>
                 <div class="muscle-grid">
-                    <div class="muscle-btn" onclick="showMuscleGroupForDay('chest')"> Pecho</div>
+                    <div class="muscle-btn" onclick="showMuscleGroupForDay('chest')">🫁 Pecho</div>
                     <div class="muscle-btn" onclick="showMuscleGroupForDay('back')">🔙 Espalda</div>
                     <div class="muscle-btn" onclick="showMuscleGroupForDay('legs')">🦵 Piernas y Gemelos</div>
-                    <div class="muscle-btn" onclick="showMuscleGroupForDay('shoulders')">🤷 Hombros</div>
+                    <div class="muscle-btn" onclick="showMuscleGroupForDay('shoulders')"> Hombros</div>
                     <div class="muscle-btn" onclick="showMuscleGroupForDay('upper arms')">💪 Brazos</div>
                     <div class="muscle-btn" onclick="showMuscleGroupForDay('waist')">🎯 Core</div>
                     <div class="muscle-btn" onclick="showMuscleGroupForDay('cardio')">❤️ Cardio</div>
@@ -364,11 +365,11 @@
                 <label style="color:white; font-weight:bold;">Objetivo</label>
                 <select id="edit-goal" style="width:100%; padding:12px; border-radius:8px; border:none; font-size:16px; background:white; color:#333;">
                     <option value="fuerza">💪 Fuerza</option>
-                    <option value="hipertrofia">️ Hipertrofia</option>
-                    <option value="definicion">✂️ Definición</option>
+                    <option value="hipertrofia">🏋️ Hipertrofia</option>
+                    <option value="definicion">️ Definición</option>
                     <option value="resistencia">🏃 Resistencia</option>
                     <option value="salud">❤️ Salud</option>
-                    <option value="perder_peso"> Perder peso</option>
+                    <option value="perder_peso">📉 Perder peso</option>
                 </select>
             </div>
             <div class="form-group" style="margin-bottom:20px;">
@@ -398,17 +399,17 @@
         const SHEET_ID = "1Ngui-rgC76dPioIy4XLUo5Ene0QtoHl42rhntK5T6Po";
 
         const muscleNames = {
-            'chest': '🫁 Pecho',
-            'back': '🔙 Espalda',
-            'legs': '🦵 Piernas y Gemelos',
+            'chest': ' Pecho',
+            'back': ' Espalda',
+            'legs': ' Piernas y Gemelos',
             'shoulders': '🤷 Hombros',
             'upper arms': '💪 Brazos',
             'waist': '🎯 Core',
             'cardio': '❤️ Cardio'
         };
         const muscleEmojis = {
-            'chest': '', 'back': '🔙', 'legs': '🦵', 'shoulders': '🤷',
-            'upper arms': '', 'waist': '🎯', 'cardio': '❤️'
+            'chest': '🫁', 'back': '🔙', 'legs': '🦵', 'shoulders': '🤷',
+            'upper arms': '💪', 'waist': '', 'cardio': '❤️'
         };
 
         let exercisesDB = [];
@@ -454,7 +455,7 @@
                 exercisesLoaded = true;
                 console.log(`✅ Cargados ${exercisesDB.length} ejercicios`);
             } catch (error) {
-                console.error('❌ Error cargando ejercicios:', error);
+                console.error(' Error cargando ejercicios:', error);
                 exercisesDB = [];
             }
         }
@@ -491,9 +492,9 @@
                 const response = await fetch('translations.json');
                 if (!response.ok) throw new Error('No se pudo cargar translations.json');
                 translationsDB = await response.json();
-                console.log('✅ Traducciones cargadas');
+                console.log('✅ Traducciones cargadas:', Object.keys(translationsDB.exercises || {}).length, 'ejercicios');
             } catch (error) {
-                console.error('❌ Error cargando traducciones:', error);
+                console.error(' Error cargando traducciones:', error);
                 translationsDB = { exercises: {}, muscles: {}, equipment: {} };
             }
         }
@@ -578,7 +579,7 @@
             if (!user.active) { alert('️ Tu acceso ha sido desactivado.'); logout(); return; }
             const today = new Date();
             const expires = new Date(user.expires);
-            if (today > expires) { alert('⏰ Tu código ha caducado.'); logout(); return; }
+            if (today > expires) { alert(' Tu código ha caducado.'); logout(); return; }
             isAdmin = user.role === 'admin';
             showApp();
         }
@@ -602,7 +603,7 @@
             }
             
             if (!user.active) { 
-                errorDiv.textContent = '️ Este código está desactivado'; 
+                errorDiv.textContent = '⚠️ Este código está desactivado'; 
                 errorDiv.style.display = 'block'; 
                 return; 
             }
@@ -610,7 +611,7 @@
             const today = new Date();
             const expires = new Date(user.expires);
             if (today > expires) { 
-                errorDiv.textContent = '⏰ Este código ha caducado'; 
+                errorDiv.textContent = ' Este código ha caducado'; 
                 errorDiv.style.display = 'block'; 
                 return; 
             }
@@ -708,7 +709,7 @@
         function updateHome() {
             if (!profile) return;
             document.getElementById('welcome-title').textContent = '¡Hola, ' + profile.name + '!';
-            const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: ' Perder peso' };
+            const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
             document.getElementById('welcome-msg').textContent = 'Objetivo: ' + (goals[profile.goal] || profile.goal);
             let totalExercises = 0;
             if (routine && routine.days) { totalExercises = routine.days.reduce((sum, day) => sum + (day.exercises ? day.exercises.length : 0), 0); }
@@ -898,7 +899,7 @@
             const imc = (profile.weight / ((profile.height/100) ** 2)).toFixed(1);
             let imcText = imc < 18.5 ? 'Bajo peso' : imc < 25 ? 'Normal' : imc < 30 ? 'Sobrepeso' : 'Obesidad';
             let imcColor = imc < 18.5 ? '#3498db' : imc < 25 ? '#27ae60' : imc < 30 ? '#f39c12' : '#e74c3c';
-            const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: ' Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
+            const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
             document.getElementById('profile-display').innerHTML = `
                 <div class="profile-info"><div class="label">Nombre</div><div class="value">${profile.name}</div></div>
                 <div class="profile-info"><div class="label">Fecha de nacimiento</div><div class="value">${profile.birthdate}</div></div>
@@ -943,8 +944,8 @@
             const days = parseInt(document.getElementById('edit-days').value);
             if (!name) { alert('⚠️ Nombre obligatorio'); return; }
             if (!birthdate) { alert('⚠️ Fecha obligatoria'); return; }
-            if (!weight || weight <= 0) { alert('⚠️ Peso válido'); return; }
-            if (!height || height <= 0) { alert('⚠️ Altura válida'); return; }
+            if (!weight || weight <= 0) { alert('️ Peso válido'); return; }
+            if (!height || height <= 0) { alert('️ Altura válida'); return; }
             profile.name = name; profile.birthdate = birthdate; profile.gender = gender;
             profile.weight = weight; profile.height = height; profile.level = level;
             profile.goal = goal; profile.days = days;
@@ -965,7 +966,7 @@
 
         function resetProfile() {
             if (confirm('⚠️ ¿ESTÁS SEGURO?\n\nSe borrará:\n- Perfil\n- Rutina\n- Todos los datos\n\nNO se puede deshacer.')) {
-                if (confirm('️ ÚLTIMA ADVERTENCIA: ¿Realmente borrar todo?')) {
+                if (confirm('⚠️ ÚLTIMA ADVERTENCIA: ¿Realmente borrar todo?')) {
                     localStorage.removeItem('gembukai_profile');
                     localStorage.removeItem('gembukai_routine');
                     profile = null; routine = null;
@@ -990,19 +991,19 @@
             container.innerHTML = html;
         }
 
-        function toggleUserStatus(index) { alert('️ Activa/desactiva en Google Sheets cambiando TRUE/FALSE en la columna "active".'); }
+        function toggleUserStatus(index) { alert('⚠️ Activa/desactiva en Google Sheets cambiando TRUE/FALSE en la columna "active".'); }
         function showAddUserForm() { document.getElementById('add-user-form').style.display = 'block'; }
         function hideAddUserForm() { document.getElementById('add-user-form').style.display = 'none'; }
 
         function addNewUser() {
             const name = document.getElementById('new-user-name').value.trim();
             const expires = document.getElementById('new-user-expires').value;
-            if (!name || !expires) { alert('⚠️ Rellena todos los campos'); return; }
+            if (!name || !expires) { alert('️ Rellena todos los campos'); return; }
             const code = generateRandomCode();
             const newUser = { code, name, active: true, role: 'user', expires };
             usersDB.users.push(newUser);
             renderUserList();
-            alert(`✅ Usuario creado.\n\n Código: ${code}\n\nCópialo y dáselo al usuario.\n\n️ IMPORTANTE: Añade este usuario manualmente en Google Sheets.`);
+            alert(`✅ Usuario creado.\n\n🔑 Código: ${code}\n\nCópialo y dáselo al usuario.\n\n⚠️ IMPORTANTE: Añade este usuario manualmente en Google Sheets.`);
             hideAddUserForm();
             document.getElementById('new-user-name').value = '';
             document.getElementById('new-user-expires').value = '';
