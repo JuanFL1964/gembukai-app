@@ -589,46 +589,60 @@
         }
 
         async function validateCode() {
-            const code = document.getElementById('login-code').value.trim().toUpperCase();
-            const errorDiv = document.getElementById('login-error');
-            
-            if (!code) { 
-                errorDiv.textContent = '⚠️ Introduce un código'; 
-                errorDiv.style.display = 'block'; 
-                return; 
-            }
-            
-            errorDiv.textContent = '⏳ Verificando...';
-            errorDiv.style.display = 'block';
-            
-            try {
-                const response = await fetch(APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify({ action: 'login', code: code })
-                });
-                
-                const result = await response.json();
-                
-                if (result.result === 'error') {
-                    errorDiv.textContent = ' ' + result.message;
-                    errorDiv.style.display = 'block';
-                    return;
-                }
-                
-                currentUser = result.user;
-                localStorage.setItem('gembukai_current_user', JSON.stringify(result.user));
-                isAdmin = result.user.role === 'admin';
-                
-                errorDiv.style.display = 'none';
-                showApp();
-                
-            } catch (error) {
-                console.error('Error conectando con Sheets:', error);
-                errorDiv.textContent = ' Error de conexión. Intenta de nuevo.';
-                errorDiv.style.display = 'block';
-            }
-        }
+    const code = document.getElementById('login-code').value.trim().toUpperCase();
+    const errorDiv = document.getElementById('login-error');
+    
+    if (!code) { 
+        errorDiv.textContent = '⚠️ Introduce un código'; 
+        errorDiv.style.display = 'block'; 
+        return; 
+    }
+    
+    errorDiv.textContent = ' Verificando...';
+    errorDiv.style.display = 'block';
+    
+    // Buscar el usuario en la lista local (ya cargada de Google Sheets)
+    const user = usersDB.users.find(u => u.code === code);
+    
+    if (!user) { 
+        errorDiv.textContent = '❌ Código no válido'; 
+        errorDiv.style.display = 'block'; 
+        return; 
+    }
+    
+    if (!user.active) { 
+        errorDiv.textContent = '⚠️ Este código está desactivado'; 
+        errorDiv.style.display = 'block'; 
+        return; 
+    }
+    
+    const today = new Date();
+    const expires = new Date(user.expires);
+    if (today > expires) { 
+        errorDiv.textContent = '⏰ Este código ha caducado'; 
+        errorDiv.style.display = 'block'; 
+        return; 
+    }
+    
+    // Intentar marcar el código como en uso en Apps Script (pero si falla, no importa)
+    try {
+        await fetch(APPS_SCRIPT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({ action: 'login', code: code })
+        });
+    } catch (error) {
+        console.log('Apps Script no disponible, continuando con login local');
+    }
+    
+    // Login exitoso
+    currentUser = user;
+    localStorage.setItem('gembukai_current_user', JSON.stringify(user));
+    isAdmin = user.role === 'admin';
+    
+    errorDiv.style.display = 'none';
+    showApp();
+}
 
         function togglePasswordVisibility() {
             const input = document.getElementById('login-code');
