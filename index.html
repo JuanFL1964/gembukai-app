@@ -588,7 +588,7 @@
             showApp();
         }
 
-        async function validateCode() {
+async function validateCode() {
     const code = document.getElementById('login-code').value.trim().toUpperCase();
     const errorDiv = document.getElementById('login-error');
     
@@ -598,7 +598,7 @@
         return; 
     }
     
-    errorDiv.textContent = ' Verificando...';
+    errorDiv.textContent = '⏳ Verificando...';
     errorDiv.style.display = 'block';
     
     // Buscar el usuario en la lista local (ya cargada de Google Sheets)
@@ -631,11 +631,12 @@
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
             body: JSON.stringify({ action: 'login', code: code })
         });
+        console.log('✅ Código marcado en Apps Script');
     } catch (error) {
-        console.log('Apps Script no disponible, continuando con login local');
+        console.log('⚠️ Apps Script no disponible, continuando con login local');
     }
     
-    // Login exitoso
+    // Login exitoso - guardar usuario
     currentUser = user;
     localStorage.setItem('gembukai_current_user', JSON.stringify(user));
     isAdmin = user.role === 'admin';
