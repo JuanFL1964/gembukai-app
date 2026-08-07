@@ -202,7 +202,7 @@
     <div id="screen-register" class="screen">
         <div class="main-content">
             <div class="card">
-                <h2>👋 ¡Bienvenido!</h2>
+                <h2>&#128075; ¡Bienvenido!</h2>
                 <div class="form-group"><label>Nombre</label><input type="text" id="reg-name" placeholder="Tu nombre"></div>
                 <div class="form-group"><label>Fecha de nacimiento</label><input type="date" id="reg-birthdate"></div>
                 <div class="form-group"><label>Sexo</label><select id="reg-gender"><option value="">Selecciona</option><option value="hombre">Hombre</option><option value="mujer">Mujer</option></select></div>
@@ -211,7 +211,7 @@
                     <div class="form-group"><label>Altura (cm)</label><input type="number" id="reg-height" placeholder="175"></div>
                 </div>
                 <div class="form-group"><label>Nivel</label><select id="reg-level"><option value="principiante">Principiante</option><option value="intermedio">Intermedio</option><option value="avanzado">Avanzado</option></select></div>
-                <div class="form-group"><label>Objetivo</label><select id="reg-goal"><option value="fuerza">💪 Fuerza</option><option value="hipertrofia">🏋️ Hipertrofia</option><option value="definicion">✂️ Definición</option><option value="resistencia">🏃 Resistencia</option><option value="salud">❤️ Salud</option><option value="perder_peso">📉 Perder peso</option></select></div>
+                <div class="form-group"><label>Objetivo</label><select id="reg-goal"><option value="fuerza">&#128170; Fuerza</option><option value="hipertrofia">&#127947;&#65039; Hipertrofia</option><option value="definicion">&#9986;&#65039; Definición</option><option value="resistencia">&#127939; Resistencia</option><option value="salud">&#10084;&#65039; Salud</option><option value="perder_peso">&#128200; Perder peso</option></select></div>
                 <div class="form-group">
                     <label>¿Cuántos días entrenar?</label>
                     <div class="day-selector" id="reg-days-selector">
@@ -222,7 +222,7 @@
                     </div>
                     <input type="hidden" id="reg-days">
                 </div>
-                <button class="btn" onclick="saveProfile()">✅ Crear perfil</button>
+                <button class="btn" onclick="saveProfile()">&#9989; Crear perfil</button>
             </div>
         </div>
     </div>
@@ -231,13 +231,13 @@
         <div class="main-content">
             <div class="card">
                 <h2 id="welcome-title">¡Bienvenido!</h2>
-                <p id="welcome-msg" style="margin-bottom: 15px;">Vamos a entrenar 💪</p>
+                <p id="welcome-msg" style="margin-bottom: 15px;">Vamos a entrenar &#128170;</p>
                 <div class="stats-grid">
                     <div class="stat-box"><div class="number" id="stat-days">0</div><div class="text">Días de entreno</div></div>
                     <div class="stat-box"><div class="number" id="stat-exercises">0</div><div class="text">Ejercicios totales</div></div>
                 </div>
-                <button class="btn" onclick="showScreen('screen-routines')">️ Mis Rutinas</button>
-                <button class="btn btn-secondary" onclick="showScreen('screen-exercises')">📋 Explorar ejercicios</button>
+                <button class="btn" onclick="showScreen('screen-routines')">&#127947;&#65039; Mis Rutinas</button>
+                <button class="btn btn-secondary" onclick="showScreen('screen-exercises')">&#128203; Explorar ejercicios</button>
             </div>
         </div>
     </div>
@@ -247,13 +247,13 @@
             <div class="card">
                 <h2>Elige grupo muscular</h2>
                 <div class="muscle-grid">
-                    <div class="muscle-btn" onclick="showMuscleGroup('chest')">🫁 Pecho</div>
-                    <div class="muscle-btn" onclick="showMuscleGroup('back')">🔙 Espalda</div>
-                    <div class="muscle-btn" onclick="showMuscleGroup('legs')">🦵 Piernas y Gemelos</div>
-                    <div class="muscle-btn" onclick="showMuscleGroup('shoulders')">🤷 Hombros</div>
-                    <div class="muscle-btn" onclick="showMuscleGroup('upper arms')">💪 Brazos</div>
-                    <div class="muscle-btn" onclick="showMuscleGroup('waist')">🎯 Core</div>
-                    <div class="muscle-btn" onclick="showMuscleGroup('cardio')">❤️ Cardio</div>
+                    <div class="muscle-btn" onclick="showMuscleGroup('chest')">&#129513; Pecho</div>
+                    <div class="muscle-btn" onclick="showMuscleGroup('back')">&#128296; Espalda</div>
+                    <div class="muscle-btn" onclick="showMuscleGroup('legs')">&#129461; Piernas y Gemelos</div>
+                    <div class="muscle-btn" onclick="showMuscleGroup('shoulders')">&#129335; Hombros</div>
+                    <div class="muscle-btn" onclick="showMuscleGroup('upper arms')">&#128170; Brazos</div>
+                    <div class="muscle-btn" onclick="showMuscleGroup('waist')">&#127919; Core</div>
+                    <div class="muscle-btn" onclick="showMuscleGroup('cardio')">&#10084;&#65039; Cardio</div>
                 </div>
             </div>
         </div>
@@ -261,7 +261,7 @@
 
     <div id="screen-exercise-list" class="screen">
         <div class="main-content">
-            <button class="back-btn" onclick="goBackFromList()">← Volver</button>
+            <button class="back-btn" onclick="goBackFromList()">&#8592; Volver</button>
             <div class="card">
                 <h2 id="muscle-title">Ejercicios</h2>
                 <div id="exercise-list-container" class="exercise-list"></div>
@@ -271,7 +271,7 @@
 
     <div id="screen-exercise-detail" class="screen">
         <div class="main-content">
-            <button class="back-btn" onclick="backFromDetail()">← Volver</button>
+            <button class="back-btn" onclick="backFromDetail()">&#8592; Volver</button>
             <div class="card">
                 <div id="detail-image-container" class="detail-image"></div>
                 <div class="detail-info">
@@ -279,18 +279,18 @@
                     <p id="detail-equipment" style="font-size: 12px; opacity: 0.8; margin-bottom: 10px;"></p>
                     <p id="detail-desc">Descripción</p>
                     <div id="detail-instructions-container" class="detail-instructions" style="display:none;">
-                        <h4> Instrucciones</h4>
+                        <h4>&#128221; Instrucciones</h4>
                         <ol id="detail-instructions-list"></ol>
                     </div>
-                    <a id="detail-youtube" href="#" target="_blank" class="btn btn-youtube" style="text-decoration: none; margin-top: 15px;">▶️ Ver video en YouTube</a>
+                    <a id="detail-youtube" href="#" target="_blank" class="btn btn-youtube" style="text-decoration: none; margin-top: 15px;">&#9654;&#65039; Ver video en YouTube</a>
                 </div>
-                <h3 style="margin-top: 15px;">📊 Tu registro</h3>
+                <h3 style="margin-top: 15px;">&#128202; Tu registro</h3>
                 <div class="form-row">
                     <div class="form-group"><label>Series</label><input type="number" id="input-sets" placeholder="4" min="1"></div>
                     <div class="form-group"><label>Reps</label><input type="text" id="input-reps" placeholder="12"></div>
                     <div class="form-group"><label>Peso (kg)</label><input type="number" id="input-weight" placeholder="0" step="0.5"></div>
                 </div>
-                <button class="btn btn-success" onclick="saveExerciseData()">💾 Guardar datos</button>
+                <button class="btn btn-success" onclick="saveExerciseData()">&#128190; Guardar datos</button>
             </div>
         </div>
     </div>
@@ -298,10 +298,10 @@
     <div id="screen-routines" class="screen">
         <div class="main-content">
             <div class="card">
-                <h2>🏋️ Mi Rutina Semanal</h2>
+                <h2>&#127947;&#65039; Mi Rutina Semanal</h2>
                 <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                    <button class="btn btn-small btn-warning" onclick="shareRoutine()" style="flex:1;">📤 Compartir</button>
-                    <button class="btn btn-small btn-success" onclick="importRoutine()" style="flex:1;">📥 Importar</button>
+                    <button class="btn btn-small btn-warning" onclick="shareRoutine()" style="flex:1;">&#128228; Compartir</button>
+                    <button class="btn btn-small btn-success" onclick="importRoutine()" style="flex:1;">&#128229; Importar</button>
                 </div>
                 <div id="routine-days-container"></div>
             </div>
@@ -310,18 +310,18 @@
 
     <div id="screen-add-to-day" class="screen">
         <div class="main-content">
-            <button class="back-btn" onclick="showScreen('screen-routines')">← Volver a rutina</button>
+            <button class="back-btn" onclick="showScreen('screen-routines')">&#8592; Volver a rutina</button>
             <div class="card">
                 <h2 id="add-to-day-title">Añadir ejercicios</h2>
                 <p style="margin-bottom: 15px; font-size: 14px;">Elige un grupo muscular:</p>
                 <div class="muscle-grid">
-                    <div class="muscle-btn" onclick="showMuscleGroupForDay('chest')">🫁 Pecho</div>
-                    <div class="muscle-btn" onclick="showMuscleGroupForDay('back')"> Espalda</div>
-                    <div class="muscle-btn" onclick="showMuscleGroupForDay('legs')">🦵 Piernas y Gemelos</div>
-                    <div class="muscle-btn" onclick="showMuscleGroupForDay('shoulders')">🤷 Hombros</div>
-                    <div class="muscle-btn" onclick="showMuscleGroupForDay('upper arms')">💪 Brazos</div>
-                    <div class="muscle-btn" onclick="showMuscleGroupForDay('waist')">🎯 Core</div>
-                    <div class="muscle-btn" onclick="showMuscleGroupForDay('cardio')">❤️ Cardio</div>
+                    <div class="muscle-btn" onclick="showMuscleGroupForDay('chest')">&#129513; Pecho</div>
+                    <div class="muscle-btn" onclick="showMuscleGroupForDay('back')">&#128296; Espalda</div>
+                    <div class="muscle-btn" onclick="showMuscleGroupForDay('legs')">&#129461; Piernas y Gemelos</div>
+                    <div class="muscle-btn" onclick="showMuscleGroupForDay('shoulders')">&#129335; Hombros</div>
+                    <div class="muscle-btn" onclick="showMuscleGroupForDay('upper arms')">&#128170; Brazos</div>
+                    <div class="muscle-btn" onclick="showMuscleGroupForDay('waist')">&#127919; Core</div>
+                    <div class="muscle-btn" onclick="showMuscleGroupForDay('cardio')">&#10084;&#65039; Cardio</div>
                 </div>
             </div>
         </div>
@@ -330,23 +330,23 @@
     <div id="screen-profile" class="screen">
         <div class="main-content">
             <div class="card">
-                <h2>👤 Mi Perfil</h2>
+                <h2>&#128100; Mi Perfil</h2>
                 <div id="profile-display"></div>
                 <div class="profile-actions">
-                    <button class="btn btn-warning" onclick="editProfile()">✏️ Editar</button>
-                    <button class="btn btn-danger" onclick="resetProfile()">🔄 Reiniciar todo</button>
+                    <button class="btn btn-warning" onclick="editProfile()">&#9999;&#65039; Editar</button>
+                    <button class="btn btn-danger" onclick="resetProfile()">&#128260; Reiniciar todo</button>
                 </div>
             </div>
             <div id="admin-section" style="display:none;">
                 <div class="card">
-                    <h2>🔐 Panel de Administración</h2>
+                    <h2>&#128274; Panel de Administración</h2>
                     <div class="admin-panel">
                         <h3>Gestión de usuarios</h3>
-                        <button class="btn btn-success" onclick="showAddUserForm()">➕ Añadir nuevo usuario</button>
+                        <button class="btn btn-success" onclick="showAddUserForm()">&#10133; Añadir nuevo usuario</button>
                         <div id="add-user-form" style="display:none; margin-top: 15px;">
                             <div class="form-group"><label>Nombre del usuario</label><input type="text" id="new-user-name" placeholder="Nombre del usuario"></div>
                             <div class="form-group"><label>Fecha de caducidad</label><input type="date" id="new-user-expires"></div>
-                            <button class="btn btn-success" onclick="addNewUser()">✅ Generar código y crear usuario</button>
+                            <button class="btn btn-success" onclick="addNewUser()">&#9989; Generar código y crear usuario</button>
                             <button class="btn btn-secondary" onclick="hideAddUserForm()">Cancelar</button>
                         </div>
                         <h3 style="margin-top: 20px;">Usuarios existentes</h3>
@@ -359,7 +359,7 @@
 
     <div id="edit-profile-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.8); z-index:2000; overflow-y:auto; padding:20px;">
         <div style="background:linear-gradient(135deg, #8B0000 0%, #DC143C 100%); max-width:500px; margin:30px auto; border-radius:15px; padding:25px; border:2px solid white;">
-            <h2 style="color:white; text-align:center; margin-bottom:20px;">✏️ Editar perfil</h2>
+            <h2 style="color:white; text-align:center; margin-bottom:20px;">&#9999;&#65039; Editar perfil</h2>
             <div class="form-group" style="margin-bottom:12px;">
                 <label style="color:white; font-weight:bold;">Nombre</label>
                 <input type="text" id="edit-name" style="width:100%; padding:12px; border-radius:8px; border:none; font-size:16px;">
@@ -396,12 +396,12 @@
             <div class="form-group" style="margin-bottom:12px;">
                 <label style="color:white; font-weight:bold;">Objetivo</label>
                 <select id="edit-goal" style="width:100%; padding:12px; border-radius:8px; border:none; font-size:16px; background:white; color:#333;">
-                    <option value="fuerza">💪 Fuerza</option>
-                    <option value="hipertrofia">🏋️ Hipertrofia</option>
-                    <option value="definicion">✂️ Definición</option>
-                    <option value="resistencia">🏃 Resistencia</option>
-                    <option value="salud">❤️ Salud</option>
-                    <option value="perder_peso">📉 Perder peso</option>
+                    <option value="fuerza">&#128170; Fuerza</option>
+                    <option value="hipertrofia">&#127947;&#65039; Hipertrofia</option>
+                    <option value="definicion">&#9986;&#65039; Definición</option>
+                    <option value="resistencia">&#127939; Resistencia</option>
+                    <option value="salud">&#10084;&#65039; Salud</option>
+                    <option value="perder_peso">&#128200; Perder peso</option>
                 </select>
             </div>
             <div class="form-group" style="margin-bottom:20px;">
@@ -414,34 +414,34 @@
                 </select>
             </div>
             <div style="display:flex; gap:10px;">
-                <button class="btn btn-success" onclick="saveEditedProfile()" style="flex:1;">✅ Guardar cambios</button>
+                <button class="btn btn-success" onclick="saveEditedProfile()" style="flex:1;">&#9989; Guardar cambios</button>
                 <button class="btn btn-secondary" onclick="closeEditModal()" style="flex:1;">Cancelar</button>
             </div>
         </div>
     </div>
 
     <div class="bottom-nav" id="bottom-nav" style="display:none;">
-        <div class="nav-item active" onclick="showScreen('screen-home', this)"><span class="icon">🏠</span><span class="label">Inicio</span></div>
-        <div class="nav-item" onclick="showScreen('screen-exercises', this)"><span class="icon"></span><span class="label">Ejercicios</span></div>
-        <div class="nav-item" onclick="showScreen('screen-routines', this)"><span class="icon">🏋️</span><span class="label">Rutinas</span></div>
-        <div class="nav-item" onclick="showScreen('screen-profile', this)"><span class="icon">👤</span><span class="label">Perfil</span></div>
+        <div class="nav-item active" onclick="showScreen('screen-home', this)"><span class="icon">&#127968;</span><span class="label">Inicio</span></div>
+        <div class="nav-item" onclick="showScreen('screen-exercises', this)"><span class="icon">&#128203;</span><span class="label">Ejercicios</span></div>
+        <div class="nav-item" onclick="showScreen('screen-routines', this)"><span class="icon">&#127947;&#65039;</span><span class="label">Rutinas</span></div>
+        <div class="nav-item" onclick="showScreen('screen-profile', this)"><span class="icon">&#128100;</span><span class="label">Perfil</span></div>
     </div>
 
     <script>
         const SHEET_ID = "1Ngui-rgC76dPioIy4XLUo5Ene0QtoHl42rhntK5T6Po";
 
         const muscleNames = {
-            'chest': '🫁 Pecho',
-            'back': '🔙 Espalda',
-            'legs': '🦵 Piernas y Gemelos',
-            'shoulders': '🤷 Hombros',
-            'upper arms': ' Brazos',
-            'waist': ' Core',
-            'cardio': '❤️ Cardio'
+            'chest': '&#129513; Pecho',
+            'back': '&#128296; Espalda',
+            'legs': '&#129461; Piernas y Gemelos',
+            'shoulders': '&#129335; Hombros',
+            'upper arms': '&#128170; Brazos',
+            'waist': '&#127919; Core',
+            'cardio': '&#10084;&#65039; Cardio'
         };
         const muscleEmojis = {
-            'chest': '🫁', 'back': '🔙', 'legs': '🦵', 'shoulders': '🤷',
-            'upper arms': '💪', 'waist': '🎯', 'cardio': '❤️'
+            'chest': '&#129513;', 'back': '&#128296;', 'legs': '&#129461;', 'shoulders': '&#129335;',
+            'upper arms': '&#128170;', 'waist': '&#127919;', 'cardio': '&#10084;&#65039;'
         };
 
         let exercisesDB = [];
@@ -487,7 +487,7 @@
                 exercisesLoaded = true;
                 console.log('✅ Cargados ' + exercisesDB.length + ' ejercicios');
             } catch (error) {
-                console.error('❌ Error cargando ejercicios:', error);
+                console.error(' Error cargando ejercicios:', error);
                 exercisesDB = [];
             }
         }
@@ -550,7 +550,7 @@
         }
 
         function createPlaceholder(muscle, name, size) {
-            const emoji = muscleEmojis[muscle] || '🏋️';
+            const emoji = muscleEmojis[muscle] || '&#127947;&#65039;';
             const initials = getInitials(name);
             if (size === 'big') {
                 return '<div class="emoji-big">' + emoji + '</div><div class="initials-big">' + initials + '</div>';
@@ -612,7 +612,7 @@
             if (!user.active) { alert('⚠️ Tu acceso ha sido desactivado.'); logout(); return; }
             const today = new Date();
             const expires = new Date(user.expires);
-            if (today > expires) { alert(' Tu código ha caducado.'); logout(); return; }
+            if (today > expires) { alert('⏰ Tu código ha caducado.'); logout(); return; }
             isAdmin = user.role === 'admin';
             showApp();
         }
@@ -622,7 +622,7 @@
             const errorDiv = document.getElementById('login-error');
             
             if (!code) { 
-                errorDiv.textContent = '️ Introduce un código'; 
+                errorDiv.textContent = '⚠️ Introduce un código'; 
                 errorDiv.style.display = 'block'; 
                 return; 
             }
@@ -630,13 +630,13 @@
             const user = usersDB.users.find(u => u.code === code);
             
             if (!user) { 
-                errorDiv.textContent = '❌ Código no válido'; 
+                errorDiv.textContent = ' Código no válido'; 
                 errorDiv.style.display = 'block'; 
                 return; 
             }
             
             if (!user.active) { 
-                errorDiv.textContent = '️ Este código está desactivado'; 
+                errorDiv.textContent = '⚠️ Este código está desactivado'; 
                 errorDiv.style.display = 'block'; 
                 return; 
             }
@@ -742,7 +742,7 @@
         function updateHome() {
             if (!profile) return;
             document.getElementById('welcome-title').textContent = '¡Hola, ' + profile.name + '!';
-            const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: ' Perder peso' };
+            const goals = { fuerza: '💪 Fuerza', hipertrofia: '️ Hipertrofia', definicion: '️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
             document.getElementById('welcome-msg').textContent = 'Objetivo: ' + (goals[profile.goal] || profile.goal);
             let totalExercises = 0;
             if (routine && routine.days) { totalExercises = routine.days.reduce((sum, day) => sum + (day.exercises ? day.exercises.length : 0), 0); }
@@ -941,7 +941,7 @@
             const imc = (profile.weight / ((profile.height/100) ** 2)).toFixed(1);
             let imcText = imc < 18.5 ? 'Bajo peso' : imc < 25 ? 'Normal' : imc < 30 ? 'Sobrepeso' : 'Obesidad';
             let imcColor = imc < 18.5 ? '#3498db' : imc < 25 ? '#27ae60' : imc < 30 ? '#f39c12' : '#e74c3c';
-            const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
+            const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: ' Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
             document.getElementById('profile-display').innerHTML = 
                 '<div class="profile-info"><div class="label">Nombre</div><div class="value">' + profile.name + '</div></div>' +
                 '<div class="profile-info"><div class="label">Fecha de nacimiento</div><div class="value">' + profile.birthdate + '</div></div>' +
@@ -983,7 +983,7 @@
             const level = document.getElementById('edit-level').value;
             const goal = document.getElementById('edit-goal').value;
             const days = parseInt(document.getElementById('edit-days').value);
-            if (!name) { alert('️ Nombre obligatorio'); return; }
+            if (!name) { alert('⚠️ Nombre obligatorio'); return; }
             if (!birthdate) { alert('⚠️ Fecha obligatoria'); return; }
             if (!weight || weight <= 0) { alert('⚠️ Peso válido'); return; }
             if (!height || height <= 0) { alert('⚠️ Altura válida'); return; }
@@ -1006,8 +1006,8 @@
         }
 
         function resetProfile() {
-            if (confirm('⚠️ ¿ESTÁS SEGURO?\n\nSe borrará:\n- Perfil\n- Rutina\n- Todos los datos\n\nNO se puede deshacer.')) {
-                if (confirm('️ ÚLTIMA ADVERTENCIA: ¿Realmente borrar todo?')) {
+            if (confirm('️ ¿ESTÁS SEGURO?\n\nSe borrará:\n- Perfil\n- Rutina\n- Todos los datos\n\nNO se puede deshacer.')) {
+                if (confirm('⚠️ ÚLTIMA ADVERTENCIA: ¿Realmente borrar todo?')) {
                     localStorage.removeItem('gembukai_profile');
                     localStorage.removeItem('gembukai_routine');
                     profile = null; routine = null;
@@ -1027,7 +1027,7 @@
                 let statusClass = 'active', statusText = '✅ Activo';
                 if (!user.active) { statusClass = 'inactive'; statusText = '❌ Desactivado'; }
                 else if (today > expires) { statusClass = 'expired'; statusText = '⏰ Caducado'; }
-                html += '<div class="user-item"><div class="user-info"><div class="user-code">' + user.code + '</div><div class="user-name">' + user.name + '</div><div class="user-status ' + statusClass + '">' + statusText + ' | Caduca: ' + user.expires + '</div></div><div class="user-actions">' + (user.role !== 'admin' ? '<button class="btn btn-tiny ' + (user.active ? 'btn-warning' : 'btn-success') + '" onclick="toggleUserStatus(' + index + ')">' + (user.active ? '️' : '▶️') + '</button>' : '') + '</div></div>';
+                html += '<div class="user-item"><div class="user-info"><div class="user-code">' + user.code + '</div><div class="user-name">' + user.name + '</div><div class="user-status ' + statusClass + '">' + statusText + ' | Caduca: ' + user.expires + '</div></div><div class="user-actions">' + (user.role !== 'admin' ? '<button class="btn btn-tiny ' + (user.active ? 'btn-warning' : 'btn-success') + '" onclick="toggleUserStatus(' + index + ')">' + (user.active ? '⏸️' : '▶️') + '</button>' : '') + '</div></div>';
             });
             container.innerHTML = html;
         }
@@ -1039,7 +1039,7 @@
         function addNewUser() {
             const name = document.getElementById('new-user-name').value.trim();
             const expires = document.getElementById('new-user-expires').value;
-            if (!name || !expires) { alert('️ Rellena todos los campos'); return; }
+            if (!name || !expires) { alert('⚠️ Rellena todos los campos'); return; }
             const code = generateRandomCode();
             const newUser = { code, name, active: true, role: 'user', expires };
             usersDB.users.push(newUser);
@@ -1052,7 +1052,7 @@
 
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./service-worker.js').then(reg => console.log('✅ SW registrado')).catch(err => console.log(' Error SW:', err));
+                navigator.serviceWorker.register('./service-worker.js').then(reg => console.log('✅ SW registrado')).catch(err => console.log('❌ Error SW:', err));
             });
             history.pushState(null, null, location.href);
             window.onpopstate = function () { history.go(1); };
