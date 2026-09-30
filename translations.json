@@ -268,7 +268,6 @@
     "lever chest press": "Press de pecho en máquina de palanca",
     "lever incline chest press": "Press de pecho inclinado en máquina de palanca",
     "lever decline chest press": "Press de pecho declinado en máquina de palanca"
-=======
     "3/4 sit-up": "Abdominales 3/4",
     "45° side bend": "45° side bend",
     "air bike": "air bike",
@@ -1587,7 +1586,6 @@
     "world greatest stretch": "world greatest stretch",
     "wrist circles": "wrist circles",
     "wrist rollerer": "wrist rollerer"
->>>>>>> a9927ed62d90ff396d1b18ea664f50e7cd72a298
   },
   "muscles": {
     "chest": "Pecho",
@@ -1604,30 +1602,23 @@
   "equipment": {
     "barbell": "Barra",
     "dumbbell": "Mancuernas",
-<<<<<<< HEAD
     "cable": "Polea/Cable",
-=======
     "cable": "Polea",
->>>>>>> a9927ed62d90ff396d1b18ea664f50e7cd72a298
     "machine": "Máquina",
     "body weight": "Peso corporal",
     "kettlebell": "Pesa rusa",
     "band": "Banda elástica",
     "leverage machine": "Máquina de palanca",
     "assisted": "Asistido",
-<<<<<<< HEAD
     "band": "Banda elástica",
     "kettlebell": "Pesa rusa",
-=======
     "smith machine": "Máquina Smith",
->>>>>>> a9927ed62d90ff396d1b18ea664f50e7cd72a298
     "ez barbell": "Barra Z",
     "trap bar": "Barra trapecio",
     "olympic barbell": "Barra olímpica",
     "bosu ball": "Bosu",
     "medicine ball": "Balón medicinal",
     "stability ball": "Balón de estabilidad",
-<<<<<<< HEAD
     "foam roll": "Rodillo de espuma",
     "bosu ball": "Bosu",
     "suspension": "Suspensión",
@@ -1646,12 +1637,10 @@
     "hammer": "Martillo",
     "rope": "Cuerda",
     "plate": "Disco"
-=======
     "roller": "Rodillo",
     "wheel roller": "Rueda abdominal",
     "rope": "Cuerda",
     "sled machine": "Máquina de trineo",
     "hammer machine": "Máquina Hammer"
->>>>>>> a9927ed62d90ff396d1b18ea664f50e7cd72a298
   }
 }
