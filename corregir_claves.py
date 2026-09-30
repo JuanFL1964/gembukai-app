@@ -1,0 +1,178 @@
+import json
+
+with open("translations.json", "r", encoding="utf-8") as f:
+    traducciones = json.load(f)
+
+print(f"Total traducciones: {len(traducciones['exercises'])}")
+
+# Correcciones por CLAVE en inglés (busca exactamente)
+correcciones = {
+    # Pecho - Press de banca
+    "barbell bench press": "Press de banca con barra",
+    "barbell decline bench press": "Press de banca declinado con barra",
+    "barbell incline bench press": "Press de banca inclinado con barra",
+    "barbell wide-grip bench press": "Press de banca agarre ancho con barra",
+    "barbell close-grip bench press": "Press de banca agarre cerrado con barra",
+    "barbell reverse-grip bench press": "Press de banca agarre inverso con barra",
+    "barbell decline reverse-grip bench press": "Press de banca declinado agarre inverso con barra",
+    "barbell guillotine bench press": "Press de banca guillotina con barra",
+    "barbell wide-grip decline bench press": "Press de banca declinado agarre ancho con barra",
+    "dumbbell bench press": "Press de banca con mancuernas",
+    "dumbbell incline bench press": "Press de banca inclinado con mancuernas",
+    "dumbbell decline bench press": "Press de banca declinado con mancuernas",
+    "dumbbell fly": "Aperturas con mancuernas",
+    "smith machine bench press": "Press de banca en máquina Smith",
+    "smith machine incline bench press": "Press de banca inclinado en máquina Smith",
+    "smith machine decline bench press": "Press de banca declinado en máquina Smith",
+    
+    # Pecho - Flexiones y fondos
+    "push-up": "Flexiones",
+    "incline push-up": "Flexiones inclinadas",
+    "decline push-up": "Flexiones declinadas",
+    "wide-grip push-up": "Flexiones agarre ancho",
+    "close-grip push-up": "Flexiones agarre cerrado",
+    "diamond push-up": "Flexiones diamante",
+    "archer push-up": "Flexiones de arquero",
+    "chest dip": "Fondos en paralelas (pecho)",
+    "wide-grip chest dip": "Fondos en paralelas agarre ancho",
+    "assisted chest dip": "Fondos en paralelas asistidos",
+    "assisted chest dip (kneeling)": "Fondos de pecho asistidos (de rodillas)",
+    "assisted wide-grip chest dip (kneeling)": "Fondos de pecho agarre ancho asistidos (de rodillas)",
+    
+    # Pecho - Poleas y máquina
+    "cable crossover": "Cruce de poleas",
+    "cable chest fly": "Cruce de poleas al pecho",
+    "cable incline fly": "Cruce de poleas inclinado",
+    "pec deck fly": "Aperturas en máquina pec-deck",
+    "machine chest press": "Press de pecho en máquina",
+    
+    # Pecho - Pullover (los "jersey" y "sweater")
+    "barbell pullover": "Pullover con barra",
+    "dumbbell pullover": "Pullover con mancuerna",
+    "barbell bent arm pullover": "Pullover con barra",
+    "barbell straight arm pullover": "Pullover con brazos extendidos",
+    "jersey barbell": "Pullover con barra",
+    "jersey barbell decline": "Pullover con barra en banco declinado",
+    "sweater barbell": "Pullover con barra",
+    "sweater barbell decline": "Pullover con barra en banco declinado",
+    
+    # Pecho - Estiramientos
+    "assisted seated pectoralis major stretch with stability ball": "Estiramiento de pecho asistido con balón",
+    "standing chest stretch": "Estiramiento de pecho de pie",
+    
+    # Espalda
+    "pull-up": "Dominadas",
+    "wide-grip pull-up": "Dominadas agarre ancho",
+    "close-grip pull-up": "Dominadas agarre cerrado",
+    "assisted pull-up": "Dominadas asistidas",
+    "chin-up": "Dominadas agarre supino",
+    "assisted chin-up": "Dominadas agarre supino asistidas",
+    "lat pulldown": "Jalón al pecho",
+    "wide-grip lat pulldown": "Jalón al pecho agarre ancho",
+    "close-grip lat pulldown": "Jalón al pecho agarre cerrado",
+    "barbell bent over row": "Remo con barra",
+    "barbell pendlay row": "Remo Pendlay con barra",
+    "barbell t-bar row": "Remo en barra T",
+    "dumbbell row": "Remo con mancuerna",
+    "one arm dumbbell row": "Remo con mancuerna a una mano",
+    "seated cable row": "Remo en polea baja",
+    "deadlift": "Peso muerto",
+    "barbell deadlift": "Peso muerto con barra",
+    "romanian deadlift": "Peso muerto rumano",
+    "sumo deadlift": "Peso muerto sumo",
+    "face pull": "Face pull",
+    "barbell shrug": "Encogimientos con barra",
+    "dumbbell shrug": "Encogimientos con mancuernas",
+    "hyperextension": "Hiperextensiones lumbares",
+    "good morning": "Buenos días",
+    
+    # Piernas
+    "barbell squat": "Sentadilla con barra",
+    "front squat": "Sentadilla frontal",
+    "goblet squat": "Sentadilla goblet",
+    "hack squat": "Sentadilla hack",
+    "leg press": "Prensa de piernas",
+    "sled 45 degree leg press": "Prensa de piernas a 45°",
+    "barbell lunge": "Zancadas con barra",
+    "dumbbell lunge": "Zancadas con mancuernas",
+    "walking lunge": "Zancadas caminando",
+    "reverse lunge": "Zancada hacia atrás",
+    "lateral lunge": "Zancada lateral",
+    "bulgarian split squat": "Sentadilla búlgara",
+    "step-up": "Step-up",
+    "leg extension": "Extensiones de cuádriceps",
+    "lying leg curl": "Curl femoral tumbado",
+    "seated leg curl": "Curl femoral sentado",
+    "standing leg curl": "Curl femoral de pie",
+    "barbell hip thrust": "Hip thrust con barra",
+    "glute bridge": "Puente de glúteos",
+    "calf raise": "Elevación de gemelos",
+    "barbell calf raise": "Elevación de gemelos con barra",
+    "seated calf raise": "Elevación de gemelos sentado",
+    
+    # Hombros
+    "barbell shoulder press": "Press militar con barra",
+    "dumbbell shoulder press": "Press militar con mancuernas",
+    "arnold press": "Press Arnold",
+    "lateral raise": "Elevaciones laterales",
+    "front raise": "Elevaciones frontales",
+    "rear delt fly": "Pájaros (deltoides posterior)",
+    "upright row": "Remo al mentón",
+    
+    # Brazos
+    "barbell curl": "Curl de bíceps con barra",
+    "dumbbell curl": "Curl de bíceps con mancuernas",
+    "ez bar curl": "Curl con barra Z",
+    "hammer curl": "Curl martillo",
+    "preacher curl": "Curl predicador",
+    "concentration curl": "Curl concentrado",
+    "tricep pushdown": "Extensión de tríceps en polea",
+    "overhead tricep extension": "Extensión de tríceps sobre la cabeza",
+    "skull crusher": "Rompecráneos",
+    "tricep dip": "Fondos de tríceps",
+    "close-grip bench press": "Press de banca agarre cerrado",
+    
+    # Core
+    "plank": "Plancha",
+    "side plank": "Plancha lateral",
+    "crunch": "Crunch abdominal",
+    "decline crunch": "Crunch declinado",
+    "cable crunch": "Crunch en polea",
+    "reverse crunch": "Crunch inverso",
+    "leg raise": "Elevación de piernas",
+    "hanging leg raise": "Elevación de piernas colgado",
+    "russian twist": "Giros rusos",
+    "bicycle crunch": "Crunch bicicleta",
+    "mountain climber": "Escalador",
+    "ab wheel rollout": "Rueda abdominal",
+    "sit-up": "Abdominales",
+    "v-up": "V-up",
+    
+    # Cardio
+    "burpee": "Burpee",
+    "running": "Correr",
+    "cycling": "Ciclismo",
+    "jump rope": "Saltar a la cuerda",
+    "jumping jacks": "Saltos de tijera",
+    "rowing": "Remo",
+    "treadmill": "Cinta de correr",
+    "stationary bike": "Bicicleta estática",
+    "kettlebell swing": "Swing con pesa rusa",
+    "box jump": "Salto al cajón",
+    "battle ropes": "Cuerdas de batalla",
+}
+
+# Aplicar correcciones
+corregidas = 0
+for clave, traduccion_correcta in correcciones.items():
+    if clave in traducciones["exercises"]:
+        traducciones["exercises"][clave] = traduccion_correcta
+        corregidas += 1
+        print(f"✅ '{clave}' → '{traduccion_correcta}'")
+
+print(f"\nTotal correcciones: {corregidas}")
+
+with open("translations.json", "w", encoding="utf-8") as f:
+    json.dump(traducciones, f, indent=2, ensure_ascii=False)
+
+print(f"✅ Guardado con {len(traducciones['exercises'])} traducciones")
