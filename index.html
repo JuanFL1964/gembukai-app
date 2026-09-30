@@ -537,8 +537,16 @@ function createPlaceholder(muscle, name, size) {
 
 function getExerciseImage(exercise) {
     const id = String(exercise.id || '0001').padStart(4, '0');
+    const mediaId = exercise.media_id || '';
+    
+    // Si tiene media_id, usar el formato correcto
+    if (mediaId) {
+        return `https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/main/images/${id}-${mediaId}.jpg`;
+    }
+    
+    // Fallback: intentar con el nombre
     const name = (exercise.name || 'unknown').toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]/g, '');
-    return `${EXERCISEDB_IMAGES_URL}/${id}-${name}.gif`;
+    return `https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/main/images/${id}-${name}.jpg`;
 }
 
 function generateRandomCode() {
