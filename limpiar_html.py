@@ -1,31 +1,59 @@
 import re
 
-print("=== LIMPIANDO index.html ===")
+print("=== LIMPIANDO index.html COMPLETAMENTE ===")
 
 with open("index.html", "r", encoding="utf-8") as f:
-    content = f.read()
+    lines = f.readlines()
 
-print(f"Tamaño original: {len(content)} caracteres")
+print(f"Total líneas: {len(lines)}")
 
-# 1. Eliminar marcadores de conflicto de Git
-# Patrones como: @@ -1,178 +1,178 @@
-content = re.sub(r'^@@ -\d+,\d+ \+\d+,\d+ @@.*$', '', content, flags=re.MULTILINE)
+# Filtrar líneas problemáticas
+cleaned_lines = []
+removed = 0
 
-# Patrones como: <<<<<<< HEAD, =======, >>>>>>> commit
-content = re.sub(r'^<<<<<<< HEAD\s*$', '', content, flags=re.MULTILINE)
-content = re.sub(r'^=======\s*$', '', content, flags=re.MULTILINE)
-content = re.sub(r'^>>>>>>> [a-f0-9]+\s*$', '', content, flags=re.MULTILINE)
+for i, line in enumerate(lines):
+    stripped = line.strip()
+    
+    # Eliminar líneas que empiecen con @@ (marcadores de diff)
+    if stripped.startswith('@@'):
+        removed += 1
+        continue
+    
+    # Eliminar líneas que empiecen con <<<<<<<
+    if stripped.startswith('<<<<<<<'):
+        removed += 1
+        continue
+    
+    # Eliminar líneas que sean exactamente =======
+    if stripped == '=======':
+        removed += 1
+        continue
+    
+    # Eliminar líneas que empiecen con >>>>>>>
+    if stripped.startswith('>>>>>>>'):
+        removed += 1
+        continue
+    
+    # Eliminar líneas que empiecen con + o - (marcadores de diff)
+    if stripped.startswith('+') or stripped.startswith('-'):
+        # Pero no si son parte del código HTML normal
+        if len(stripped) > 1 and stripped[1] not in [' ', '\t']:
+            removed += 1
+            continue
+    
+    cleaned_lines.append(line)
 
-# 2. Eliminar líneas vacías múltiples
-content = re.sub(r'\n{3,}', '\n\n', content)
+print(f"Líneas eliminadas: {removed}")
+print(f"Líneas restantes: {len(cleaned_lines)}")
 
-# 3. Eliminar caracteres raros al inicio
-content = content.lstrip('@ \n')
+# Unir y guardar
+content = ''.join(cleaned_lines)
 
-print(f"Tamaño después de limpiar: {len(content)} caracteres")
+# Eliminar caracteres raros al inicio
+content = content.lstrip('@ \n+-')
 
-# Guardar
 with open("index.html", "w", encoding="utf-8") as f:
     f.write(content)
 
-print("✅ index.html limpiado")
+print(f"\n✅ index.html limpiado")
+print(f"Tamaño final: {len(content)} caracteres")
