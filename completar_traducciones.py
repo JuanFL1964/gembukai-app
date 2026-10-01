@@ -1,0 +1,195 @@
+import json
+
+print("=== ANADIENDO TRADUCCIONES FALTANTES ===")
+
+# Cargar traducciones actuales
+with open("translations.json", "r", encoding="utf-8") as f:
+    traducciones = json.load(f)
+
+print(f"Total traducciones actuales: {len(traducciones['exercises'])}")
+
+# Traducciones para los ejercicios faltantes
+FALTANTES = {
+    "air bike": "Bicicleta abdominal",
+    "alternate lateral pulldown": "Jalon lateral alterno",
+    "archer pull up": "Dominada de arquero",
+    "back lever": "Palanca trasera",
+    "band one arm single leg split squat": "Sentadilla dividida a una pierna y un brazo con banda",
+    "barbell decline close grip to skull press": "Press de craneo agarre cerrado declinado con barra",
+    "barbell floor calf raise": "Elevacion de gemelos en suelo con barra",
+    "barbell full squat (back pov)": "Sentadilla completa con barra (vista trasera)",
+    "barbell full squat (side pov)": "Sentadilla completa con barra (vista lateral)",
+    "barbell glute bridge two legs on bench (male)": "Puente de gluteos con dos piernas en banco con barra",
+    "barbell incline close grip bench press": "Press de banca agarre cerrado inclinado con barra",
+    "barbell pin presses": "Press de pasador con barra",
+    "bench hip extension": "Extension de cadera en banco",
+    "bench pull-ups": "Dominadas en banco",
+    "body-up": "Body-up",
+    "bodyweight incline side plank": "Plancha lateral inclinada con peso corporal",
+    "bodyweight side lying biceps curl": "Curl de biceps tumbado de lado con peso corporal",
+    "bodyweight standing calf raise": "Elevacion de gemelos de pie con peso corporal",
+    "bottoms-up": "Bottoms-up",
+    "bridge - mountain climber (cross body)": "Puente - escalador (cruzado)",
+    "burpee": "Burpee",
+    "butt-ups": "Elevacion de gluteos",
+    "cable alternate shoulder press": "Press de hombros alterno en polea",
+    "cable assisted inverse leg curl": "Curl femoral inverso asistido en polea",
+    "cable bar lateral pulldown": "Jalon lateral con barra en polea",
+    "cable close grip curl": "Curl agarre cerrado en polea",
+    "cable concentration curl": "Curl concentrado en polea",
+    "cable cross-over lateral pulldown": "Jalon lateral cruzado en polea",
+    "cable cross-over revers fly": "Aperturas inversas cruzadas en polea",
+    "cable decline one arm press": "Press a una mano declinado en polea",
+    "cable decline press": "Press declinado en polea",
+    "cable decline seated wide-grip row": "Remo sentado agarre ancho declinado en polea",
+    "cable drag curl": "Drag curl en polea",
+    "cable floor seated wide-grip row": "Remo sentado agarre ancho en suelo en polea",
+    "cable forward raise": "Elevacion frontal en polea",
+    "cable front shoulder raise": "Elevacion frontal de hombro en polea",
+    "cable incline bench press": "Press de banca inclinado en polea",
+    "cable incline bench row": "Remo en banco inclinado en polea",
+    "cable incline fly (on stability ball)": "Aperturas inclinadas en balon en polea",
+    "cable judo flip": "Judo flip en polea",
+    "cable kneeling crunch": "Crunch de rodillas en polea",
+    "cable kneeling rear delt row (with rope) (male)": "Remo de deltoides posterior de rodillas con cuerda en polea",
+    "cable lateral pulldown (with rope attachment)": "Jalon lateral con cuerda en polea",
+    "cable lateral pulldown with v-bar": "Jalon lateral con barra V en polea",
+    "cable low seated row": "Remo sentado bajo en polea",
+    "cable lying bicep curl": "Curl de biceps tumbado en polea",
+    "cable lying close-grip curl": "Curl agarre cerrado tumbado en polea",
+    "cable lying extension pullover (with rope attachment)": "Extension pullover tumbado con cuerda en polea",
+    "cable lying fly": "Aperturas tumbado en polea",
+    "cable one arm curl": "Curl a una mano en polea",
+    "cable one arm decline chest fly": "Aperturas de pecho a una mano declinado en polea",
+    "cable one arm fly on exercise ball": "Aperturas a una mano en balon en polea",
+    "cable one arm incline fly on exercise ball": "Aperturas a una mano inclinadas en balon en polea",
+    "cable one arm incline press": "Press inclinado a una mano en polea",
+    "cable one arm incline press on exercise ball": "Press inclinado a una mano en balon en polea",
+    "cable one arm lateral bent-over": "Elevacion lateral a una mano inclinado en polea",
+    "cable one arm lateral raise": "Elevaciones laterales a una mano en polea",
+    "cable one arm preacher curl": "Curl predicador a una mano en polea",
+    "cable one arm press on exercise ball": "Press a una mano en balon en polea",
+    "cable one arm pulldown": "Jalon a una mano en polea",
+    "cable one arm reverse preacher curl": "Curl predicador inverso a una mano en polea",
+    "cable overhead curl": "Curl sobre cabeza en polea",
+    "cable overhead curl on exercise ball": "Curl sobre cabeza en balon en polea",
+    "cable press on exercise ball": "Press en balon en polea",
+    "cable pulldown": "Jalon en polea",
+    "cable pulldown (pro lat bar)": "Jalon con barra Pro Lat en polea",
+    "cable pulldown bicep curl": "Jalon con curl de biceps en polea",
+    "cable rear drive": "Empuje trasero en polea",
+    "cable rear pulldown": "Jalon trasero en polea",
+    "cable reverse curl": "Curl inverso en polea",
+    "cable reverse one arm curl": "Curl inverso a una mano en polea",
+    "cable reverse preacher curl": "Curl predicador inverso en polea",
+    "cable reverse wrist curl": "Curl inverso de muneca en polea",
+    "cable rope hammer preacher curl": "Curl martillo predicador con cuerda en polea",
+    "cable seated curl": "Curl sentado en polea",
+    "cable seated one arm alternate row": "Remo alternado a una mano sentado en polea",
+    "cable seated overhead curl": "Curl sobre cabeza sentado en polea",
+    "cable seated rear lateral raise": "Elevaciones laterales traseras sentado en polea",
+    "cable seated shoulder internal rotation": "Rotacion interna de hombro sentado en polea",
+    "cable seated wide-grip row": "Remo sentado agarre ancho en polea",
+    "cable shoulder press": "Press de hombros en polea",
+    "cable squatting curl": "Curl en sentadilla en polea",
+    "cable standing back wrist curl": "Curl inverso de muneca de pie en polea",
+    "cable standing cross-over high reverse fly": "Aperturas inversas altas cruzadas de pie en polea",
+    "cable standing fly": "Aperturas de pie en polea",
+    "cable standing hip extension": "Extension de cadera de pie en polea",
+    "cable standing inner curl": "Curl interno de pie en polea",
+    "cable standing lift": "Elevacion de pie en polea",
+    "cable standing one leg calf raise": "Elevacion de gemelos a una pierna de pie en polea",
+    "cable standing pulldown (with rope)": "Jalon de pie con cuerda en polea",
+    "cable standing shoulder external rotation": "Rotacion externa de hombro de pie en polea",
+    "cable standing twist row (v-bar)": "Remo con giro de pie con barra V en polea",
+    "cable standing up straight crossovers": "Cruces de pie recto en polea",
+    "cable straight arm pulldown (with rope)": "Jalon con brazos rectos con cuerda en polea",
+    "cable supine reverse fly": "Aperturas inversas supino en polea",
+    "cable two arm curl on incline bench": "Curl a dos brazos en banco inclinado en polea",
+    "cable underhand pulldown": "Jalon agarre inverso en polea",
+    "cable wide grip rear pulldown behind neck": "Jalon trasero agarre ancho detras de cuello en polea",
+    "cable wrist curl": "Curl de muneca en polea",
+    "close-grip push-up (on knees)": "Flexiones agarre cerrado de rodillas",
+    "cocoons": "Cocoons",
+    "curl-up": "Curl-up",
+    "dumbbell alternate biceps curl": "Curl de biceps alterno con mancuernas",
+    "dumbbell alternate biceps curl (with arm blaster)": "Curl de biceps alterno con arm blaster con mancuernas",
+    "dumbbell alternate hammer preacher curl": "Curl martillo predicador alterno con mancuernas",
+    "dumbbell alternate preacher curl": "Curl predicador alterno con mancuernas",
+    "dumbbell alternate seated hammer curl": "Curl martillo sentado alterno con mancuernas",
+    "dumbbell alternate side press": "Press lateral alterno con mancuernas",
+    "dumbbell alternating bicep curl with leg raised on exercise ball": "Curl de biceps alterno con pierna elevada en balon con mancuernas",
+    "dumbbell alternating seated bicep curl on exercise ball": "Curl de biceps sentado alterno en balon con mancuernas",
+    "dumbbell one arm seated bicep curl on exercise ball": "Curl de biceps a una mano sentado en balon con mancuernas",
+    "ez bar seated close grip concentration curl": "Curl concentrado agarre cerrado sentado con barra Z",
+    "front lever": "Palanca frontal",
+    "front lever reps": "Palanca frontal reps",
+    "gironda sternum chin": "Chin esternon Gironda",
+    "incline push-up (on box)": "Flexiones inclinadas en caja",
+    "landmine 180": "Landmine 180",
+    "lever alternate leg press": "Prensa de piernas alterna en maquina de palanca",
+    "lever assisted chin-up": "Chin-up asistido en maquina de palanca",
+    "lever back extension": "Extension de espalda en maquina de palanca",
+    "lever donkey calf raise": "Elevacion de gemelos tipo burro en maquina de palanca",
+    "lever front pulldown": "Jalon frontal en maquina de palanca",
+    "lever gripless shrug": "Encogimientos sin agarre en maquina de palanca",
+    "lever gripless shrug v. 2": "Encogimientos sin agarre en maquina de palanca v.2",
+    "lever gripper hands": "Agarre de manos en maquina de palanca",
+    "lever hammer grip preacher curl": "Curl predicador agarre martillo en maquina de palanca",
+    "lever hip extension v. 2": "Extension de cadera en maquina de palanca v.2",
+    "lever horizontal one leg press": "Prensa horizontal a una pierna en maquina de palanca",
+    "lever incline chest press v. 2": "Press de pecho inclinado en maquina de palanca v.2",
+    "lever kneeling leg curl": "Curl femoral de rodillas en maquina de palanca",
+    "lever lying two-one leg curl": "Curl femoral dos-una pierna tumbado en maquina de palanca",
+    "lever military press": "Press militar en maquina de palanca",
+    "lever one arm lateral wide pulldown": "Jalon lateral amplio a una mano en maquina de palanca",
+    "lever one arm shoulder press": "Press de hombros a una mano en maquina de palanca",
+    "lever pullover": "Pullover en maquina de palanca",
+    "lever reverse grip lateral pulldown": "Jalon lateral agarre inverso en maquina de palanca",
+    "lever reverse grip preacher curl": "Curl predicador agarre inverso en maquina de palanca",
+    "lever reverse grip vertical row": "Remo vertical agarre inverso en maquina de palanca",
+    "lever reverse hyperextension": "Hiperextension inversa en maquina de palanca",
+    "lever rotary calf": "Gemelos rotatorios en maquina de palanca",
+    "lever seated calf press": "Prensa de gemelos sentado en maquina de palanca",
+    "lever seated dip": "Fondos sentado en maquina de palanca",
+    "lever seated fly": "Aperturas sentado en maquina de palanca",
+    "lever seated good morning": "Buenos dias sentado en maquina de palanca",
+    "lever seated hip abduction": "Abduccion de cadera sentado en maquina de palanca",
+    "lever seated hip adduction": "Aduccion de cadera sentado en maquina de palanca",
+    "lever seated reverse fly": "Aperturas inversas sentado en maquina de palanca",
+    "lever seated reverse fly (parallel grip)": "Aperturas inversas agarre paralelo sentado en maquina de palanca",
+    "lever seated squat calf raise on leg press machine": "Elevacion de gemelos en sentadilla en prensa de piernas en maquina de palanca",
+    "lever shoulder press v. 2": "Press de hombros en maquina de palanca v.2",
+    "lever shoulder press v. 3": "Press de hombros en maquina de palanca v.3",
+    "lever standing chest press": "Press de pecho de pie en maquina de palanca",
+    "lever t-bar reverse grip row": "Remo en barra T agarre inverso en maquina de palanca",
+    "machine inner chest press": "Press de pecho interno en maquina",
+    "muscle up": "Muscle up",
+    "otis up": "Otis up",
+    "swing 360": "Swing 360",
+}
+
+# Añadir las traducciones directamente
+anadidas = 0
+actualizadas = 0
+
+for clave, traduccion in FALTANTES.items():
+    if clave in traducciones["exercises"]:
+        # Si ya existe, actualizarla
+        traducciones["exercises"][clave] = traduccion
+        actualizadas += 1
+    else:
+        # Si no existe, añadirla
+        traducciones["exercises"][clave] = traduccion
+        anadidas += 1
+
+print(f"Traducciones añadidas (nuevas): {anadidas}")
+print(f"Traducciones actualizadas (existentes): {actualizadas}")
+print(f"Total modificadas: {anadidas + actualizadas}")
+print(f"Total traducciones: {len(traducciones['exercises'])}")
+
+# Guardar
+with open("translations.json", "w", encoding="utf-8") as f:
+    json.dump(traducciones, f, indent=2, ensure_ascii=False)
+
+print("\ntranslations.json guardado correctamente")
