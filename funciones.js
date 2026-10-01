@@ -1,16 +1,7 @@
 // Funciones esenciales para Gembukai App
 
 // Variables globales
-let currentUser = null;
-let exercisesDB = [];
-let translationsDB = { exercises: {}, muscles: {}, equipment: {} };
-let usersDB = { users: [] };
-let routine = null;
 
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyR-C5PKEq6Hr_M21I35jlE5S8gSU1nsy3RypxXcufcWWQDrtVgJVKvf5bPRPAyARkK/exec";
-const SHEET_ID = "1Ngui-rgC76dPioIy4XLUo5Ene0QtoHl42rhntK5T6Po";
-const EXERCISEDB_URL = "https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/main/data/exercises.json";
-const EXERCISEDB_BASE_URL = "https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/main";
 
 // Entrar a la app
 function enterApp() {
