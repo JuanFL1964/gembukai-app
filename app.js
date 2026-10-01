@@ -1,9 +1,10 @@
-// Función para entrar a la app
+// Funciones básicas de la app Gembukai
+
 function enterApp() {
     console.log('Entrando a la app...');
-    const splashScreen = document.getElementById('splash-screen');
-    const mainHeader = document.getElementById('main-header');
-    const loginScreen = document.getElementById('screen-login');
+    var splashScreen = document.getElementById('splash-screen');
+    var mainHeader = document.getElementById('main-header');
+    var loginScreen = document.getElementById('screen-login');
     
     if (splashScreen) {
         splashScreen.classList.add('hidden');
@@ -20,34 +21,30 @@ function enterApp() {
     console.log('App cargada correctamente');
 }
 
-// Función para mostrar pantallas
 function showScreen(screenId, navItem) {
     console.log('Mostrando pantalla:', screenId);
     
-    // Ocultar todas las pantallas
-    document.querySelectorAll('.screen').forEach(screen => {
-        screen.classList.remove('active');
-    });
+    var screens = document.querySelectorAll('.screen');
+    for (var i = 0; i < screens.length; i++) {
+        screens[i].classList.remove('active');
+    }
     
-    // Mostrar la pantalla seleccionada
-    const targetScreen = document.getElementById(screenId);
+    var targetScreen = document.getElementById(screenId);
     if (targetScreen) {
         targetScreen.classList.add('active');
     }
     
-    // Actualizar navegación
     if (navItem) {
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.classList.remove('active');
-        });
+        var navItems = document.querySelectorAll('.nav-item');
+        for (var i = 0; i < navItems.length; i++) {
+            navItems[i].classList.remove('active');
+        }
         navItem.classList.add('active');
     }
 }
 
-// Función para mostrar grupo muscular
 function showMuscleGroup(muscle) {
     console.log('Mostrando grupo muscular:', muscle);
-    // Aquí iría la lógica para mostrar ejercicios del grupo muscular
 }
 
 console.log('app.js cargado correctamente');
