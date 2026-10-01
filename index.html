@@ -186,10 +186,10 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 <div class="form-group">
 <label>¿Cuántos días entrenar?</label>
 <div class="day-selector" id="reg-days-selector">
-<div class="day-selector-btn" onclick="selectDays(2, this)">2 días</div>
 <div class="day-selector-btn" onclick="selectDays(3, this)">3 días</div>
 <div class="day-selector-btn" onclick="selectDays(4, this)">4 días</div>
 <div class="day-selector-btn" onclick="selectDays(5, this)">5 días</div>
+<div class="day-selector-btn" onclick="selectDays(6, this)">6 días</div>
 </div>
 <input type="hidden" id="reg-days">
 </div>
@@ -222,7 +222,7 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 <div class="muscle-btn" onclick="showMuscleGroup('back')"> Espalda</div>
 <div class="muscle-btn" onclick="showMuscleGroup('shoulders')">🤷 Hombros</div>
 <div class="muscle-btn" onclick="showMuscleGroup('upper arms')">💪 Brazos</div>
-<div class="muscle-btn" onclick="showMuscleGroup('upper legs')">🦵 Piernas</div>
+<div class="muscle-btn" onclick="showMuscleGroup('upper legs')"> Piernas</div>
 <div class="muscle-btn" onclick="showMuscleGroup('lower legs')">🦶 Pantorrillas</div>
 <div class="muscle-btn" onclick="showMuscleGroup('waist')"> Core</div>
 <div class="muscle-btn" onclick="showMuscleGroup('cardio')">❤️ Cardio</div>
@@ -273,7 +273,7 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 <h2>🏋️ Mi Rutina Semanal</h2>
 <div style="display: flex; gap: 10px; margin-bottom: 15px;">
 <button class="btn btn-small btn-warning" onclick="shareRoutine()" style="flex:1;">📤 Compartir</button>
-<button class="btn btn-small btn-success" onclick="importRoutine()" style="flex:1;">📥 Importar</button>
+<button class="btn btn-small btn-success" onclick="importRoutine()" style="flex:1;"> Importar</button>
 </div>
 <div id="routine-days-container"></div>
 </div>
@@ -291,7 +291,7 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 <div class="muscle-btn" onclick="showMuscleGroupForDay('back')">🔙 Espalda</div>
 <div class="muscle-btn" onclick="showMuscleGroupForDay('shoulders')">🤷 Hombros</div>
 <div class="muscle-btn" onclick="showMuscleGroupForDay('upper arms')"> Brazos</div>
-<div class="muscle-btn" onclick="showMuscleGroupForDay('upper legs')">🦵 Piernas</div>
+<div class="muscle-btn" onclick="showMuscleGroupForDay('upper legs')"> Piernas</div>
 <div class="muscle-btn" onclick="showMuscleGroupForDay('lower legs')">🦶 Pantorrillas</div>
 <div class="muscle-btn" onclick="showMuscleGroupForDay('waist')"> Core</div>
 <div class="muscle-btn" onclick="showMuscleGroupForDay('cardio')">❤️ Cardio</div>
@@ -306,13 +306,13 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 <h2>👤 Mi Perfil</h2>
 <div id="profile-display"></div>
 <div class="profile-actions">
-<button class="btn btn-warning" onclick="editProfile()">✏️ Editar</button>
+<button class="btn btn-warning" onclick="editProfile()">️ Editar</button>
 <button class="btn btn-danger" onclick="resetProfile()">🔄 Reiniciar todo</button>
 </div>
 </div>
 <div id="admin-section" style="display:none;">
 <div class="card">
-<h2>🔐 Panel de Administración</h2>
+<h2> Panel de Administración</h2>
 <div class="admin-panel">
 <h3>Gestión de usuarios</h3>
 <button class="btn btn-success" onclick="showAddUserForm()">➕ Añadir nuevo usuario</button>
@@ -372,7 +372,7 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 <option value="fuerza">💪 Fuerza</option>
 <option value="hipertrofia">🏋️ Hipertrofia</option>
 <option value="definicion">✂️ Definición</option>
-<option value="resistencia">🏃 Resistencia</option>
+<option value="resistencia"> Resistencia</option>
 <option value="salud">❤️ Salud</option>
 <option value="perder_peso"> Perder peso</option>
 </select>
@@ -380,10 +380,10 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 <div class="form-group" style="margin-bottom:20px;">
 <label style="color:white; font-weight:bold;">Días de entreno</label>
 <select id="edit-days" style="width:100%; padding:12px; border-radius:8px; border:none; font-size:16px; background:white; color:#333;">
-<option value="2">2 días</option>
 <option value="3">3 días</option>
 <option value="4">4 días</option>
 <option value="5">5 días</option>
+<option value="6">6 días</option>
 </select>
 </div>
 <div style="display:flex; gap:10px;">
@@ -407,9 +407,9 @@ const EXERCISEDB_URL = "https://raw.githubusercontent.com/hasaneyldrm/exercises-
 const EXERCISEDB_BASE_URL = "https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/main";
 
 const muscleNames = {
-    'chest': '🫁 Pecho',
-    'back': '🔙 Espalda',
-    'shoulders': '🤷 Hombros',
+    'chest': ' Pecho',
+    'back': ' Espalda',
+    'shoulders': ' Hombros',
     'upper arms': '💪 Brazos',
     'upper legs': '🦵 Piernas',
     'lower legs': '🦶 Pantorrillas',
@@ -418,7 +418,7 @@ const muscleNames = {
 };
 
 const muscleEmojis = {
-    'chest': '🫁', 'back': '', 'shoulders': '🤷',
+    'chest': '', 'back': '', 'shoulders': '🤷',
     'upper arms': '💪', 'upper legs': '🦵', 'lower legs': '🦶',
     'waist': '', 'cardio': '❤️'
 };
@@ -585,7 +585,7 @@ function checkUserAccess() {
     if (!currentUser) { showScreen('screen-login'); return; }
     const user = usersDB.users.find(u => u.code === currentUser.code);
     if (!user) { alert('❌ Código no válido. Contacta con el gimnasio.'); logout(); return; }
-    if (!user.active) { alert('⚠️ Tu acceso ha sido desactivado.'); logout(); return; }
+    if (!user.active) { alert('️ Tu acceso ha sido desactivado.'); logout(); return; }
     const today = new Date();
     const expires = new Date(user.expires);
     if (today > expires) { alert('⏰ Tu código ha caducado.'); logout(); return; }
@@ -599,7 +599,7 @@ function validateCode() {
     if (!code) { errorDiv.textContent = '⚠️ Introduce un código'; errorDiv.style.display = 'block'; return; }
     const user = usersDB.users.find(u => u.code === code);
     if (!user) { errorDiv.textContent = '❌ Código no válido'; errorDiv.style.display = 'block'; return; }
-    if (!user.active) { errorDiv.textContent = '⚠️ Desactivado'; errorDiv.style.display = 'block'; return; }
+    if (!user.active) { errorDiv.textContent = '️ Desactivado'; errorDiv.style.display = 'block'; return; }
     const today = new Date();
     const expires = new Date(user.expires);
     if (today > expires) { errorDiv.textContent = '⏰ Caducado'; errorDiv.style.display = 'block'; return; }
@@ -702,7 +702,7 @@ function saveRoutine() { localStorage.setItem('gembukai_routine', JSON.stringify
 function updateHome() {
     if (!profile) return;
     document.getElementById('welcome-title').textContent = '¡Hola, ' + profile.name + '!';
-    const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
+    const goals = { fuerza: ' Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
     document.getElementById('welcome-msg').textContent = 'Objetivo: ' + (goals[profile.goal] || profile.goal);
     let totalExercises = 0;
     if (routine && routine.days) { totalExercises = routine.days.reduce((sum, day) => sum + (day.exercises ? day.exercises.length : 0), 0); }
@@ -892,7 +892,7 @@ function renderProfile() {
     const imc = (profile.weight / ((profile.height/100) ** 2)).toFixed(1);
     let imcText = imc < 18.5 ? 'Bajo peso' : imc < 25 ? 'Normal' : imc < 30 ? 'Sobrepeso' : 'Obesidad';
     let imcColor = imc < 18.5 ? '#3498db' : imc < 25 ? '#27ae60' : imc < 30 ? '#f39c12' : '#e74c3c';
-    const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
+    const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: ' Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
     document.getElementById('profile-display').innerHTML = `
         <div class="profile-info"><div class="label">Nombre</div><div class="value">${profile.name}</div></div>
         <div class="profile-info"><div class="label">Fecha de nacimiento</div><div class="value">${profile.birthdate}</div></div>
@@ -984,14 +984,14 @@ function renderUserList() {
     container.innerHTML = html;
 }
 
-function toggleUserStatus(index) { alert('⚠️ Activa/desactiva en Google Sheets cambiando TRUE/FALSE en la columna "active".'); }
+function toggleUserStatus(index) { alert('️ Activa/desactiva en Google Sheets cambiando TRUE/FALSE en la columna "active".'); }
 function showAddUserForm() { document.getElementById('add-user-form').style.display = 'block'; }
 function hideAddUserForm() { document.getElementById('add-user-form').style.display = 'none'; }
 
 async function addNewUser() {
     const name = document.getElementById('new-user-name').value.trim();
     const expires = document.getElementById('new-user-expires').value;
-    if (!name || !expires) { alert('⚠️ Rellena todos los campos'); return; }
+    if (!name || !expires) { alert('️ Rellena todos los campos'); return; }
     const code = generateRandomCode();
     const newUser = { code, name, active: true, role: 'user', expires };
     usersDB.users.push(newUser);

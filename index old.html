@@ -186,10 +186,10 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 <div class="form-group">
 <label>¿Cuántos días entrenar?</label>
 <div class="day-selector" id="reg-days-selector">
+<div class="day-selector-btn" onclick="selectDays(2, this)">2 días</div>
 <div class="day-selector-btn" onclick="selectDays(3, this)">3 días</div>
 <div class="day-selector-btn" onclick="selectDays(4, this)">4 días</div>
 <div class="day-selector-btn" onclick="selectDays(5, this)">5 días</div>
-<div class="day-selector-btn" onclick="selectDays(6, this)">6 días</div>
 </div>
 <input type="hidden" id="reg-days">
 </div>
@@ -380,10 +380,10 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 <div class="form-group" style="margin-bottom:20px;">
 <label style="color:white; font-weight:bold;">Días de entreno</label>
 <select id="edit-days" style="width:100%; padding:12px; border-radius:8px; border:none; font-size:16px; background:white; color:#333;">
+<option value="2">2 días</option>
 <option value="3">3 días</option>
 <option value="4">4 días</option>
 <option value="5">5 días</option>
-<option value="6">6 días</option>
 </select>
 </div>
 <div style="display:flex; gap:10px;">
