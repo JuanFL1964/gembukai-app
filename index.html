@@ -269,6 +269,13 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 </div>
 
 <script>
+function enterApp() {
+    console.log('Entrando a la app...');
+    document.getElementById('splash-screen').classList.add('hidden');
+    document.getElementById('main-header').style.display = 'block';
+    showScreen('screen-login');
+}
+
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyR-C5PKEq6Hr_M21I35jlE5S8gSU1nsy3RypxXcufcWWQDrtVgJVKvf5bPRPAyARkK/exec";
 const SHEET_ID = "1Ngui-rgC76dPioIy4XLUo5Ene0QtoHl42rhntK5T6Po";
 const EXERCISEDB_URL = "https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/main/exercises.json";
