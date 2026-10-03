@@ -728,6 +728,7 @@ function addExerciseToSpecificDay(exerciseId, dayIndex) {
     saveRoutine();
     alert('✅ Añadido a ' + day.name);
     document.querySelector('div[style*="z-index:2000"]').remove();
+	showScreen('screen-routines');
 }
 
 async function showMuscleGroupForDay(muscle) {
