@@ -11,12 +11,9 @@
 <meta name="apple-mobile-web-app-title" content="Gembukai">
 <link rel="apple-touch-icon" href="logo.png">
 <style>
-/* Estilos base */
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
 html { font-size: 16px; }
 body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height: 100vh; color: #fff; padding-bottom: 80px; }
-
-/* Splash & Login */
 .splash-screen { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #8B0000 0%, #DC143C 50%, #8B0000 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
 .splash-screen.hidden { display: none; }
 .splash-logo { width: 200px; height: 200px; background: white; border-radius: 50%; border: 6px solid #ffd700; overflow: hidden; margin-bottom: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); animation: pulse 2s infinite; }
@@ -26,20 +23,14 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 .splash-btn { background: white; color: #8B0000; border: 3px solid #ffd700; padding: 20px 60px; border-radius: 50px; font-size: 24px; font-weight: bold; cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.3); min-width: 250px; }
 .splash-btn:active { transform: scale(0.95); }
 @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-
-/* Header */
 .header { background: rgba(0,0,0,0.3); padding: 20px 15px; text-align: center; border-bottom: 3px solid #DC143C; }
 .logo-container { width: 100px; height: 100px; margin: 0 auto 10px; background: white; border-radius: 50%; border: 4px solid #8B0000; overflow: hidden; }
 .logo-container img { width: 100%; height: 100%; object-fit: contain; }
 .header h1 { font-size: 28px; color: #fff; margin-bottom: 3px; letter-spacing: 2px; }
 .header p { font-size: 14px; color: #ffd700; }
-
-/* Layout */
 .main-content { padding: 15px; }
 .card { background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border-radius: 15px; padding: 15px; margin-bottom: 15px; border: 2px solid rgba(255,255,255,0.3); }
 .card h2 { font-size: 20px; margin-bottom: 12px; color: #fff; border-bottom: 2px solid #DC143C; padding-bottom: 8px; }
-
-/* Botones */
 .btn { background: linear-gradient(135deg, #DC143C 0%, #8B0000 100%); color: white; border: 2px solid white; padding: 16px 20px; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; min-height: 52px; display: flex; align-items: center; justify-content: center; gap: 8px; }
 .btn:active { transform: scale(0.97); background: #8B0000; }
 .btn-secondary { background: white; color: #8B0000; border: 2px solid #DC143C; }
@@ -50,28 +41,18 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 .btn-danger { background: #e74c3c; border-color: #e74c3c; }
 .btn-tiny { padding: 8px 12px; font-size: 13px; min-height: 38px; }
 .btn-delete-exercise { padding: 4px 8px !important; font-size: 11px !important; min-height: 28px !important; width: auto !important; flex: none !important; line-height: 1 !important; margin: 0 2px; }
-
-/* Navegación inferior */
-.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.95); display: flex; justify-content: space-around; padding: 8px 0 12px; border-top: 3px solid #DC143C; z-index: 100; }
-.nav-item { text-align: center; cursor: pointer; padding: 8px 12px; border-radius: 10px; flex: 1; }
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.95); display: flex; flex-direction: row; justify-content: space-around; padding: 8px 0 12px; border-top: 3px solid #DC143C; z-index: 100; width: 100%; }
+.nav-item { text-align: center; cursor: pointer; padding: 8px 12px; border-radius: 10px; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 .nav-item .icon { font-size: 22px; display: block; }
 .nav-item .label { font-size: 11px; margin-top: 2px; }
 .nav-item.active { color: #DC143C; background: rgba(255,255,255,0.1); }
-
-/* Pantallas */
 .screen { display: none; }
 .screen.active { display: block; animation: fadeIn 0.2s; }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-/* Grilla de músculos */
 .muscle-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 12px; }
 .muscle-btn { background: white; border: 2px solid #DC143C; color: #8B0000; padding: 16px; border-radius: 12px; cursor: pointer; text-align: center; font-size: 15px; font-weight: bold; min-height: 60px; display: flex; align-items: center; justify-content: center; gap: 8px; }
 .muscle-btn:active { background: #DC143C; color: white; transform: scale(0.97); }
-
-/* Botón volver */
 .back-btn { background: rgba(255,255,255,0.2); border: 2px solid white; color: white; padding: 12px 18px; border-radius: 10px; cursor: pointer; margin-bottom: 12px; font-size: 15px; min-height: 48px; display: inline-flex; align-items: center; gap: 8px; }
-
-/* Lista de ejercicios */
 .exercise-list { display: grid; gap: 12px; margin-top: 12px; }
 .exercise-item { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.3); display: flex; flex-direction: row; align-items: stretch; }
 .exercise-image { width: 100px; min-width: 100px; height: 100px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
@@ -83,8 +64,6 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 .exercise-info h3 { color: #8B0000; font-size: 15px; margin-bottom: 4px; line-height: 1.2; }
 .exercise-info p { color: #666; font-size: 12px; margin-bottom: 8px; line-height: 1.3; }
 .exercise-actions { display: flex; gap: 6px; flex-wrap: wrap; }
-
-/* Rutinas */
 .day-card { background: white; color: #333; border-radius: 12px; padding: 15px; margin-bottom: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
 .day-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 2px solid #DC143C; }
 .day-title-input { font-size: 16px; font-weight: bold; color: #8B0000; border: 1px solid #DC143C; padding: 5px 8px; border-radius: 6px; flex: 1; }
@@ -97,8 +76,6 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 .day-actions { display: flex; gap: 6px; margin-top: 10px; }
 .day-actions .btn { margin-top: 0; flex: 1; font-size: 13px; padding: 10px; min-height: 44px; }
 .day-completed { background: #27ae60; }
-
-/* Detalle ejercicio */
 .detail-image { width: 100%; height: 250px; background: #fff; border-radius: 12px; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
 .detail-image img { max-width: 100%; max-height: 100%; object-fit: contain; }
 .detail-image .placeholder-big { width: 100%; height: 100%; background: linear-gradient(135deg, #DC143C 0%, #8B0000 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; }
@@ -109,8 +86,6 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 .detail-instructions { background: rgba(255,255,255,0.1); padding: 12px; border-radius: 8px; margin-top: 10px; }
 .detail-instructions h4 { color: #ffd700; margin-bottom: 8px; font-size: 14px; }
 .detail-instructions ol { margin-left: 20px; font-size: 13px; line-height: 1.6; }
-
-/* Formularios */
 .form-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
 .form-group { margin-bottom: 10px; }
 .form-group label { display: block; margin-bottom: 5px; font-size: 13px; font-weight: bold; }
@@ -118,8 +93,6 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 .day-selector { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 15px; }
 .day-selector-btn { background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.3); color: white; padding: 12px; border-radius: 10px; cursor: pointer; text-align: center; font-size: 14px; font-weight: bold; min-height: 48px; }
 .day-selector-btn.selected { background: #DC143C; border-color: white; }
-
-/* Perfil */
 .profile-info { background: white; color: #333; padding: 12px; border-radius: 10px; margin-bottom: 8px; }
 .profile-info .label { font-size: 11px; color: #666; text-transform: uppercase; }
 .profile-info .value { font-size: 16px; font-weight: bold; color: #8B0000; margin-top: 2px; }
@@ -152,11 +125,7 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 .user-actions { display: flex; gap: 6px; }
 .profile-actions { display: flex; gap: 10px; margin-top: 15px; }
 .profile-actions .btn { flex: 1; margin-top: 0; }
-
-/* Buscador */
-.search-container { margin-bottom: 15px; }
-.search-input { width: 100%; padding: 12px; border: 2px solid #DC143C; border-radius: 10px; font-size: 16px; background: white; color: #333; }
-
+.search-input { width: 100%; padding: 12px; border: 2px solid #DC143C; border-radius: 10px; font-size: 16px; background: white; color: #333; margin-bottom: 15px; }
 @media (min-width: 768px) {
 .main-content { max-width: 800px; margin: 0 auto; padding: 20px; }
 .muscle-grid { grid-template-columns: repeat(3, 1fr); }
@@ -233,13 +202,14 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 <div class="main-content">
 <div class="card">
 <h2 id="welcome-title">¡Bienvenido!</h2>
-<p id="welcome-msg" style="margin-bottom: 15px;">Vamos a entrenar 💪</p>
+<p id="welcome-msg" style="margin-bottom: 15px;">Vamos a entrenar </p>
 <div class="stats-grid">
 <div class="stat-box"><div class="number" id="stat-days">0</div><div class="text">Días de entreno</div></div>
 <div class="stat-box"><div class="number" id="stat-exercises">0</div><div class="text">Ejercicios totales</div></div>
 </div>
 <button class="btn" onclick="showScreen('screen-routines')">🏋️ Mis Rutinas</button>
-<button class="btn btn-secondary" onclick="showScreen('screen-exercises')">📋 Explorar ejercicios</button>
+<button class="btn btn-secondary" onclick="showScreen('screen-exercises')"> Explorar ejercicios</button>
+<button class="btn" onclick="if(confirm('¿Seguro que quieres cerrar sesión?')) logout()" style="background: #333; border-color: #666; margin-top: 20px;">🚪 Cerrar sesión</button>
 </div>
 </div>
 </div>
@@ -251,9 +221,9 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 <div class="muscle-grid">
 <div class="muscle-btn" onclick="showMuscleGroup('chest')">🫁 Pecho</div>
 <div class="muscle-btn" onclick="showMuscleGroup('back')">🔙 Espalda</div>
-<div class="muscle-btn" onclick="showMuscleGroup('shoulders')">🤷 Hombros</div>
+<div class="muscle-btn" onclick="showMuscleGroup('shoulders')"> Hombros</div>
 <div class="muscle-btn" onclick="showMuscleGroup('upper arms')">💪 Brazos</div>
-<div class="muscle-btn" onclick="showMuscleGroup('upper legs')"> Piernas</div>
+<div class="muscle-btn" onclick="showMuscleGroup('upper legs')">🦵 Piernas</div>
 <div class="muscle-btn" onclick="showMuscleGroup('lower legs')">🦶 Pantorrillas</div>
 <div class="muscle-btn" onclick="showMuscleGroup('waist')">🎯 Core</div>
 <div class="muscle-btn" onclick="showMuscleGroup('cardio')">❤️ Cardio</div>
@@ -267,9 +237,7 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 <button class="back-btn" onclick="goBackFromList()">← Volver</button>
 <div class="card">
 <h2 id="muscle-title">Ejercicios</h2>
-<div class="search-container">
 <input type="text" id="exercise-search" class="search-input" placeholder="🔍 Buscar ejercicio (ej: glúteo, press, barra)..." oninput="filterExercises()">
-</div>
 <div id="exercise-list-container" class="exercise-list"></div>
 </div>
 </div>
@@ -323,10 +291,10 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 <div class="muscle-grid">
 <div class="muscle-btn" onclick="showMuscleGroupForDay('chest')">🫁 Pecho</div>
 <div class="muscle-btn" onclick="showMuscleGroupForDay('back')">🔙 Espalda</div>
-<div class="muscle-btn" onclick="showMuscleGroupForDay('shoulders')"> Hombros</div>
+<div class="muscle-btn" onclick="showMuscleGroupForDay('shoulders')">🤷 Hombros</div>
 <div class="muscle-btn" onclick="showMuscleGroupForDay('upper arms')">💪 Brazos</div>
 <div class="muscle-btn" onclick="showMuscleGroupForDay('upper legs')">🦵 Piernas</div>
-<div class="muscle-btn" onclick="showMuscleGroupForDay('lower legs')"> Pantorrillas</div>
+<div class="muscle-btn" onclick="showMuscleGroupForDay('lower legs')">🦶 Pantorrillas</div>
 <div class="muscle-btn" onclick="showMuscleGroupForDay('waist')">🎯 Core</div>
 <div class="muscle-btn" onclick="showMuscleGroupForDay('cardio')">❤️ Cardio</div>
 </div>
@@ -403,9 +371,9 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 <div class="form-group" style="margin-bottom:12px;">
 <label style="color:white; font-weight:bold;">Objetivo</label>
 <select id="edit-goal" style="width:100%; padding:12px; border-radius:8px; border:none; font-size:16px; background:white; color:#333;">
-<option value="fuerza">💪 Fuerza</option>
+<option value="fuerza"> Fuerza</option>
 <option value="hipertrofia">🏋️ Hipertrofia</option>
-<option value="definicion">️ Definición</option>
+<option value="definicion">✂️ Definición</option>
 <option value="resistencia">🏃 Resistencia</option>
 <option value="salud">❤️ Salud</option>
 <option value="perder_peso">📉 Perder peso</option>
@@ -428,9 +396,9 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 </div>
 
 <div class="bottom-nav" id="bottom-nav" style="display:none;">
-<div class="nav-item active" onclick="showScreen('screen-home', this)"><span class="icon">🏠</span><span class="label">Inicio</span>
+<div class="nav-item active" onclick="showScreen('screen-home', this)"><span class="icon"></span><span class="label">Inicio</span></div>
 <div class="nav-item" onclick="showScreen('screen-exercises', this)"><span class="icon">📋</span><span class="label">Ejercicios</span></div>
-<div class="nav-item" onclick="showScreen('screen-routines', this)"><span class="icon">🏋️</span><span class="label">Rutinas</span></div>
+<div class="nav-item" onclick="showScreen('screen-routines', this)"><span class="icon">️</span><span class="label">Rutinas</span></div>
 <div class="nav-item" onclick="showScreen('screen-profile', this)"><span class="icon">👤</span><span class="label">Perfil</span></div>
 </div>
 
@@ -447,8 +415,8 @@ const muscleNames = {
 };
 
 const muscleEmojis = {
-    'chest': '🫁', 'back': '🔙', 'shoulders': '🤷',
-    'upper arms': '💪', 'upper legs': '🦵', 'lower legs': '🦶',
+    'chest': '', 'back': '🔙', 'shoulders': '🤷',
+    'upper arms': '💪', 'upper legs': '', 'lower legs': '🦶',
     'waist': '🎯', 'cardio': '❤️'
 };
 
@@ -465,6 +433,7 @@ let exercisesLoaded = false;
 let currentUser = null;
 let isAdmin = false;
 let currentSearchTerm = '';
+let isAddingToDay = false;
 
 function calculateAge(birthdate) {
     if (!birthdate) return 0;
@@ -484,13 +453,13 @@ async function loadExercises() {
         if (!response.ok) throw new Error('No se pudo cargar exercises.json');
         exercisesDB = await response.json();
         exercisesLoaded = true;
-        console.log(`✅ Cargados ${exercisesDB.length} ejercicios`);
+        console.log('✅ Cargados ' + exercisesDB.length + ' ejercicios');
     } catch (error) { console.error('❌ Error cargando ejercicios:', error); exercisesDB = []; }
 }
 
 async function loadUsers() {
     try {
-        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+        const url = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json';
         const response = await fetch(url);
         const text = await response.text();
         const jsonString = text.substring(47).slice(0, -2);
@@ -507,7 +476,7 @@ async function loadUsers() {
                 });
             }
         });
-        console.log(`✅ Cargados ${usersDB.users.length} usuarios`);
+        console.log('✅ Cargados ' + usersDB.users.length + ' usuarios');
     } catch (error) { console.error('❌ Error cargando usuarios:', error); usersDB = { users: [] }; }
 }
 
@@ -517,7 +486,7 @@ async function loadTranslations() {
         if (!response.ok) throw new Error('No se pudo cargar translations.json');
         translationsDB = await response.json();
         console.log('✅ Traducciones cargadas');
-    } catch (error) { console.error('❌ Error cargando traducciones:', error); translationsDB = { exercises: {}, muscles: {}, equipment: {} }; }
+    } catch (error) { console.error(' Error cargando traducciones:', error); translationsDB = { exercises: {}, muscles: {}, equipment: {} }; }
 }
 
 function translateExerciseName(englishName) {
@@ -538,16 +507,16 @@ function getInitials(name) {
 function createPlaceholder(muscle, name, size) {
     const emoji = muscleEmojis[muscle] || '🏋️';
     const initials = getInitials(name);
-    if (size === 'big') return `<div class="emoji-big">${emoji}</div><div class="initials-big">${initials}</div>`;
-    return `<div class="emoji">${emoji}</div><div class="initials">${initials}</div>`;
+    if (size === 'big') return '<div class="emoji-big">' + emoji + '</div><div class="initials-big">' + initials + '</div>';
+    return '<div class="emoji">' + emoji + '</div><div class="initials">' + initials + '</div>';
 }
 
 function getExerciseImage(exercise) {
     const id = String(exercise.id || '0001').padStart(4, '0');
     const mediaId = exercise.media_id || '';
-    if (mediaId) return `${EXERCISEDB_BASE_URL}/images/${id}-${mediaId}.jpg`;
+    if (mediaId) return EXERCISEDB_BASE_URL + '/images/' + id + '-' + mediaId + '.jpg';
     const name = (exercise.name || 'unknown').toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]/g, '');
-    return `${EXERCISEDB_BASE_URL}/images/${id}-${name}.jpg`;
+    return EXERCISEDB_BASE_URL + '/images/' + id + '-' + name + '.jpg';
 }
 
 function generateRandomCode() {
@@ -614,7 +583,6 @@ function showApp() {
     const savedRoutine = localStorage.getItem('gembukai_routine');
     if (savedProfile) profile = JSON.parse(savedProfile);
     if (savedRoutine) routine = JSON.parse(savedRoutine);
-    
     if (isAdmin) {
         if (!profile) {
             profile = { name: currentUser.name || 'Administrador', birthdate: '1990-01-01', gender: 'hombre', weight: 75, height: 175, level: 'intermedio', goal: 'fuerza', days: 4 };
@@ -650,7 +618,7 @@ function saveProfile() {
     const level = document.getElementById('reg-level').value;
     const goal = document.getElementById('reg-goal').value;
     const days = parseInt(document.getElementById('reg-days').value);
-    if (!name || !birthdate || !gender || !weight || !height || !days) { alert('️ Rellena todos los campos'); return; }
+    if (!name || !birthdate || !gender || !weight || !height || !days) { alert('⚠️ Rellena todos los campos'); return; }
     profile = { name, birthdate, gender, weight, height, level, goal, days };
     localStorage.setItem('gembukai_profile', JSON.stringify(profile));
     createRoutineFromProfile();
@@ -670,7 +638,7 @@ function saveRoutine() { localStorage.setItem('gembukai_routine', JSON.stringify
 function updateHome() {
     if (!profile) return;
     document.getElementById('welcome-title').textContent = '¡Hola, ' + profile.name + '!';
-    const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
+    const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: ' Perder peso' };
     document.getElementById('welcome-msg').textContent = 'Objetivo: ' + (goals[profile.goal] || profile.goal);
     let totalExercises = 0;
     if (routine && routine.days) totalExercises = routine.days.reduce((sum, day) => sum + (day.exercises ? day.exercises.length : 0), 0);
@@ -688,16 +656,18 @@ function showScreen(screenId, navElement) {
     window.scrollTo(0, 0);
 }
 
-// BUSCADOR
 function filterExercises() {
     currentSearchTerm = document.getElementById('exercise-search').value.toLowerCase().trim();
-    renderExerciseListScreen();
+    if (isAddingToDay) {
+        renderAddToDayList(currentMuscleForDay);
+    } else {
+        renderExerciseListScreen();
+    }
 }
 
 function renderExerciseListScreen() {
     const container = document.getElementById('exercise-list-container');
     const muscle = document.getElementById('muscle-title').getAttribute('data-muscle');
-    
     let filtered = [];
     if (currentSearchTerm) {
         filtered = exercisesDB.filter(ex => {
@@ -709,12 +679,7 @@ function renderExerciseListScreen() {
     } else if (muscle) {
         filtered = filterExercisesByMuscle(muscle);
     }
-
-    if (filtered.length === 0) {
-        container.innerHTML = '<p style="text-align:center;padding:20px;color:#fff;">No se encontraron ejercicios</p>';
-        return;
-    }
-
+    if (filtered.length === 0) { container.innerHTML = '<p style="text-align:center;padding:20px;color:#fff;">No se encontraron ejercicios</p>'; return; }
     container.innerHTML = '';
     filtered.forEach(ex => {
         const div = document.createElement('div');
@@ -724,15 +689,16 @@ function renderExerciseListScreen() {
         const img = document.createElement('img');
         img.src = getExerciseImage(ex);
         img.alt = ex.name;
-        img.onerror = function() { this.parentElement.innerHTML = `<div class="placeholder">${createPlaceholder(ex.body_part, ex.name)}</div>`; };
+        img.onerror = function() { this.parentElement.innerHTML = '<div class="placeholder">' + createPlaceholder(ex.body_part, ex.name) + '</div>'; };
         imgContainer.appendChild(img);
-        div.innerHTML += `<div class="exercise-info"><h3>${translateExerciseName(ex.name)}</h3><p>${translateEquipment(ex.equipment) || ''}</p><div class="exercise-actions"><a href="https://www.youtube.com/results?search_query=${encodeURIComponent(ex.name + ' exercise')}" target="_blank" class="btn btn-small btn-youtube">▶️ Ver</a><button class="btn btn-small btn-success" onclick="showAddToDaySelector('${ex.id}', '${ex.name.replace(/'/g, "\\'")}')">➕ Añadir</button></div></div>`;
+        div.innerHTML += '<div class="exercise-info"><h3>' + translateExerciseName(ex.name) + '</h3><p>' + translateEquipment(ex.equipment) + '</p><div class="exercise-actions"><a href="https://www.youtube.com/results?search_query=' + encodeURIComponent(ex.name + ' exercise') + '" target="_blank" class="btn btn-small btn-youtube">▶️ Ver</a><button class="btn btn-small btn-success" onclick="showAddToDaySelector(\'' + ex.id + '\', \'' + ex.name.replace(/'/g, "\\'") + '\')">➕ Añadir</button></div></div>';
         div.insertBefore(imgContainer, div.firstChild);
         container.appendChild(div);
     });
 }
 
 async function showMuscleGroup(muscle) {
+    isAddingToDay = false;
     lastScreen = 'screen-exercises';
     document.getElementById('muscle-title').textContent = muscleNames[muscle] || muscle;
     document.getElementById('muscle-title').setAttribute('data-muscle', muscle);
@@ -747,8 +713,8 @@ function showAddToDaySelector(exerciseId, exerciseName) {
     const modal = document.createElement('div');
     modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:2000;display:flex;align-items:center;justify-content:center;padding:20px;';
     let daysHtml = '';
-    routine.days.forEach((day, index) => { daysHtml += `<button class="btn" onclick="addExerciseToSpecificDay('${exerciseId}', ${index})" style="margin-bottom:10px;">${day.name} (${day.exercises.length} ejercicios)</button>`; });
-    modal.innerHTML = `<div style="background:#8B0000;padding:30px;border-radius:15px;max-width:400px;width:100%;max-height:80vh;overflow-y:auto;"><h2 style="color:white;margin-bottom:20px;text-align:center;">Añadir a:</h2><p style="color:white;margin-bottom:20px;text-align:center;font-size:14px;">${translateExerciseName(exerciseName)}</p>${daysHtml}<button class="btn btn-secondary" onclick="this.parentElement.parentElement.remove()" style="margin-top:15px;">Volver</button></div>`;
+    routine.days.forEach((day, index) => { daysHtml += '<button class="btn" onclick="addExerciseToSpecificDay(\'' + exerciseId + '\', ' + index + ')" style="margin-bottom:10px;">' + day.name + ' (' + day.exercises.length + ' ejercicios)</button>'; });
+    modal.innerHTML = '<div style="background:#8B0000;padding:30px;border-radius:15px;max-width:400px;width:100%;max-height:80vh;overflow-y:auto;"><h2 style="color:white;margin-bottom:20px;text-align:center;">Añadir a:</h2><p style="color:white;margin-bottom:20px;text-align:center;font-size:14px;">' + translateExerciseName(exerciseName) + '</p>' + daysHtml + '<button class="btn btn-secondary" onclick="this.parentElement.parentElement.remove()" style="margin-top:15px;">Volver</button></div>';
     document.body.appendChild(modal);
 }
 
@@ -763,36 +729,29 @@ function addExerciseToSpecificDay(exerciseId, dayIndex) {
 }
 
 async function showMuscleGroupForDay(muscle) {
+    isAddingToDay = true;
     currentMuscleForDay = muscle;
     document.getElementById('muscle-title').textContent = muscleNames[muscle] || muscle;
     document.getElementById('muscle-title').setAttribute('data-muscle', muscle);
     document.getElementById('exercise-search').value = '';
     currentSearchTerm = '';
     if (!exercisesLoaded) { document.getElementById('exercise-list-container').innerHTML = '<div class="loading">Cargando...</div>'; await loadExercises(); }
-    renderExerciseListScreen(); // Reutilizamos la lógica pero el botón de añadir es diferente
-    // Sobrescribir botones para añadir al día actual
-    const container = document.getElementById('exercise-list-container');
-    const items = container.querySelectorAll('.exercise-item');
-    items.forEach((div, idx) => {
-        const ex = filteredExercisesForRender[idx]; // Necesitamos acceso a la lista filtrada
-        // Simplificación: regeneramos con el botón correcto
-    });
-    // Mejor regenerar:
     renderAddToDayList(muscle);
     showScreen('screen-exercise-list');
 }
 
-let filteredExercisesForRender = [];
-
 function renderAddToDayList(muscle) {
     const container = document.getElementById('exercise-list-container');
-    let filtered = currentSearchTerm ? exercisesDB.filter(ex => {
-        const name = translateExerciseName(ex.name).toLowerCase();
-        const equip = translateEquipment(ex.equipment).toLowerCase();
-        return name.includes(currentSearchTerm) || equip.includes(currentSearchTerm);
-    }) : filterExercisesByMuscle(muscle);
-    
-    filteredExercisesForRender = filtered;
+    let filtered = [];
+    if (currentSearchTerm) {
+        filtered = exercisesDB.filter(ex => {
+            const name = translateExerciseName(ex.name).toLowerCase();
+            const equip = translateEquipment(ex.equipment).toLowerCase();
+            return name.includes(currentSearchTerm) || equip.includes(currentSearchTerm);
+        });
+    } else if (muscle) {
+        filtered = filterExercisesByMuscle(muscle);
+    }
     if (filtered.length === 0) { container.innerHTML = '<p style="text-align:center;padding:20px;color:#fff;">No se encontraron ejercicios</p>'; return; }
     container.innerHTML = '';
     filtered.forEach(ex => {
@@ -803,26 +762,14 @@ function renderAddToDayList(muscle) {
         const img = document.createElement('img');
         img.src = getExerciseImage(ex);
         img.alt = ex.name;
-        img.onerror = function() { this.parentElement.innerHTML = `<div class="placeholder">${createPlaceholder(ex.body_part, ex.name)}</div>`; };
+        img.onerror = function() { this.parentElement.innerHTML = '<div class="placeholder">' + createPlaceholder(ex.body_part, ex.name) + '</div>'; };
         imgContainer.appendChild(img);
         const alreadyInDay = routine.days[currentDayIndex].exercises.find(e => e.id === ex.id);
-        div.innerHTML += `<div class="exercise-info"><h3>${translateExerciseName(ex.name)}</h3><p>${translateEquipment(ex.equipment) || ''}</p><div class="exercise-actions"><a href="https://www.youtube.com/results?search_query=${encodeURIComponent(ex.name + ' exercise')}" target="_blank" class="btn btn-small btn-youtube">▶️ Ver</a><button class="btn btn-small ${alreadyInDay ? 'btn-warning' : 'btn-success'}" onclick="addExerciseToDay('${ex.id}')" ${alreadyInDay ? 'disabled' : ''}>${alreadyInDay ? '✓ Añadido' : ' Añadir'}</button></div></div>`;
+        div.innerHTML += '<div class="exercise-info"><h3>' + translateExerciseName(ex.name) + '</h3><p>' + translateEquipment(ex.equipment) + '</p><div class="exercise-actions"><a href="https://www.youtube.com/results?search_query=' + encodeURIComponent(ex.name + ' exercise') + '" target="_blank" class="btn btn-small btn-youtube">▶️ Ver</a><button class="btn btn-small ' + (alreadyInDay ? 'btn-warning' : 'btn-success') + '" onclick="addExerciseToDay(\'' + ex.id + '\')" ' + (alreadyInDay ? 'disabled' : '') + '>' + (alreadyInDay ? '✓ Añadido' : '➕ Añadir') + '</button></div></div>';
         div.insertBefore(imgContainer, div.firstChild);
         container.appendChild(div);
     });
 }
-
-// Sobrescribir filterExercises para manejar ambos modos
-const originalFilterExercises = filterExercises;
-filterExercises = function() {
-    currentSearchTerm = document.getElementById('exercise-search').value.toLowerCase().trim();
-    const muscle = document.getElementById('muscle-title').getAttribute('data-muscle');
-    if (currentDayIndex !== null) {
-        renderAddToDayList(muscle);
-    } else {
-        renderExerciseListScreen();
-    }
-};
 
 function addExerciseToDay(exerciseId) {
     const ex = exercisesDB.find(e => e.id === exerciseId);
@@ -831,11 +778,10 @@ function addExerciseToDay(exerciseId) {
     day.exercises.push({ id: ex.id, name: ex.name, body_part: ex.body_part, equipment: ex.equipment, media_id: ex.media_id || '', sets: '', reps: '', weight: '' });
     saveRoutine();
     alert('✅ Añadido a ' + day.name);
-    const muscle = document.getElementById('muscle-title').getAttribute('data-muscle');
-    renderAddToDayList(muscle);
+    renderAddToDayList(currentMuscleForDay);
 }
 
-function goBackFromList() { currentDayIndex = null; showScreen(lastScreen); }
+function goBackFromList() { currentDayIndex = null; isAddingToDay = false; showScreen(lastScreen); }
 
 function shareRoutine() {
     if (!routine || !routine.days || routine.days.length === 0) { alert('⚠️ No tienes rutina'); return; }
@@ -862,7 +808,7 @@ function renderRoutineDays() {
     routine.days.forEach((day, index) => {
         const exerciseCount = day.exercises ? day.exercises.length : 0;
         const isCompleted = day.completed ? 'day-completed' : '';
-        html += `<div class="day-card ${isCompleted}"><div class="day-header"><input class="day-title-input" value="${day.name}" onchange="renameDay(${index}, this.value)" onclick="event.stopPropagation()"><span class="day-badge">${exerciseCount} ejercicios</span></div><div class="day-exercises">`;
+        html += '<div class="day-card ' + isCompleted + '"><div class="day-header"><input class="day-title-input" value="' + day.name + '" onchange="renameDay(' + index + ', this.value)" onclick="event.stopPropagation()"><span class="day-badge">' + exerciseCount + ' ejercicios</span></div><div class="day-exercises">';
         if (!day.exercises || day.exercises.length === 0) { html += '<p style="color:#999;font-size:13px;text-align:center;padding:10px;">Sin ejercicios</p>'; }
         else {
             day.exercises.forEach((ex, exIndex) => {
@@ -871,13 +817,13 @@ function renderRoutineDays() {
                 if (ex.reps) setsReps.push(ex.reps + ' reps');
                 if (ex.weight) setsReps.push(ex.weight + ' kg');
                 const fullEx = exercisesDB.find(e => e.id === ex.id) || ex;
-                html += `<div class="day-exercise-item"><img class="routine-exercise-img" src="${getExerciseImage(fullEx)}" alt="${ex.name}" onerror="this.style.display='none'"><div class="routine-exercise-info"><div class="day-exercise-name">${translateExerciseName(ex.name)}</div><div class="day-exercise-data">${setsReps.join(' | ') || 'Sin datos'}</div></div><div style="display:flex;flex-direction:column;gap:2px;">`;
-                if (exIndex > 0) html += `<button class="btn btn-delete-exercise" onclick="moveExercise(${index}, ${exIndex}, -1)">⬆️</button>`;
-                if (exIndex < day.exercises.length - 1) html += `<button class="btn btn-delete-exercise" onclick="moveExercise(${index}, ${exIndex}, 1)">⬇️</button>`;
-                html += `<button class="btn btn-delete-exercise" onclick="removeExerciseFromDay(${index}, ${exIndex})">🗑️</button></div></div>`;
+                html += '<div class="day-exercise-item"><img class="routine-exercise-img" src="' + getExerciseImage(fullEx) + '" alt="' + ex.name + '" onerror="this.style.display=\'none\'"><div class="routine-exercise-info"><div class="day-exercise-name">' + translateExerciseName(ex.name) + '</div><div class="day-exercise-data">' + (setsReps.join(' | ') || 'Sin datos') + '</div></div><div style="display:flex;flex-direction:column;gap:2px;">';
+                if (exIndex > 0) html += '<button class="btn btn-delete-exercise" onclick="moveExercise(' + index + ', ' + exIndex + ', -1)">⬆️</button>';
+                if (exIndex < day.exercises.length - 1) html += '<button class="btn btn-delete-exercise" onclick="moveExercise(' + index + ', ' + exIndex + ', 1)">⬇️</button>';
+                html += '<button class="btn btn-delete-exercise" onclick="removeExerciseFromDay(' + index + ', ' + exIndex + ')">🗑️</button></div></div>';
             });
         }
-        html += `</div><div class="day-actions"><button class="btn btn-small" onclick="openAddToDay(${index})">➕ Añadir</button><button class="btn btn-small ${day.completed ? 'btn-warning' : 'btn-success'}" onclick="toggleDayCompleted(${index})">${day.completed ? '↩️ Desmarcar' : '✅ Completado'}</button></div></div>`;
+        html += '</div><div class="day-actions"><button class="btn btn-small" onclick="openAddToDay(' + index + ')">➕ Añadir</button><button class="btn btn-small ' + (day.completed ? 'btn-warning' : 'btn-success') + '" onclick="toggleDayCompleted(' + index + ')">' + (day.completed ? '↩️ Desmarcar' : '✅ Completado') + '</button></div></div>';
     });
     container.innerHTML = html;
 }
@@ -906,13 +852,13 @@ function openExerciseDetailInDay(dayIndex, exIndex) {
     const img = document.createElement('img');
     img.src = getExerciseImage(fullEx);
     img.alt = ex.name;
-    img.onerror = function() { this.parentElement.innerHTML = `<div class="placeholder-big">${createPlaceholder(ex.body_part || 'chest', ex.name, 'big')}</div>`; };
+    img.onerror = function() { this.parentElement.innerHTML = '<div class="placeholder-big">' + createPlaceholder(ex.body_part || 'chest', ex.name, 'big') + '</div>'; };
     imgContainer.innerHTML = '';
     imgContainer.appendChild(img);
     document.getElementById('detail-name').textContent = translateExerciseName(ex.name);
     document.getElementById('detail-equipment').textContent = ex.equipment ? 'Equipo: ' + translateEquipment(ex.equipment) : '';
     document.getElementById('detail-desc').textContent = 'Ejercicio de tu rutina';
-    document.getElementById('detail-youtube').href = `https://www.youtube.com/results?search_query=${encodeURIComponent(ex.name + ' exercise')}`;
+    document.getElementById('detail-youtube').href = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(ex.name + ' exercise');
     document.getElementById('input-sets').value = ex.sets || '';
     document.getElementById('input-reps').value = ex.reps || '';
     document.getElementById('input-weight').value = ex.weight || '';
@@ -922,7 +868,8 @@ function openExerciseDetailInDay(dayIndex, exIndex) {
 
 function saveExerciseData() {
     if (!currentExerciseDetail) return;
-    const { dayIndex, exIndex } = currentExerciseDetail;
+    const dayIndex = currentExerciseDetail.dayIndex;
+    const exIndex = currentExerciseDetail.exIndex;
     const ex = routine.days[dayIndex].exercises[exIndex];
     ex.sets = document.getElementById('input-sets').value;
     ex.reps = document.getElementById('input-reps').value;
@@ -941,20 +888,7 @@ function renderProfile() {
     let imcText = imc < 18.5 ? 'Bajo peso' : imc < 25 ? 'Normal' : imc < 30 ? 'Sobrepeso' : 'Obesidad';
     let imcColor = imc < 18.5 ? '#3498db' : imc < 25 ? '#27ae60' : imc < 30 ? '#f39c12' : '#e74c3c';
     const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
-    document.getElementById('profile-display').innerHTML = `
-        <div class="profile-info"><div class="label">Nombre</div><div class="value">${profile.name}</div></div>
-        <div class="profile-info"><div class="label">Fecha de nacimiento</div><div class="value">${profile.birthdate}</div></div>
-        <div class="profile-info"><div class="label">Edad</div><div class="value">${age} años</div></div>
-        <div class="flex-row">
-            <div class="profile-info"><div class="label">Peso</div><div class="value">${profile.weight} kg</div></div>
-            <div class="profile-info"><div class="label">Altura</div><div class="value">${profile.height} cm</div></div>
-        </div>
-        <div class="profile-info"><div class="label">IMC</div><div class="value">${imc} <span style="display:inline-block;padding:3px 10px;border-radius:15px;font-size:12px;color:white;background:${imcColor}">${imcText}</span></div></div>
-        <div class="profile-info"><div class="label">Nivel</div><div class="value">${profile.level.charAt(0).toUpperCase() + profile.level.slice(1)}</div></div>
-        <div class="profile-info"><div class="label">Objetivo</div><div class="value">${goals[profile.goal] || profile.goal}</div></div>
-        <div class="profile-info"><div class="label">Días de entreno</div><div class="value">${profile.days} días/semana</div></div>
-        <div class="profile-info"><div class="label">Código de acceso</div><div class="value">${currentUser ? currentUser.code : 'N/A'}</div></div>
-    `;
+    document.getElementById('profile-display').innerHTML = '<div class="profile-info"><div class="label">Nombre</div><div class="value">' + profile.name + '</div></div><div class="profile-info"><div class="label">Fecha de nacimiento</div><div class="value">' + profile.birthdate + '</div></div><div class="profile-info"><div class="label">Edad</div><div class="value">' + age + ' años</div></div><div class="flex-row"><div class="profile-info"><div class="label">Peso</div><div class="value">' + profile.weight + ' kg</div></div><div class="profile-info"><div class="label">Altura</div><div class="value">' + profile.height + ' cm</div></div></div><div class="profile-info"><div class="label">IMC</div><div class="value">' + imc + ' <span style="display:inline-block;padding:3px 10px;border-radius:15px;font-size:12px;color:white;background:' + imcColor + '">' + imcText + '</span></div></div><div class="profile-info"><div class="label">Nivel</div><div class="value">' + profile.level.charAt(0).toUpperCase() + profile.level.slice(1) + '</div></div><div class="profile-info"><div class="label">Objetivo</div><div class="value">' + (goals[profile.goal] || profile.goal) + '</div></div><div class="profile-info"><div class="label">Días de entreno</div><div class="value">' + profile.days + ' días/semana</div></div><div class="profile-info"><div class="label">Código de acceso</div><div class="value">' + (currentUser ? currentUser.code : 'N/A') + '</div></div>';
     if (isAdmin) { document.getElementById('admin-section').style.display = 'block'; renderUserList(); }
     else { document.getElementById('admin-section').style.display = 'none'; }
 }
@@ -1020,8 +954,8 @@ function renderUserList() {
         const expires = new Date(user.expires);
         let statusClass = 'active', statusText = '✅ Activo';
         if (!user.active) { statusClass = 'inactive'; statusText = '❌ Desactivado'; }
-        else if (today > expires) { statusClass = 'expired'; statusText = '⏰ Caducado'; }
-        html += `<div class="user-item"><div class="user-info"><div class="user-code">${user.code}</div><div class="user-name">${user.name}</div><div class="user-status ${statusClass}">${statusText} | Caduca: ${user.expires}</div></div><div class="user-actions">${user.role !== 'admin' ? `<button class="btn btn-tiny ${user.active ? 'btn-warning' : 'btn-success'}" onclick="toggleUserStatus(${index})">${user.active ? '⏸️' : '▶️'}</button>` : ''}</div></div>`;
+        else if (today > expires) { statusClass = 'expired'; statusText = ' Caducado'; }
+        html += '<div class="user-item"><div class="user-info"><div class="user-code">' + user.code + '</div><div class="user-name">' + user.name + '</div><div class="user-status ' + statusClass + '">' + statusText + ' | Caduca: ' + user.expires + '</div></div><div class="user-actions">' + (user.role !== 'admin' ? '<button class="btn btn-tiny ' + (user.active ? 'btn-warning' : 'btn-success') + '" onclick="toggleUserStatus(' + index + ')">' + (user.active ? '⏸️' : '▶️') + '</button>' : '') + '</div></div>';
     });
     container.innerHTML = html;
 }
@@ -1040,8 +974,8 @@ async function addNewUser() {
     renderUserList();
     try {
         await fetch(APPS_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(newUser) });
-        alert(`✅ Usuario creado.\n Código: ${code}`);
-    } catch (error) { alert(`✅ Código: ${code}\n️ No se pudo guardar en Sheets.`); }
+        alert('✅ Usuario creado.\n🔑 Código: ' + code);
+    } catch (error) { alert('✅ Código: ' + code + '\n⚠️ No se pudo guardar en Sheets.'); }
     hideAddUserForm();
     document.getElementById('new-user-name').value = '';
     document.getElementById('new-user-expires').value = '';
