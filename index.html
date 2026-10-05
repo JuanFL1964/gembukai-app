@@ -40,9 +40,9 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 .btn-warning { background: #f39c12; border-color: #f39c12; }
 .btn-danger { background: #e74c3c; border-color: #e74c3c; }
 .btn-tiny { padding: 8px 12px; font-size: 13px; min-height: 38px; }
-.btn-delete-exercise { padding: 4px 8px !important; font-size: 11px !important; min-height: 28px !important; width: auto !important; flex: none !important; line-height: 1 !important; }
-.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.95); display: flex; justify-content: space-around; padding: 8px 0 12px; border-top: 3px solid #DC143C; z-index: 100; }
-.nav-item { text-align: center; cursor: pointer; padding: 8px 12px; border-radius: 10px; flex: 1; }
+.btn-delete-exercise { padding: 4px 8px !important; font-size: 11px !important; min-height: 28px !important; width: auto !important; flex: none !important; line-height: 1 !important; margin: 0 2px; }
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.95); display: flex; flex-direction: row; justify-content: space-around; padding: 8px 0 12px; border-top: 3px solid #DC143C; z-index: 100; width: 100%; }
+.nav-item { text-align: center; cursor: pointer; padding: 8px 12px; border-radius: 10px; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 .nav-item .icon { font-size: 22px; display: block; }
 .nav-item .label { font-size: 11px; margin-top: 2px; }
 .nav-item.active { color: #DC143C; background: rgba(255,255,255,0.1); }
@@ -55,15 +55,16 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 .back-btn { background: rgba(255,255,255,0.2); border: 2px solid white; color: white; padding: 12px 18px; border-radius: 10px; cursor: pointer; margin-bottom: 12px; font-size: 15px; min-height: 48px; display: inline-flex; align-items: center; gap: 8px; }
 .exercise-list { display: grid; gap: 12px; margin-top: 12px; }
 .exercise-item { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.3); display: flex; flex-direction: row; align-items: stretch; }
-.exercise-image { width: 100px; min-width: 100px; height: 100px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.exercise-image { width: 100px; min-width: 100px; height: 100px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
 .exercise-image img { width: 100%; height: 100%; object-fit: cover; }
 .exercise-image .placeholder { width: 100%; height: 100%; background: linear-gradient(135deg, #DC143C 0%, #8B0000 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; font-weight: bold; }
 .exercise-image .emoji { font-size: 32px; line-height: 1; }
 .exercise-image .initials { font-size: 16px; margin-top: 4px; letter-spacing: 1px; }
-.exercise-info { flex: 1; padding: 10px; display: flex; flex-direction: column; justify-content: center; }
-.exercise-info h3 { color: #8B0000; font-size: 15px; margin-bottom: 4px; line-height: 1.2; }
+.exercise-info { flex: 1; padding: 10px; display: flex; flex-direction: column; justify-content: center; position: relative; }
+.exercise-info h3 { color: #8B0000; font-size: 15px; margin-bottom: 4px; line-height: 1.2; padding-right: 80px; }
 .exercise-info p { color: #666; font-size: 12px; margin-bottom: 8px; line-height: 1.3; }
 .exercise-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+.muscle-tag { position: absolute; top: 8px; right: 8px; background: rgba(139, 0, 0, 0.9); color: white; padding: 3px 8px; border-radius: 10px; font-size: 10px; font-weight: bold; z-index: 10; white-space: nowrap; }
 .day-card { background: white; color: #333; border-radius: 12px; padding: 15px; margin-bottom: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
 .day-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 2px solid #DC143C; }
 .day-title-input { font-size: 16px; font-weight: bold; color: #8B0000; border: 1px solid #DC143C; padding: 5px 8px; border-radius: 6px; flex: 1; }
@@ -124,6 +125,7 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 .user-actions { display: flex; gap: 6px; }
 .profile-actions { display: flex; gap: 10px; margin-top: 15px; }
 .profile-actions .btn { flex: 1; margin-top: 0; }
+.search-input { width: 100%; padding: 12px; border: 2px solid #DC143C; border-radius: 10px; font-size: 16px; background: white; color: #333; margin-bottom: 15px; }
 @media (min-width: 768px) {
 .main-content { max-width: 800px; margin: 0 auto; padding: 20px; }
 .muscle-grid { grid-template-columns: repeat(3, 1fr); }
@@ -208,6 +210,7 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 </div>
 <button class="btn" onclick="showScreen('screen-routines')">🏋️ Mis Rutinas</button>
 <button class="btn btn-secondary" onclick="showScreen('screen-exercises')">📋 Explorar ejercicios</button>
+<button class="btn" onclick="if(confirm('¿Seguro que quieres cerrar sesión?')) logout()" style="background: #333; border-color: #666; margin-top: 20px;">🚪 Cerrar sesión</button>
 </div>
 </div>
 </div>
@@ -221,8 +224,13 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 <div class="muscle-btn" onclick="showMuscleGroup('back')">🔙 Espalda</div>
 <div class="muscle-btn" onclick="showMuscleGroup('shoulders')">🤷 Hombros</div>
 <div class="muscle-btn" onclick="showMuscleGroup('upper arms')">💪 Brazos</div>
+<<<<<<< HEAD
 <div class="muscle-btn" onclick="showMuscleGroup('upper legs')"> Piernas</div>
 <div class="muscle-btn" onclick="showMuscleGroup('lower legs')">🦶 Pantorrillas</div>
+=======
+<div class="muscle-btn" onclick="showMuscleGroup('upper legs')">🦵 Piernas</div>
+<div class="muscle-btn" onclick="showMuscleGroup('lower legs')"> Pantorrillas</div>
+>>>>>>> edca8db3f855f8e7e1b49af00f1ad326a1d01f11
 <div class="muscle-btn" onclick="showMuscleGroup('waist')">🎯 Core</div>
 <div class="muscle-btn" onclick="showMuscleGroup('cardio')">❤️ Cardio</div>
 </div>
@@ -235,6 +243,7 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 <button class="back-btn" onclick="goBackFromList()">← Volver</button>
 <div class="card">
 <h2 id="muscle-title">Ejercicios</h2>
+<input type="text" id="exercise-search" class="search-input" placeholder=" Buscar ejercicio (ej: glúteo, press, barra)..." oninput="filterExercises()">
 <div id="exercise-list-container" class="exercise-list"></div>
 </div>
 </div>
@@ -287,10 +296,10 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 <p style="margin-bottom: 15px; font-size: 14px;">Elige un grupo muscular:</p>
 <div class="muscle-grid">
 <div class="muscle-btn" onclick="showMuscleGroupForDay('chest')">🫁 Pecho</div>
-<div class="muscle-btn" onclick="showMuscleGroupForDay('back')">🔙 Espalda</div>
+<div class="muscle-btn" onclick="showMuscleGroupForDay('back')"> Espalda</div>
 <div class="muscle-btn" onclick="showMuscleGroupForDay('shoulders')">🤷 Hombros</div>
 <div class="muscle-btn" onclick="showMuscleGroupForDay('upper arms')">💪 Brazos</div>
-<div class="muscle-btn" onclick="showMuscleGroupForDay('upper legs')">🦵 Piernas</div>
+<div class="muscle-btn" onclick="showMuscleGroupForDay('upper legs')"> Piernas</div>
 <div class="muscle-btn" onclick="showMuscleGroupForDay('lower legs')">🦶 Pantorrillas</div>
 <div class="muscle-btn" onclick="showMuscleGroupForDay('waist')">🎯 Core</div>
 <div class="muscle-btn" onclick="showMuscleGroupForDay('cardio')">❤️ Cardio</div>
@@ -406,6 +415,7 @@ const EXERCISEDB_URL = "https://raw.githubusercontent.com/hasaneyldrm/exercises-
 const EXERCISEDB_BASE_URL = "https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/main";
 
 const muscleNames = {
+<<<<<<< HEAD
     'chest': ' Pecho',
     'back': ' Espalda',
     'shoulders': '🤷 Hombros',
@@ -414,6 +424,11 @@ const muscleNames = {
     'lower legs': '🦶 Pantorrillas',
     'waist': '🎯 Core',
     'cardio': '❤️ Cardio'
+=======
+    'chest': '🫁 Pecho', 'back': '🔙 Espalda', 'shoulders': '🤷 Hombros',
+    'upper arms': '💪 Brazos', 'upper legs': '🦵 Piernas', 'lower legs': '🦶 Pantorrillas',
+    'waist': '🎯 Core', 'cardio': '❤️ Cardio'
+>>>>>>> edca8db3f855f8e7e1b49af00f1ad326a1d01f11
 };
 
 const muscleEmojis = {
@@ -434,25 +449,17 @@ let lastScreen = 'screen-exercises';
 let exercisesLoaded = false;
 let currentUser = null;
 let isAdmin = false;
+let currentSearchTerm = '';
+let isAddingToDay = false;
 
 function calculateAge(birthdate) {
     if (!birthdate) return 0;
-    let birthDate;
-    if (birthdate.includes('-')) {
-        birthDate = new Date(birthdate);
-    } else if (birthdate.includes('/')) {
-        const parts = birthdate.split('/');
-        birthDate = new Date(parts[2], parts[1] - 1, parts[0]);
-    } else {
-        return 0;
-    }
+    let birthDate = new Date(birthdate);
     if (isNaN(birthDate.getTime())) return 0;
     const today = new Date();
     let age = today.getFullYear() - birthDate.getFullYear();
     const monthDiff = today.getMonth() - birthDate.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-        age--;
-    }
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) age--;
     return age;
 }
 
@@ -460,14 +467,19 @@ async function loadExercises() {
     if (exercisesLoaded) return;
     try {
         const response = await fetch(EXERCISEDB_URL);
-        if (!response.ok) throw new Error('No se pudo cargar exercises.json desde ExerciseDB');
+        if (!response.ok) throw new Error('No se pudo cargar exercises.json');
         exercisesDB = await response.json();
         exercisesLoaded = true;
+<<<<<<< HEAD
         console.log('✅ Cargados ' + exercisesDB.length + ' ejercicios desde ExerciseDB');
     } catch (error) {
         console.error('❌ Error cargando ejercicios:', error);
         exercisesDB = [];
     }
+=======
+        console.log('✅ Cargados ' + exercisesDB.length + ' ejercicios');
+    } catch (error) { console.error('❌ Error cargando ejercicios:', error); exercisesDB = []; }
+>>>>>>> edca8db3f855f8e7e1b49af00f1ad326a1d01f11
 }
 
 async function loadUsers() {
@@ -478,8 +490,7 @@ async function loadUsers() {
         const jsonString = text.substring(47).slice(0, -2);
         const data = JSON.parse(jsonString);
         usersDB = { users: [] };
-        const rows = data.table.rows;
-        rows.forEach(row => {
+        data.table.rows.forEach(row => {
             if (row.c && row.c.length >= 4) {
                 usersDB.users.push({
                     code: row.c[0] ? String(row.c[0].v) : '',
@@ -490,11 +501,16 @@ async function loadUsers() {
                 });
             }
         });
+<<<<<<< HEAD
         console.log('✅ Cargados ' + usersDB.users.length + ' usuarios desde Google Sheets');
     } catch (error) {
         console.error('❌ Error cargando usuarios:', error);
         usersDB = { users: [{ code: 'GEMBU-ADMIN-2026', name: 'Administrador', role: 'admin', active: true, expires: '2030-12-31' }] };
     }
+=======
+        console.log('✅ Cargados ' + usersDB.users.length + ' usuarios');
+    } catch (error) { console.error('❌ Error cargando usuarios:', error); usersDB = { users: [] }; }
+>>>>>>> edca8db3f855f8e7e1b49af00f1ad326a1d01f11
 }
 
 async function loadTranslations() {
@@ -503,22 +519,17 @@ async function loadTranslations() {
         if (!response.ok) throw new Error('No se pudo cargar translations.json');
         translationsDB = await response.json();
         console.log('✅ Traducciones cargadas');
-    } catch (error) {
-        console.error('❌ Error cargando traducciones:', error);
-        translationsDB = { exercises: {}, muscles: {}, equipment: {} };
-    }
+    } catch (error) { console.error('❌ Error cargando traducciones:', error); translationsDB = { exercises: {}, muscles: {}, equipment: {} }; }
 }
 
 function translateExerciseName(englishName) {
     if (!translationsDB.exercises) return englishName;
-    const lowerName = englishName.toLowerCase();
-    return translationsDB.exercises[lowerName] || englishName;
+    return translationsDB.exercises[englishName.toLowerCase()] || englishName;
 }
 
 function translateEquipment(equipment) {
     if (!equipment || !translationsDB.equipment) return equipment || '';
-    const lowerEquip = equipment.toLowerCase();
-    return translationsDB.equipment[lowerEquip] || equipment;
+    return translationsDB.equipment[equipment.toLowerCase()] || equipment;
 }
 
 function getInitials(name) {
@@ -527,20 +538,28 @@ function getInitials(name) {
 }
 
 function createPlaceholder(muscle, name, size) {
-    const emoji = muscleEmojis[muscle] || '️';
+    const emoji = muscleEmojis[muscle] || '🏋️';
     const initials = getInitials(name);
+<<<<<<< HEAD
     if (size === 'big') {
         return '<div class="emoji-big">' + emoji + '</div><div class="initials-big">' + initials + '</div>';
     }
+=======
+    if (size === 'big') return '<div class="emoji-big">' + emoji + '</div><div class="initials-big">' + initials + '</div>';
+>>>>>>> edca8db3f855f8e7e1b49af00f1ad326a1d01f11
     return '<div class="emoji">' + emoji + '</div><div class="initials">' + initials + '</div>';
 }
 
 function getExerciseImage(exercise) {
     const id = String(exercise.id || '0001').padStart(4, '0');
     const mediaId = exercise.media_id || '';
+<<<<<<< HEAD
     if (mediaId) {
         return EXERCISEDB_BASE_URL + '/images/' + id + '-' + mediaId + '.jpg';
     }
+=======
+    if (mediaId) return EXERCISEDB_BASE_URL + '/images/' + id + '-' + mediaId + '.jpg';
+>>>>>>> edca8db3f855f8e7e1b49af00f1ad326a1d01f11
     const name = (exercise.name || 'unknown').toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]/g, '');
     return EXERCISEDB_BASE_URL + '/images/' + id + '-' + name + '.jpg';
 }
@@ -548,13 +567,9 @@ function getExerciseImage(exercise) {
 function generateRandomCode() {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     let code = 'GEMBU-';
-    for (let i = 0; i < 4; i++) {
-        code += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
+    for (let i = 0; i < 4; i++) code += chars.charAt(Math.floor(Math.random() * chars.length));
     code += '-';
-    for (let i = 0; i < 4; i++) {
-        code += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
+    for (let i = 0; i < 4; i++) code += chars.charAt(Math.floor(Math.random() * chars.length));
     return code;
 }
 
@@ -568,22 +583,26 @@ async function enterApp() {
     await loadUsers();
     await loadTranslations();
     const savedUser = localStorage.getItem('gembukai_current_user');
-    if (savedUser) {
-        currentUser = JSON.parse(savedUser);
-        checkUserAccess();
-    } else {
-        showScreen('screen-login');
-    }
+    if (savedUser) { currentUser = JSON.parse(savedUser); checkUserAccess(); }
+    else { showScreen('screen-login'); }
 }
 
 function checkUserAccess() {
     if (!currentUser) { showScreen('screen-login'); return; }
     const user = usersDB.users.find(u => u.code === currentUser.code);
+<<<<<<< HEAD
     if (!user) { alert(' Código no válido. Contacta con el gimnasio.'); logout(); return; }
     if (!user.active) { alert('⚠️ Tu acceso ha sido desactivado.'); logout(); return; }
     const today = new Date();
     const expires = new Date(user.expires);
     if (today > expires) { alert('⏰ Tu código ha caducado.'); logout(); return; }
+=======
+    if (!user) { alert('❌ Código no válido.'); logout(); return; }
+    if (!user.active) { alert('⚠️ Acceso desactivado.'); logout(); return; }
+    const today = new Date();
+    const expires = new Date(user.expires);
+    if (today > expires) { alert('⏰ Código caducado.'); logout(); return; }
+>>>>>>> edca8db3f855f8e7e1b49af00f1ad326a1d01f11
     isAdmin = user.role === 'admin';
     showApp();
 }
@@ -607,7 +626,11 @@ function validateCode() {
 
 function togglePasswordVisibility() {
     const input = document.getElementById('login-code');
+<<<<<<< HEAD
     if (input.type === 'text') { input.type = 'password'; } else { input.type = 'text'; }
+=======
+    input.type = input.type === 'text' ? 'password' : 'text';
+>>>>>>> edca8db3f855f8e7e1b49af00f1ad326a1d01f11
 }
 
 function showApp() {
@@ -623,9 +646,13 @@ function showApp() {
             localStorage.setItem('gembukai_profile', JSON.stringify(profile));
             createRoutineFromProfile();
         }
+<<<<<<< HEAD
         updateHome();
         showScreen('screen-home');
         return;
+=======
+        updateHome(); showScreen('screen-home'); return;
+>>>>>>> edca8db3f855f8e7e1b49af00f1ad326a1d01f11
     }
     if (!profile) { showScreen('screen-register'); }
     else { if (!routine) createRoutineFromProfile(); updateHome(); showScreen('screen-home'); }
@@ -659,16 +686,13 @@ function saveProfile() {
     localStorage.setItem('gembukai_profile', JSON.stringify(profile));
     createRoutineFromProfile();
     alert('✅ ¡Perfil creado, ' + name + '!');
-    updateHome();
-    showScreen('screen-home');
+    updateHome(); showScreen('screen-home');
 }
 
 function createRoutineFromProfile() {
     const dayNames = ['Día 1', 'Día 2', 'Día 3', 'Día 4', 'Día 5'];
     routine = { days: [] };
-    for (let i = 0; i < profile.days; i++) {
-        routine.days.push({ name: dayNames[i], exercises: [], completed: false });
-    }
+    for (let i = 0; i < profile.days; i++) routine.days.push({ name: dayNames[i], exercises: [], completed: false });
     saveRoutine();
 }
 
@@ -677,10 +701,10 @@ function saveRoutine() { localStorage.setItem('gembukai_routine', JSON.stringify
 function updateHome() {
     if (!profile) return;
     document.getElementById('welcome-title').textContent = '¡Hola, ' + profile.name + '!';
-    const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
+    const goals = { fuerza: ' Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
     document.getElementById('welcome-msg').textContent = 'Objetivo: ' + (goals[profile.goal] || profile.goal);
     let totalExercises = 0;
-    if (routine && routine.days) { totalExercises = routine.days.reduce((sum, day) => sum + (day.exercises ? day.exercises.length : 0), 0); }
+    if (routine && routine.days) totalExercises = routine.days.reduce((sum, day) => sum + (day.exercises ? day.exercises.length : 0), 0);
     document.getElementById('stat-days').textContent = profile.days;
     document.getElementById('stat-exercises').textContent = totalExercises;
 }
@@ -695,13 +719,30 @@ function showScreen(screenId, navElement) {
     window.scrollTo(0, 0);
 }
 
-async function showMuscleGroup(muscle) {
-    lastScreen = 'screen-exercises';
-    document.getElementById('muscle-title').textContent = muscleNames[muscle] || muscle;
+function filterExercises() {
+    currentSearchTerm = document.getElementById('exercise-search').value.toLowerCase().trim();
+    if (isAddingToDay) {
+        renderAddToDayList(currentMuscleForDay);
+    } else {
+        renderExerciseListScreen();
+    }
+}
+
+function renderExerciseListScreen() {
     const container = document.getElementById('exercise-list-container');
-    if (!exercisesLoaded) { container.innerHTML = '<div class="loading">Cargando ejercicios...</div>'; await loadExercises(); }
-    const filtered = filterExercisesByMuscle(muscle);
-    if (filtered.length === 0) { container.innerHTML = '<p style="text-align:center;padding:20px;color:#fff;">No hay ejercicios disponibles para este grupo</p>'; showScreen('screen-exercise-list'); return; }
+    const muscle = document.getElementById('muscle-title').getAttribute('data-muscle');
+    let filtered = [];
+    if (currentSearchTerm) {
+        filtered = exercisesDB.filter(ex => {
+            const name = translateExerciseName(ex.name).toLowerCase();
+            const equip = translateEquipment(ex.equipment).toLowerCase();
+            const original = ex.name.toLowerCase();
+            return name.includes(currentSearchTerm) || equip.includes(currentSearchTerm) || original.includes(currentSearchTerm);
+        });
+    } else if (muscle) {
+        filtered = filterExercisesByMuscle(muscle);
+    }
+    if (filtered.length === 0) { container.innerHTML = '<p style="text-align:center;padding:20px;color:#fff;">No se encontraron ejercicios</p>'; return; }
     container.innerHTML = '';
     filtered.forEach(ex => {
         const div = document.createElement('div');
@@ -711,12 +752,30 @@ async function showMuscleGroup(muscle) {
         const img = document.createElement('img');
         img.src = getExerciseImage(ex);
         img.alt = ex.name;
+<<<<<<< HEAD
         img.onerror = function() { this.parentElement.innerHTML = '<div class="placeholder">' + createPlaceholder(muscle, ex.name) + '</div>'; };
         imgContainer.appendChild(img);
         div.innerHTML += '<div class="exercise-info"><h3>' + translateExerciseName(ex.name) + '</h3><p>' + (translateEquipment(ex.equipment) || '') + '</p><div class="exercise-actions"><a href="https://www.youtube.com/results?search_query=' + encodeURIComponent(ex.name + ' exercise') + '" target="_blank" class="btn btn-small btn-youtube">▶️ Ver</a><button class="btn btn-small btn-success" onclick="showAddToDaySelector(\'' + ex.id + '\',\'' + ex.name.replace(/'/g, "\\'") + '\')">➕ Añadir</button></div></div>';
+=======
+        img.onerror = function() { this.parentElement.innerHTML = '<div class="placeholder">' + createPlaceholder(ex.body_part, ex.name) + '</div>'; };
+        imgContainer.appendChild(img);
+        const muscleTag = muscleNames[ex.body_part] || ex.body_part;
+        div.innerHTML += '<div class="exercise-info"><span class="muscle-tag">' + muscleTag + '</span><h3>' + translateExerciseName(ex.name) + '</h3><p>' + translateEquipment(ex.equipment) + '</p><div class="exercise-actions"><a href="https://www.youtube.com/results?search_query=' + encodeURIComponent(ex.name + ' exercise') + '" target="_blank" class="btn btn-small btn-youtube">▶️ Ver</a><button class="btn btn-small btn-success" onclick="showAddToDaySelector(\'' + ex.id + '\', \'' + ex.name.replace(/'/g, "\\'") + '\')">➕ Añadir</button></div></div>';
+>>>>>>> edca8db3f855f8e7e1b49af00f1ad326a1d01f11
         div.insertBefore(imgContainer, div.firstChild);
         container.appendChild(div);
     });
+}
+
+async function showMuscleGroup(muscle) {
+    isAddingToDay = false;
+    lastScreen = 'screen-exercises';
+    document.getElementById('muscle-title').textContent = muscleNames[muscle] || muscle;
+    document.getElementById('muscle-title').setAttribute('data-muscle', muscle);
+    document.getElementById('exercise-search').value = '';
+    currentSearchTerm = '';
+    if (!exercisesLoaded) { document.getElementById('exercise-list-container').innerHTML = '<div class="loading">Cargando...</div>'; await loadExercises(); }
+    renderExerciseListScreen();
     showScreen('screen-exercise-list');
 }
 
@@ -724,7 +783,11 @@ function showAddToDaySelector(exerciseId, exerciseName) {
     const modal = document.createElement('div');
     modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:2000;display:flex;align-items:center;justify-content:center;padding:20px;';
     let daysHtml = '';
+<<<<<<< HEAD
     routine.days.forEach((day, index) => { daysHtml += '<button class="btn" onclick="addExerciseToSpecificDay(\'' + exerciseId + '\',' + index + ')" style="margin-bottom:10px;">' + day.name + ' (' + day.exercises.length + ' ejercicios)</button>'; });
+=======
+    routine.days.forEach((day, index) => { daysHtml += '<button class="btn" onclick="addExerciseToSpecificDay(\'' + exerciseId + '\', ' + index + ')" style="margin-bottom:10px;">' + day.name + ' (' + day.exercises.length + ' ejercicios)</button>'; });
+>>>>>>> edca8db3f855f8e7e1b49af00f1ad326a1d01f11
     modal.innerHTML = '<div style="background:#8B0000;padding:30px;border-radius:15px;max-width:400px;width:100%;max-height:80vh;overflow-y:auto;"><h2 style="color:white;margin-bottom:20px;text-align:center;">Añadir a:</h2><p style="color:white;margin-bottom:20px;text-align:center;font-size:14px;">' + translateExerciseName(exerciseName) + '</p>' + daysHtml + '<button class="btn btn-secondary" onclick="this.parentElement.parentElement.remove()" style="margin-top:15px;">Volver</button></div>';
     document.body.appendChild(modal);
 }
@@ -733,23 +796,54 @@ function addExerciseToSpecificDay(exerciseId, dayIndex) {
     const ex = exercisesDB.find(e => String(e.id) === String(exerciseId));
     if (!ex) { alert('Ejercicio no encontrado'); return; }
     const day = routine.days[dayIndex];
+<<<<<<< HEAD
     if (day.exercises.find(e => String(e.id) === String(exerciseId))) { alert('⚠️ Ya está en este día'); return; }
     day.exercises.push({ id: ex.id, name: ex.name, body_part: ex.body_part, equipment: ex.equipment, media_id: ex.media_id || '', sets: '', reps: '', weight: '' });
     saveRoutine();
     alert('✅ Añadido a ' + day.name);
     const modal = document.querySelector('div[style*="z-index:2000"]');
     if (modal) modal.remove();
+=======
+    if (day.exercises.find(e => e.id === exerciseId)) { alert('⚠️ Ya está en este día'); return; }
+    day.exercises.push({ id: ex.id, name: ex.name, body_part: ex.body_part, equipment: ex.equipment, media_id: ex.media_id || '', sets: '', reps: '', weight: '' });
+    saveRoutine();
+    alert('✅ Añadido a ' + day.name);
+    document.querySelector('div[style*="z-index:2000"]').remove();
+	showScreen('screen-routines');
+>>>>>>> edca8db3f855f8e7e1b49af00f1ad326a1d01f11
 }
 
 async function showMuscleGroupForDay(muscle) {
+    isAddingToDay = true;
     currentMuscleForDay = muscle;
     document.getElementById('muscle-title').textContent = muscleNames[muscle] || muscle;
+    document.getElementById('muscle-title').setAttribute('data-muscle', muscle);
+    document.getElementById('exercise-search').value = '';
+    currentSearchTerm = '';
+    if (!exercisesLoaded) { document.getElementById('exercise-list-container').innerHTML = '<div class="loading">Cargando...</div>'; await loadExercises(); }
+    renderAddToDayList(muscle);
+    showScreen('screen-exercise-list');
+}
+
+function renderAddToDayList(muscle) {
     const container = document.getElementById('exercise-list-container');
-    if (!exercisesLoaded) { container.innerHTML = '<div class="loading">Cargando ejercicios...</div>'; await loadExercises(); }
-    const filtered = filterExercisesByMuscle(muscle);
+    let filtered = [];
+    if (currentSearchTerm) {
+        filtered = exercisesDB.filter(ex => {
+            const name = translateExerciseName(ex.name).toLowerCase();
+            const equip = translateEquipment(ex.equipment).toLowerCase();
+            return name.includes(currentSearchTerm) || equip.includes(currentSearchTerm);
+        });
+    } else if (muscle) {
+        filtered = filterExercisesByMuscle(muscle);
+    }
+    if (filtered.length === 0) { container.innerHTML = '<p style="text-align:center;padding:20px;color:#fff;">No se encontraron ejercicios</p>'; return; }
     container.innerHTML = '';
     filtered.forEach(ex => {
+<<<<<<< HEAD
         const alreadyInDay = routine.days[currentDayIndex].exercises.find(e => String(e.id) === String(ex.id));
+=======
+>>>>>>> edca8db3f855f8e7e1b49af00f1ad326a1d01f11
         const div = document.createElement('div');
         div.className = 'exercise-item';
         const imgContainer = document.createElement('div');
@@ -757,30 +851,46 @@ async function showMuscleGroupForDay(muscle) {
         const img = document.createElement('img');
         img.src = getExerciseImage(ex);
         img.alt = ex.name;
+<<<<<<< HEAD
         img.onerror = function() { this.parentElement.innerHTML = '<div class="placeholder">' + createPlaceholder(muscle, ex.name) + '</div>'; };
         imgContainer.appendChild(img);
         div.innerHTML += '<div class="exercise-info"><h3>' + translateExerciseName(ex.name) + '</h3><p>' + (translateEquipment(ex.equipment) || '') + '</p><div class="exercise-actions"><a href="https://www.youtube.com/results?search_query=' + encodeURIComponent(ex.name + ' exercise') + '" target="_blank" class="btn btn-small btn-youtube">▶️ Ver</a><button class="btn btn-small ' + (alreadyInDay ? 'btn-warning' : 'btn-success') + '" onclick="addExerciseToDay(\'' + ex.id + '\')" ' + (alreadyInDay ? 'disabled' : '') + '>' + (alreadyInDay ? '✓ Añadido' : '➕ Añadir') + '</button></div></div>';
+=======
+        img.onerror = function() { this.parentElement.innerHTML = '<div class="placeholder">' + createPlaceholder(ex.body_part, ex.name) + '</div>'; };
+        imgContainer.appendChild(img);
+        const alreadyInDay = routine.days[currentDayIndex].exercises.find(e => e.id === ex.id);
+        const muscleTag = muscleNames[ex.body_part] || ex.body_part;
+        div.innerHTML += '<div class="exercise-info"><span class="muscle-tag">' + muscleTag + '</span><h3>' + translateExerciseName(ex.name) + '</h3><p>' + translateEquipment(ex.equipment) + '</p><div class="exercise-actions"><a href="https://www.youtube.com/results?search_query=' + encodeURIComponent(ex.name + ' exercise') + '" target="_blank" class="btn btn-small btn-youtube">▶️ Ver</a><button class="btn btn-small ' + (alreadyInDay ? 'btn-warning' : 'btn-success') + '" onclick="addExerciseToDay(\'' + ex.id + '\')" ' + (alreadyInDay ? 'disabled' : '') + '>' + (alreadyInDay ? '✓ Añadido' : '➕ Añadir') + '</button></div></div>';
+>>>>>>> edca8db3f855f8e7e1b49af00f1ad326a1d01f11
         div.insertBefore(imgContainer, div.firstChild);
         container.appendChild(div);
     });
-    showScreen('screen-exercise-list');
 }
 
 function addExerciseToDay(exerciseId) {
     const ex = exercisesDB.find(e => String(e.id) === String(exerciseId));
     if (!ex) { alert('Ejercicio no encontrado'); return; }
     const day = routine.days[currentDayIndex];
+<<<<<<< HEAD
     if (day.exercises.find(e => String(e.id) === String(exerciseId))) { alert('⚠️ Ya está en este día'); return; }
     day.exercises.push({ id: ex.id, name: ex.name, body_part: ex.body_part, equipment: ex.equipment, media_id: ex.media_id || '', sets: '', reps: '', weight: '' });
     saveRoutine();
     alert('✅ Añadido a ' + day.name);
     showMuscleGroupForDay(currentMuscleForDay);
+=======
+    if (day.exercises.find(e => e.id === exerciseId)) { alert('⚠️ Ya está en este día'); return; }
+    day.exercises.push({ id: ex.id, name: ex.name, body_part: ex.body_part, equipment: ex.equipment, media_id: ex.media_id || '', sets: '', reps: '', weight: '' });
+    saveRoutine();
+    alert('✅ Añadido a ' + day.name);
+    renderAddToDayList(currentMuscleForDay);
+>>>>>>> edca8db3f855f8e7e1b49af00f1ad326a1d01f11
 }
 
-function goBackFromList() { showScreen(lastScreen); }
+function goBackFromList() { currentDayIndex = null; isAddingToDay = false; showScreen(lastScreen); }
 
 function shareRoutine() {
     if (!routine || !routine.days || routine.days.length === 0) { alert('⚠️ No tienes rutina'); return; }
+<<<<<<< HEAD
     try {
         const jsonStr = JSON.stringify(routine);
         const encoded = btoa(unescape(encodeURIComponent(jsonStr)));
@@ -790,6 +900,10 @@ function shareRoutine() {
             prompt('Copia este código:', encoded);
         }
     } catch (e) { alert('❌ Error al generar el código: ' + e.message); }
+=======
+    const encoded = btoa(encodeURIComponent(JSON.stringify(routine)));
+    navigator.clipboard.writeText(encoded).then(() => { alert('✅ Código copiado.'); }).catch(() => { prompt('Copia este código:', encoded); });
+>>>>>>> edca8db3f855f8e7e1b49af00f1ad326a1d01f11
 }
 
 function importRoutine() {
@@ -811,7 +925,11 @@ function renderRoutineDays() {
     routine.days.forEach((day, index) => {
         const exerciseCount = day.exercises ? day.exercises.length : 0;
         const isCompleted = day.completed ? 'day-completed' : '';
+<<<<<<< HEAD
         html += '<div class="day-card ' + isCompleted + '"><div class="day-header"><input class="day-title-input" value="' + day.name + '" onchange="renameDay(' + index + ',this.value)" onclick="event.stopPropagation()"><span class="day-badge">' + exerciseCount + ' ejercicios</span></div><div class="day-exercises">';
+=======
+        html += '<div class="day-card ' + isCompleted + '"><div class="day-header"><input class="day-title-input" value="' + day.name + '" onchange="renameDay(' + index + ', this.value)" onclick="event.stopPropagation()"><span class="day-badge">' + exerciseCount + ' ejercicios</span></div><div class="day-exercises">';
+>>>>>>> edca8db3f855f8e7e1b49af00f1ad326a1d01f11
         if (!day.exercises || day.exercises.length === 0) { html += '<p style="color:#999;font-size:13px;text-align:center;padding:10px;">Sin ejercicios</p>'; }
         else {
             day.exercises.forEach((ex, exIndex) => {
@@ -819,13 +937,35 @@ function renderRoutineDays() {
                 if (ex.sets) setsReps.push(ex.sets + ' series');
                 if (ex.reps) setsReps.push(ex.reps + ' reps');
                 if (ex.weight) setsReps.push(ex.weight + ' kg');
+<<<<<<< HEAD
                 const fullEx = exercisesDB.find(e => String(e.id) === String(ex.id)) || ex;
                 html += '<div class="day-exercise-item" onclick="openExerciseDetailInDay(' + index + ',' + exIndex + ')"><img class="routine-exercise-img" src="' + getExerciseImage(fullEx) + '" alt="' + ex.name + '" onerror="this.style.display=\'none\'"><div class="routine-exercise-info"><div class="day-exercise-name">' + translateExerciseName(ex.name) + '</div><div class="day-exercise-data">' + (setsReps.join(' | ') || 'Sin datos') + '</div></div><button class="btn btn-delete-exercise" onclick="event.stopPropagation();removeExerciseFromDay(' + index + ',' + exIndex + ')">🗑️</button></div>';
             });
         }
         html += '</div><div class="day-actions"><button class="btn btn-small" onclick="openAddToDay(' + index + ')">➕ Añadir</button><button class="btn btn-small ' + (day.completed ? 'btn-warning' : 'btn-success') + '" onclick="toggleDayCompleted(' + index + ')">' + (day.completed ? '↩️ Desmarcar' : '✅ Completado') + '</button></div></div>';
+=======
+                const fullEx = exercisesDB.find(e => e.id === ex.id) || ex;
+                html += '<div class="day-exercise-item"><img class="routine-exercise-img" src="' + getExerciseImage(fullEx) + '" alt="' + ex.name + '" onerror="this.style.display=\'none\'"><div class="routine-exercise-info"><div class="day-exercise-name">' + translateExerciseName(ex.name) + '</div><div class="day-exercise-data">' + (setsReps.join(' | ') || 'Sin datos') + '</div></div><div style="display:flex;flex-direction:column;gap:2px;">';
+                if (exIndex > 0) html += '<button class="btn btn-delete-exercise" onclick="moveExercise(' + index + ', ' + exIndex + ', -1)">⬆️</button>';
+                if (exIndex < day.exercises.length - 1) html += '<button class="btn btn-delete-exercise" onclick="moveExercise(' + index + ', ' + exIndex + ', 1)">⬇️</button>';
+                html += '<button class="btn btn-delete-exercise" onclick="removeExerciseFromDay(' + index + ', ' + exIndex + ')">🗑️</button></div></div>';
+            });
+        }
+        html += '</div><div class="day-actions"><button class="btn btn-small" onclick="openAddToDay(' + index + ')">➕ Añadir</button><button class="btn btn-small ' + (day.completed ? 'btn-warning' : 'btn-success') + '" onclick="toggleDayCompleted(' + index + ')">' + (day.completed ? '️ Desmarcar' : '✅ Completado') + '</button></div></div>';
+>>>>>>> edca8db3f855f8e7e1b49af00f1ad326a1d01f11
     });
     container.innerHTML = html;
+}
+
+function moveExercise(dayIndex, exIndex, direction) {
+    const exercises = routine.days[dayIndex].exercises;
+    const newIndex = exIndex + direction;
+    if (newIndex < 0 || newIndex >= exercises.length) return;
+    const temp = exercises[exIndex];
+    exercises[exIndex] = exercises[newIndex];
+    exercises[newIndex] = temp;
+    saveRoutine();
+    renderRoutineDays();
 }
 
 function renameDay(index, newName) { routine.days[index].name = newName; saveRoutine(); }
@@ -844,6 +984,10 @@ function openExerciseDetailInDay(dayIndex, exIndex) {
     img.src = getExerciseImage(fullEx);
     img.alt = ex.name;
     img.onerror = function() { this.parentElement.innerHTML = '<div class="placeholder-big">' + createPlaceholder(ex.body_part || 'chest', ex.name, 'big') + '</div>'; };
+<<<<<<< HEAD
+=======
+    imgContainer.innerHTML = '';
+>>>>>>> edca8db3f855f8e7e1b49af00f1ad326a1d01f11
     imgContainer.appendChild(img);
     document.getElementById('detail-name').textContent = translateExerciseName(ex.name);
     document.getElementById('detail-equipment').textContent = ex.equipment ? 'Equipo: ' + translateEquipment(ex.equipment) : '';
@@ -857,7 +1001,11 @@ function openExerciseDetailInDay(dayIndex, exIndex) {
 }
 
 function saveExerciseData() {
+<<<<<<< HEAD
     if (!currentExerciseDetail) { alert('No hay ejercicio seleccionado'); return; }
+=======
+    if (!currentExerciseDetail) return;
+>>>>>>> edca8db3f855f8e7e1b49af00f1ad326a1d01f11
     const dayIndex = currentExerciseDetail.dayIndex;
     const exIndex = currentExerciseDetail.exIndex;
     const ex = routine.days[dayIndex].exercises[exIndex];
@@ -907,10 +1055,14 @@ function saveEditedProfile() {
     const level = document.getElementById('edit-level').value;
     const goal = document.getElementById('edit-goal').value;
     const days = parseInt(document.getElementById('edit-days').value);
+<<<<<<< HEAD
     if (!name) { alert('️ Nombre obligatorio'); return; }
     if (!birthdate) { alert('⚠️ Fecha obligatoria'); return; }
     if (!weight || weight <= 0) { alert('⚠️ Peso válido'); return; }
     if (!height || height <= 0) { alert('⚠️ Altura válida'); return; }
+=======
+    if (!name || !birthdate || !weight || weight <= 0 || !height || height <= 0) { alert('⚠️ Revisa los campos'); return; }
+>>>>>>> edca8db3f855f8e7e1b49af00f1ad326a1d01f11
     profile.name = name; profile.birthdate = birthdate; profile.gender = gender;
     profile.weight = weight; profile.height = height; profile.level = level;
     profile.goal = goal; profile.days = days;
@@ -924,19 +1076,16 @@ function saveEditedProfile() {
         }
         routine = newRoutine; saveRoutine();
     }
-    closeEditModal();
-    alert('✅ Perfil actualizado');
-    renderProfile(); updateHome();
+    closeEditModal(); alert('✅ Perfil actualizado'); renderProfile(); updateHome();
 }
 
 function resetProfile() {
-    if (confirm('⚠️ ¿ESTÁS SEGURO?\nSe borrará:\n- Perfil\n- Rutina\n- Todos los datos\nNO se puede deshacer.')) {
-        if (confirm('⚠️ ÚLTIMA ADVERTENCIA: ¿Realmente borrar todo?')) {
+    if (confirm('⚠️ ¿ESTÁS SEGURO?\nSe borrará todo.')) {
+        if (confirm('⚠️ ÚLTIMA ADVERTENCIA')) {
             localStorage.removeItem('gembukai_profile');
             localStorage.removeItem('gembukai_routine');
             profile = null; routine = null;
             updateHome(); showScreen('screen-register');
-            alert('✅ Datos reiniciados.');
         }
     }
 }
@@ -951,12 +1100,16 @@ function renderUserList() {
         let statusClass = 'active', statusText = '✅ Activo';
         if (!user.active) { statusClass = 'inactive'; statusText = '❌ Desactivado'; }
         else if (today > expires) { statusClass = 'expired'; statusText = '⏰ Caducado'; }
+<<<<<<< HEAD
         html += '<div class="user-item"><div class="user-info"><div class="user-code">' + user.code + '</div><div class="user-name">' + user.name + '</div><div class="user-status ' + statusClass + '">' + statusText + ' | Caduca: ' + user.expires + '</div></div><div class="user-actions">' + (user.role !== 'admin' ? '<button class="btn btn-tiny ' + (user.active ? 'btn-warning' : 'btn-success') + '" onclick="toggleUserStatus(' + index + ')">' + (user.active ? '️' : '▶️') + '</button>' : '') + '</div></div>';
+=======
+        html += '<div class="user-item"><div class="user-info"><div class="user-code">' + user.code + '</div><div class="user-name">' + user.name + '</div><div class="user-status ' + statusClass + '">' + statusText + ' | Caduca: ' + user.expires + '</div></div><div class="user-actions">' + (user.role !== 'admin' ? '<button class="btn btn-tiny ' + (user.active ? 'btn-warning' : 'btn-success') + '" onclick="toggleUserStatus(' + index + ')">' + (user.active ? '⏸️' : '▶️') + '</button>' : '') + '</div></div>';
+>>>>>>> edca8db3f855f8e7e1b49af00f1ad326a1d01f11
     });
     container.innerHTML = html;
 }
 
-function toggleUserStatus(index) { alert('⚠️ Activa/desactiva en Google Sheets cambiando TRUE/FALSE en la columna "active".'); }
+function toggleUserStatus(index) { alert('⚠️ Activa/desactiva en Google Sheets.'); }
 function showAddUserForm() { document.getElementById('add-user-form').style.display = 'block'; }
 function hideAddUserForm() { document.getElementById('add-user-form').style.display = 'none'; }
 
@@ -970,8 +1123,13 @@ async function addNewUser() {
     renderUserList();
     try {
         await fetch(APPS_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(newUser) });
+<<<<<<< HEAD
         alert('✅ Usuario creado.\n🔑 Código: ' + code + '\nCópialo y dáselo al usuario.');
     } catch (error) { alert('✅ Código: ' + code + '\n️ No se pudo guardar en Sheets.'); }
+=======
+        alert('✅ Usuario creado.\n🔑 Código: ' + code);
+    } catch (error) { alert('✅ Código: ' + code + '\n⚠️ No se pudo guardar en Sheets.'); }
+>>>>>>> edca8db3f855f8e7e1b49af00f1ad326a1d01f11
     hideAddUserForm();
     document.getElementById('new-user-name').value = '';
     document.getElementById('new-user-expires').value = '';
