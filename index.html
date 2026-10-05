@@ -221,11 +221,7 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 <div class="muscle-btn" onclick="showMuscleGroup('back')">🔙 Espalda</div>
 <div class="muscle-btn" onclick="showMuscleGroup('shoulders')"> Hombros</div>
 <div class="muscle-btn" onclick="showMuscleGroup('upper arms')">💪 Brazos</div>
-<<<<<<< HEAD
 <div class="muscle-btn" onclick="showMuscleGroup('upper legs')">🦵 Piernas</div>
-=======
-<div class="muscle-btn" onclick="showMuscleGroup('upper legs')"> Piernas</div>
->>>>>>> 6e1b6b81fd8236af69e95de4162b3b00a06e7464
 <div class="muscle-btn" onclick="showMuscleGroup('lower legs')">🦶 Pantorrillas</div>
 <div class="muscle-btn" onclick="showMuscleGroup('waist')">🎯 Core</div>
 <div class="muscle-btn" onclick="showMuscleGroup('cardio')">❤️ Cardio</div>
@@ -410,13 +406,8 @@ const EXERCISEDB_URL = "https://raw.githubusercontent.com/hasaneyldrm/exercises-
 const EXERCISEDB_BASE_URL = "https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/main";
 
 const muscleNames = {
-<<<<<<< HEAD
     'chest': '🫁 Pecho',
     'back': '🔙 Espalda',
-=======
-    'chest': ' Pecho',
-    'back': ' Espalda',
->>>>>>> 6e1b6b81fd8236af69e95de4162b3b00a06e7464
     'shoulders': '🤷 Hombros',
     'upper arms': '💪 Brazos',
     'upper legs': '🦵 Piernas',
@@ -536,7 +527,7 @@ function getInitials(name) {
 }
 
 function createPlaceholder(muscle, name, size) {
-    const emoji = muscleEmojis[muscle] || '️';
+    const emoji = muscleEmojis[muscle] || '🏋️';
     const initials = getInitials(name);
     if (size === 'big') {
         return '<div class="emoji-big">' + emoji + '</div><div class="initials-big">' + initials + '</div>';
@@ -588,11 +579,7 @@ async function enterApp() {
 function checkUserAccess() {
     if (!currentUser) { showScreen('screen-login'); return; }
     const user = usersDB.users.find(u => u.code === currentUser.code);
-<<<<<<< HEAD
     if (!user) { alert('❌ Código no válido. Contacta con el gimnasio.'); logout(); return; }
-=======
-    if (!user) { alert(' Código no válido. Contacta con el gimnasio.'); logout(); return; }
->>>>>>> 6e1b6b81fd8236af69e95de4162b3b00a06e7464
     if (!user.active) { alert('⚠️ Tu acceso ha sido desactivado.'); logout(); return; }
     const today = new Date();
     const expires = new Date(user.expires);
@@ -690,11 +677,7 @@ function saveRoutine() { localStorage.setItem('gembukai_routine', JSON.stringify
 function updateHome() {
     if (!profile) return;
     document.getElementById('welcome-title').textContent = '¡Hola, ' + profile.name + '!';
-<<<<<<< HEAD
     const goals = { fuerza: '💪 Fuerza', hipertrofia: '️ Hipertrofia', definicion: '️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
-=======
-    const goals = { fuerza: '💪 Fuerza', hipertrofia: '🏋️ Hipertrofia', definicion: '✂️ Definición', resistencia: '🏃 Resistencia', salud: '❤️ Salud', perder_peso: '📉 Perder peso' };
->>>>>>> 6e1b6b81fd8236af69e95de4162b3b00a06e7464
     document.getElementById('welcome-msg').textContent = 'Objetivo: ' + (goals[profile.goal] || profile.goal);
     let totalExercises = 0;
     if (routine && routine.days) { totalExercises = routine.days.reduce((sum, day) => sum + (day.exercises ? day.exercises.length : 0), 0); }
@@ -787,11 +770,7 @@ function addExerciseToDay(exerciseId) {
     const ex = exercisesDB.find(e => String(e.id) === String(exerciseId));
     if (!ex) { alert('Ejercicio no encontrado'); return; }
     const day = routine.days[currentDayIndex];
-<<<<<<< HEAD
     if (day.exercises.find(e => String(e.id) === String(exerciseId))) { alert('️ Ya está en este día'); return; }
-=======
-    if (day.exercises.find(e => String(e.id) === String(exerciseId))) { alert('⚠️ Ya está en este día'); return; }
->>>>>>> 6e1b6b81fd8236af69e95de4162b3b00a06e7464
     day.exercises.push({ id: ex.id, name: ex.name, body_part: ex.body_part, equipment: ex.equipment, media_id: ex.media_id || '', sets: '', reps: '', weight: '' });
     saveRoutine();
     alert('✅ Añadido a ' + day.name);
@@ -928,11 +907,7 @@ function saveEditedProfile() {
     const level = document.getElementById('edit-level').value;
     const goal = document.getElementById('edit-goal').value;
     const days = parseInt(document.getElementById('edit-days').value);
-<<<<<<< HEAD
     if (!name) { alert('⚠️ Nombre obligatorio'); return; }
-=======
-    if (!name) { alert('️ Nombre obligatorio'); return; }
->>>>>>> 6e1b6b81fd8236af69e95de4162b3b00a06e7464
     if (!birthdate) { alert('⚠️ Fecha obligatoria'); return; }
     if (!weight || weight <= 0) { alert('⚠️ Peso válido'); return; }
     if (!height || height <= 0) { alert('⚠️ Altura válida'); return; }
@@ -956,11 +931,7 @@ function saveEditedProfile() {
 
 function resetProfile() {
     if (confirm('⚠️ ¿ESTÁS SEGURO?\nSe borrará:\n- Perfil\n- Rutina\n- Todos los datos\nNO se puede deshacer.')) {
-<<<<<<< HEAD
         if (confirm('️ ÚLTIMA ADVERTENCIA: ¿Realmente borrar todo?')) {
-=======
-        if (confirm('⚠️ ÚLTIMA ADVERTENCIA: ¿Realmente borrar todo?')) {
->>>>>>> 6e1b6b81fd8236af69e95de4162b3b00a06e7464
             localStorage.removeItem('gembukai_profile');
             localStorage.removeItem('gembukai_routine');
             profile = null; routine = null;
@@ -980,11 +951,7 @@ function renderUserList() {
         let statusClass = 'active', statusText = '✅ Activo';
         if (!user.active) { statusClass = 'inactive'; statusText = '❌ Desactivado'; }
         else if (today > expires) { statusClass = 'expired'; statusText = '⏰ Caducado'; }
-<<<<<<< HEAD
         html += '<div class="user-item"><div class="user-info"><div class="user-code">' + user.code + '</div><div class="user-name">' + user.name + '</div><div class="user-status ' + statusClass + '">' + statusText + ' | Caduca: ' + user.expires + '</div></div><div class="user-actions">' + (user.role !== 'admin' ? '<button class="btn btn-tiny ' + (user.active ? 'btn-warning' : 'btn-success') + '" onclick="toggleUserStatus(' + index + ')">' + (user.active ? '⏸️' : '▶️') + '</button>' : '') + '</div></div>';
-=======
-        html += '<div class="user-item"><div class="user-info"><div class="user-code">' + user.code + '</div><div class="user-name">' + user.name + '</div><div class="user-status ' + statusClass + '">' + statusText + ' | Caduca: ' + user.expires + '</div></div><div class="user-actions">' + (user.role !== 'admin' ? '<button class="btn btn-tiny ' + (user.active ? 'btn-warning' : 'btn-success') + '" onclick="toggleUserStatus(' + index + ')">' + (user.active ? '️' : '▶️') + '</button>' : '') + '</div></div>';
->>>>>>> 6e1b6b81fd8236af69e95de4162b3b00a06e7464
     });
     container.innerHTML = html;
 }
@@ -1004,11 +971,7 @@ async function addNewUser() {
     try {
         await fetch(APPS_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(newUser) });
         alert('✅ Usuario creado.\n🔑 Código: ' + code + '\nCópialo y dáselo al usuario.');
-<<<<<<< HEAD
     } catch (error) { alert('✅ Código: ' + code + '\n⚠️ No se pudo guardar en Sheets.'); }
-=======
-    } catch (error) { alert('✅ Código: ' + code + '\n️ No se pudo guardar en Sheets.'); }
->>>>>>> 6e1b6b81fd8236af69e95de4162b3b00a06e7464
     hideAddUserForm();
     document.getElementById('new-user-name').value = '';
     document.getElementById('new-user-expires').value = '';
