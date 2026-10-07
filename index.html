@@ -816,11 +816,11 @@ function importRoutine() {
     const code = prompt('Pega el código de la rutina:');
     if (code && code.trim() !== '') {
         try {
-            const imported = JSON.parse(decodeURIComponent(atob(code.trim())));
+            const imported = JSON.parse(decodeURIComponent(escape(atob(code.trim()))));
             if (imported.days && Array.isArray(imported.days)) {
                 if (confirm('¿Importar esta rutina? Reemplazará la actual.')) { routine = imported; saveRoutine(); renderRoutineDays(); alert('✅ Rutina importada!'); }
             } else { alert('❌ Código no válido.'); }
-        } catch (e) { alert('❌ Código no válido.'); }
+        } catch (e) { alert('❌ Código no válido: ' + e.message); }
     }
 }
 
