@@ -73,6 +73,21 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 .day-exercise-item { background: #f5f5f5; padding: 10px; border-radius: 8px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
 .routine-exercise-img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; background: #ddd; flex-shrink: 0; }
 .routine-exercise-info { flex: 1; }
+
+.weight-progress-panel {
+    margin-top: 14px; padding: 12px; border-radius: 10px;
+    background: #fff4f5; border: 1px solid #f0b5bf; color: #5b1722;
+}
+.weight-progress-panel h4 { margin: 0 0 8px; color: #8B0000; }
+.weight-progress-summary { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+.weight-progress-percent { font-size: 20px; font-weight: bold; }
+.weight-progress-up { color: #16834a; }
+.weight-progress-down { color: #c0392b; }
+.weight-progress-neutral { color: #6b7280; }
+.weight-history-list { margin: 10px 0 0; padding-left: 18px; font-size: 12px; }
+.weight-history-list li { margin: 4px 0; }
+.weight-progress-chip { font-size: 11px; font-weight: bold; display:inline-block; margin-top:4px; }
+
 .day-exercise-name { font-weight: bold; color: #8B0000; font-size: 14px; }
 .day-exercise-data { font-size: 12px; color: #666; margin-top: 2px; }
 .exercise-order-controls { display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; }
@@ -272,6 +287,7 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 <div class="form-group"><label>Peso (kg)</label><input type="number" id="input-weight" placeholder="0" step="0.5"></div>
 </div>
 <button class="btn btn-success" onclick="saveExerciseData()">💾 Guardar datos</button>
+<div id="weight-progress-detail" class="weight-progress-panel" aria-live="polite"></div>
 </div>
 </div>
 </div>
@@ -970,6 +986,73 @@ function handleRoutineFileImport(event) {
     reader.readAsText(file, 'UTF-8');
 }
 
+
+function getWeightHistory(ex) {
+    if (!Array.isArray(ex.weightHistory)) ex.weightHistory = [];
+    return ex.weightHistory
+        .map(item => ({ date: String(item.date || ''), weight: Number(item.weight) }))
+        .filter(item => Number.isFinite(item.weight) && item.weight > 0);
+}
+
+function getWeightProgress(ex) {
+    const history = getWeightHistory(ex);
+    const current = Number(ex.weight);
+    if (!Number.isFinite(current) || current <= 0 || history.length === 0) {
+        return { history, current: Number.isFinite(current) && current > 0 ? current : null, baseline: history.length ? history[0].weight : null, percent: null };
+    }
+    const baseline = history[0].weight;
+    return { history, current, baseline, percent: baseline > 0 ? ((current - baseline) / baseline) * 100 : null };
+}
+
+function formatWeightNumber(value) {
+    return Number(value).toLocaleString('es-ES', { maximumFractionDigits: 2 });
+}
+
+function formatWeightDate(value) {
+    if (!value) return 'Fecha inicial';
+    const parts = value.split('-');
+    return parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : value;
+}
+
+function renderRoutineWeightChip(ex) {
+    const progress = getWeightProgress(ex);
+    if (!progress.current) return '';
+    if (progress.percent === null) return `<div class="weight-progress-chip" style="color:#666;">Peso: ${formatWeightNumber(progress.current)} kg · Base</div>`;
+    const rounded = Math.round(progress.percent * 10) / 10;
+    const sign = rounded > 0 ? '+' : '';
+    const color = rounded > 0 ? '#16834a' : rounded < 0 ? '#c0392b' : '#666';
+    return `<div class="weight-progress-chip" style="color:${color};">Peso: ${formatWeightNumber(progress.current)} kg · ${sign}${String(rounded).replace('.', ',')}%</div>`;
+}
+
+function renderWeightProgress(ex, targetId) {
+    const target = document.getElementById(targetId);
+    if (!target) return;
+    const progress = getWeightProgress(ex);
+    if (!progress.current) {
+        target.innerHTML = '<h4>📈 Progresión del peso</h4><p style="margin:0;font-size:13px;">Guarda un peso para iniciar el historial de este ejercicio.</p>';
+        return;
+    }
+    let percentHtml = '<span class="weight-progress-percent weight-progress-neutral">Base inicial</span>';
+    let changeText = 'Primer peso registrado';
+    if (progress.percent !== null) {
+        const rounded = Math.round(progress.percent * 10) / 10;
+        const sign = rounded > 0 ? '+' : '';
+        const css = rounded > 0 ? 'weight-progress-up' : rounded < 0 ? 'weight-progress-down' : 'weight-progress-neutral';
+        percentHtml = `<span class="weight-progress-percent ${css}">${sign}${String(rounded).replace('.', ',')}%</span>`;
+        changeText = rounded === 0 ? 'Sin cambio respecto al peso inicial' : `${rounded > 0 ? 'Aumento' : 'Disminución'} respecto al peso inicial`;
+    }
+    const historyItems = progress.history.slice().reverse().map(item =>
+        `<li>${formatWeightDate(item.date)} — <strong>${formatWeightNumber(item.weight)} kg</strong></li>`
+    ).join('');
+    target.innerHTML = `<h4>📈 Progresión del peso</h4>
+        <div class="weight-progress-summary">
+            <div><div style="font-size:12px;">Peso actual</div><strong>${formatWeightNumber(progress.current)} kg</strong></div>
+            <div>${percentHtml}</div>
+        </div>
+        <p style="font-size:12px;margin:5px 0 0;">${changeText}${progress.baseline ? ` · Peso inicial: ${formatWeightNumber(progress.baseline)} kg` : ''}</p>
+        <ul class="weight-history-list">${historyItems || '<li>Sin cambios registrados todavía</li>'}</ul>`;
+}
+
 function renderRoutineDays() {
     const container = document.getElementById('routine-days-container');
     if (!routine || !routine.days || routine.days.length === 0) { container.innerHTML = '<div class="empty-state"><div class="icon">🏋️</div><p>No tienes rutina</p></div>'; return; }
@@ -985,7 +1068,7 @@ function renderRoutineDays() {
                 if (ex.sets) setsReps.push(ex.sets + ' series');
                 if (ex.reps) setsReps.push(ex.reps + ' reps');
                 if (ex.weight) setsReps.push(ex.weight + ' kg');
-                html += `<div class="day-exercise-item" onclick="openExerciseDetailInDay(${index}, ${exIndex})"><img class="routine-exercise-img" src="${getRoutineExerciseImage(ex)}" alt="${ex.name}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'60\' height=\'60\'><rect width=\'60\' height=\'60\' fill=\'%23ddd\'/><text x=\'30\' y=\'35\' font-size=\'24\' text-anchor=\'middle\'>️</text></svg>'"><div class="routine-exercise-info"><div class="day-exercise-name">${translateExerciseName(ex.name)}</div><div class="day-exercise-data">${setsReps.join(' | ') || 'Sin datos'}</div></div><div class="exercise-order-controls"><button class="btn-move-exercise" title="Mover hacia arriba" aria-label="Mover ${translateExerciseName(ex.name)} hacia arriba" ${exIndex === 0 ? 'disabled' : ''} onclick="event.stopPropagation(); moveExerciseInDay(${index}, ${exIndex}, ${exIndex - 1})">↑</button><button class="btn-move-exercise" title="Mover hacia abajo" aria-label="Mover ${translateExerciseName(ex.name)} hacia abajo" ${exIndex === day.exercises.length - 1 ? 'disabled' : ''} onclick="event.stopPropagation(); moveExerciseInDay(${index}, ${exIndex}, ${exIndex + 1})">↓</button></div><button class="btn btn-delete-exercise" onclick="event.stopPropagation(); removeExerciseFromDay(${index}, ${exIndex})">🗑️</button></div>`;
+                html += `<div class="day-exercise-item" onclick="openExerciseDetailInDay(${index}, ${exIndex})"><img class="routine-exercise-img" src="${getRoutineExerciseImage(ex)}" alt="${ex.name}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'60\' height=\'60\'><rect width=\'60\' height=\'60\' fill=\'%23ddd\'/><text x=\'30\' y=\'35\' font-size=\'24\' text-anchor=\'middle\'>️</text></svg>'"><div class="routine-exercise-info"><div class="day-exercise-name">${translateExerciseName(ex.name)}</div><div class="day-exercise-data">${setsReps.join(' | ') || 'Sin datos'}${renderRoutineWeightChip(ex)}</div></div><div class="exercise-order-controls"><button class="btn-move-exercise" title="Mover hacia arriba" aria-label="Mover ${translateExerciseName(ex.name)} hacia arriba" ${exIndex === 0 ? 'disabled' : ''} onclick="event.stopPropagation(); moveExerciseInDay(${index}, ${exIndex}, ${exIndex - 1})">↑</button><button class="btn-move-exercise" title="Mover hacia abajo" aria-label="Mover ${translateExerciseName(ex.name)} hacia abajo" ${exIndex === day.exercises.length - 1 ? 'disabled' : ''} onclick="event.stopPropagation(); moveExerciseInDay(${index}, ${exIndex}, ${exIndex + 1})">↓</button></div><button class="btn btn-delete-exercise" onclick="event.stopPropagation(); removeExerciseFromDay(${index}, ${exIndex})">🗑️</button></div>`;
             });
         }
         html += `</div><div class="day-actions"><button class="btn btn-small" onclick="openAddToDay(${index})"> Añadir</button><button class="btn btn-small ${day.completed ? 'btn-warning' : 'btn-success'}" onclick="toggleDayCompleted(${index})">${day.completed ? '↩️ Desmarcar' : '✅ Completado'}</button></div></div>`;
@@ -1024,6 +1107,12 @@ function openExerciseDetailInDay(dayIndex, exIndex) {
     document.getElementById('input-sets').value = ex.sets || '';
     document.getElementById('input-reps').value = ex.reps || '';
     document.getElementById('input-weight').value = ex.weight || '';
+    if (!Array.isArray(ex.weightHistory)) ex.weightHistory = [];
+    if (ex.weightHistory.length === 0 && Number(ex.weight) > 0) {
+        ex.weightHistory.push({ date: new Date().toISOString().slice(0, 10), weight: Number(ex.weight) });
+        saveRoutine();
+    }
+    renderWeightProgress(ex, 'weight-progress-detail');
     document.getElementById('detail-instructions-container').style.display = 'none';
     showScreen('screen-exercise-detail');
 }
@@ -1034,9 +1123,31 @@ function saveExerciseData() {
     const ex = routine.days[dayIndex].exercises[exIndex];
     ex.sets = document.getElementById('input-sets').value;
     ex.reps = document.getElementById('input-reps').value;
-    ex.weight = document.getElementById('input-weight').value;
+    const oldWeight = Number(ex.weight);
+    const weightInput = document.getElementById('input-weight').value.trim();
+    const newWeight = weightInput === '' ? '' : Number(weightInput);
+    if (weightInput !== '' && (!Number.isFinite(newWeight) || newWeight < 0)) {
+        alert('Introduce un peso válido igual o superior a 0 kg.');
+        return;
+    }
+    if (!Array.isArray(ex.weightHistory)) ex.weightHistory = [];
+    const today = new Date().toISOString().slice(0, 10);
+    if (ex.weightHistory.length === 0 && Number.isFinite(oldWeight) && oldWeight > 0) {
+        ex.weightHistory.push({ date: today, weight: oldWeight });
+    }
+    const previousRecorded = ex.weightHistory.length ? Number(ex.weightHistory[ex.weightHistory.length - 1].weight) : null;
+    if (newWeight !== '' && newWeight > 0) {
+        if (previousRecorded === null || !Number.isFinite(previousRecorded) || previousRecorded <= 0) {
+            ex.weightHistory.push({ date: today, weight: newWeight });
+        } else if (Math.abs(newWeight - previousRecorded) > 0.0001) {
+            ex.weightHistory.push({ date: today, weight: newWeight });
+        }
+    }
+    ex.weight = weightInput === '' ? '' : String(newWeight);
     saveRoutine();
-    alert('✅ Datos guardados');
+    renderWeightProgress(ex, 'weight-progress-detail');
+    renderRoutineDays();
+    alert('✅ Datos guardados. La progresión del peso se ha actualizado.');
     backFromDetail();
 }
 
