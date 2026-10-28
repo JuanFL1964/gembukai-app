@@ -41,11 +41,13 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 .btn-danger { background: #e74c3c; border-color: #e74c3c; }
 .btn-tiny { padding: 8px 12px; font-size: 13px; min-height: 38px; }
 .btn-delete-exercise { padding: 4px 8px !important; font-size: 11px !important; min-height: 28px !important; width: auto !important; flex: none !important; line-height: 1 !important; }
-.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.95); display: flex; justify-content: space-around; padding: 8px 0 12px; border-top: 3px solid #DC143C; z-index: 100; }
-.nav-item { text-align: center; cursor: pointer; padding: 8px 12px; border-radius: 10px; flex: 1; }
-.nav-item .icon { font-size: 22px; display: block; }
-.nav-item .label { font-size: 11px; margin-top: 2px; }
-.nav-item.active { color: #DC143C; background: rgba(255,255,255,0.1); }
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #111111; display: flex; justify-content: space-around; gap: 4px; padding: 7px 5px max(10px, env(safe-area-inset-bottom)); border-top: 3px solid #DC143C; z-index: 100; }
+.nav-item { text-align: center; cursor: pointer; padding: 7px 5px; border-radius: 10px; flex: 1; color: #d5d5d5; transition: background .15s, color .15s; }
+.nav-item .icon { display: flex; align-items: center; justify-content: center; height: 25px; margin-bottom: 3px; }
+.nav-item .icon svg { width: 23px; height: 23px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.nav-item .label { display: block; font-size: 11px; margin-top: 2px; color: inherit; }
+.nav-item.active { color: #ffffff; background: #B5121B; box-shadow: 0 0 0 1px rgba(255,255,255,.12) inset; }
+.nav-item:focus-visible { outline: 2px solid #ffffff; outline-offset: -2px; }
 .screen { display: none; }
 .screen.active { display: block; animation: fadeIn 0.2s; }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -73,6 +75,9 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 .routine-exercise-info { flex: 1; }
 .day-exercise-name { font-weight: bold; color: #8B0000; font-size: 14px; }
 .day-exercise-data { font-size: 12px; color: #666; margin-top: 2px; }
+.exercise-order-controls { display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; }
+.btn-move-exercise { border: 0; border-radius: 6px; background: #e5e5e5; color: #8B0000; font-size: 16px; font-weight: bold; width: 34px; height: 30px; padding: 0; cursor: pointer; }
+.btn-move-exercise:disabled { opacity: 0.3; cursor: default; }
 .day-actions { display: flex; gap: 6px; margin-top: 10px; }
 .day-actions .btn { margin-top: 0; flex: 1; font-size: 13px; padding: 10px; min-height: 44px; }
 .day-completed { background: #27ae60; }
@@ -236,6 +241,10 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 <button class="back-btn" onclick="goBackFromList()">← Volver</button>
 <div class="card">
 <h2 id="muscle-title">Ejercicios</h2>
+<div style="margin:12px 0 16px;">
+<input id="exercise-search" type="search" placeholder="🔎 Buscar ejercicio en todos los grupos musculares..." oninput="searchExercises()" style="width:100%;box-sizing:border-box;padding:13px 14px;border:2px solid #DC143C;border-radius:10px;font-size:16px;background:#fff;color:#333;">
+<p style="font-size:12px;color:#666;margin:6px 2px 0;">Escribe unas letras para buscar en todos los grupos musculares.</p>
+</div>
 <div id="exercise-list-container" class="exercise-list"></div>
 </div>
 </div>
@@ -395,10 +404,10 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 </div>
 
 <div class="bottom-nav" id="bottom-nav" style="display:none;">
-<div class="nav-item active" onclick="showScreen('screen-home', this)"><span class="icon">🏠</span><span class="label">Inicio</span></div>
-<div class="nav-item" onclick="showScreen('screen-exercises', this)"><span class="icon">📋</span><span class="label">Ejercicios</span></div>
-<div class="nav-item" onclick="showScreen('screen-routines', this)"><span class="icon">🏋️</span><span class="label">Rutinas</span></div>
-<div class="nav-item" onclick="showScreen('screen-profile', this)"><span class="icon"></span><span class="label">Perfil</span></div>
+<div class="nav-item active" onclick="showScreen('screen-home', this)"><span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7"/><path d="M5 9v11h14V9M9 20v-7h6v7"/></svg></span><span class="label">Inicio</span></div>
+<div class="nav-item" onclick="showScreen('screen-exercises', this)"><span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12M6 8h12M6 12h8M6 16h8"/><path d="M4 2h16v20H4z"/></svg></span><span class="label">Ejercicios</span></div>
+<div class="nav-item" onclick="showScreen('screen-routines', this)"><span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6M6 6v12M9 10v4M15 10v4M18 6v12M21 9v6M6 12h12"/></svg></span><span class="label">Rutinas</span></div>
+<div class="nav-item" onclick="showScreen('screen-profile', this)"><span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2z"/></svg></span><span class="label">Perfil</span></div>
 </div>
 
 <script>
@@ -432,6 +441,8 @@ let routine = null;
 let currentExerciseDetail = null;
 let currentDayIndex = null;
 let currentMuscleForDay = null;
+let exerciseListMode = 'general';
+let currentExerciseMuscle = 'chest';
 let lastScreen = 'screen-exercises';
 let exercisesLoaded = false;
 let currentUser = null;
@@ -549,6 +560,13 @@ function getExerciseImage(exercise) {
     return `${EXERCISEDB_BASE_URL}/images/${id}-${name}.jpg`;
 }
 
+
+// En las rutinas antiguas puede faltar media_id. Recuperamos el registro
+// completo del catálogo para utilizar la misma imagen que en «Ejercicios».
+function getRoutineExerciseImage(exercise) {
+    const catalogExercise = exercisesDB.find(e => String(e.id) === String(exercise.id));
+    return getExerciseImage(catalogExercise || exercise);
+}
 function generateRandomCode() {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     let code = 'GEMBU-';
@@ -723,13 +741,46 @@ function showScreen(screenId, navElement) {
 
 async function showMuscleGroup(muscle) {
     lastScreen = 'screen-exercises';
+    exerciseListMode = 'general';
+    currentExerciseMuscle = muscle;
+    const search = document.getElementById('exercise-search');
+    if (search) search.value = '';
     document.getElementById('muscle-title').textContent = muscleNames[muscle] || muscle;
     const container = document.getElementById('exercise-list-container');
     if (!exercisesLoaded) { container.innerHTML = '<div class="loading">Cargando ejercicios...</div>'; await loadExercises(); }
-    const filtered = filterExercisesByMuscle(muscle);
-    if (filtered.length === 0) { container.innerHTML = '<p style="text-align:center;padding:20px;color:#fff;">No hay ejercicios disponibles para este grupo</p>'; showScreen('screen-exercise-list'); return; }
+    renderExerciseResults(filterExercisesByMuscle(muscle));
+    showScreen('screen-exercise-list');
+}
+
+function normalizeExerciseSearch(value) {
+    return String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+}
+
+function searchExercises() {
+    const query = normalizeExerciseSearch(document.getElementById('exercise-search')?.value);
+    const title = document.getElementById('muscle-title');
+    if (!query) {
+        title.textContent = muscleNames[currentExerciseMuscle] || 'Ejercicios';
+        renderExerciseResults(filterExercisesByMuscle(currentExerciseMuscle));
+        return;
+    }
+    title.textContent = 'Resultados de búsqueda';
+    const results = exercisesDB.filter(ex => {
+        const text = normalizeExerciseSearch([translateExerciseName(ex.name), ex.name, translateEquipment(ex.equipment), muscleNames[ex.body_part] || ex.body_part].join(' '));
+        return text.includes(query);
+    });
+    renderExerciseResults(results);
+}
+
+function renderExerciseResults(results) {
+    const container = document.getElementById('exercise-list-container');
     container.innerHTML = '';
-    filtered.forEach(ex => {
+    if (!results.length) {
+        container.innerHTML = '<p style="text-align:center;padding:20px;color:#666;">No se encontraron ejercicios.</p>';
+        return;
+    }
+    results.forEach(ex => {
+        const muscle = ex.body_part || currentExerciseMuscle;
         const div = document.createElement('div');
         div.className = 'exercise-item';
         const imgContainer = document.createElement('div');
@@ -739,14 +790,22 @@ async function showMuscleGroup(muscle) {
         img.alt = ex.name;
         img.onerror = function() { this.parentElement.innerHTML = `<div class="placeholder">${createPlaceholder(muscle, ex.name)}</div>`; };
         imgContainer.appendChild(img);
-        div.innerHTML += `<div class="exercise-info"><h3>${translateExerciseName(ex.name)}</h3><p>${translateEquipment(ex.equipment) || ''}</p><div class="exercise-actions"><a href="https://www.youtube.com/results?search_query=${encodeURIComponent(ex.name + ' exercise')}" target="_blank" class="btn btn-small btn-youtube">▶️ Ver</a><button class="btn btn-small btn-success" onclick="showAddToDaySelector('${ex.id}', '${ex.name.replace(/'/g, "\\'")}')">➕ Añadir</button></div></div>`;
+        const groupLabel = document.getElementById('exercise-search')?.value.trim() ? `<p style="font-size:11px;color:#777;margin-top:2px;">${muscleNames[muscle] || muscle}</p>` : '';
+        let actions = '';
+        if (exerciseListMode === 'routine-day') {
+            const alreadyInDay = routine.days[currentDayIndex].exercises.find(e => e.id === ex.id);
+            actions = `<button class="btn btn-small ${alreadyInDay ? 'btn-warning' : 'btn-success'}" onclick="addExerciseToDay('${ex.id}')" ${alreadyInDay ? 'disabled' : ''}>${alreadyInDay ? '✓ Añadido' : '➕ Añadir'}</button>`;
+        } else {
+            actions = `<button class="btn btn-small btn-success" onclick="showAddToDaySelector('${ex.id}')">➕ Añadir</button>`;
+        }
+        div.innerHTML = `<div class="exercise-info"><h3>${translateExerciseName(ex.name)}</h3><p>${translateEquipment(ex.equipment) || ''}</p>${groupLabel}<div class="exercise-actions"><a href="https://www.youtube.com/results?search_query=${encodeURIComponent(ex.name + ' exercise')}" target="_blank" class="btn btn-small btn-youtube">▶️ Ver</a>${actions}</div></div>`;
         div.insertBefore(imgContainer, div.firstChild);
         container.appendChild(div);
     });
-    showScreen('screen-exercise-list');
 }
 
 function showAddToDaySelector(exerciseId, exerciseName) {
+    if (!exerciseName) exerciseName = (exercisesDB.find(e => String(e.id) === String(exerciseId)) || {}).name || 'Ejercicio';
     const modal = document.createElement('div');
     modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:2000;display:flex;align-items:center;justify-content:center;padding:20px;';
     let daysHtml = '';
@@ -760,7 +819,7 @@ function addExerciseToSpecificDay(exerciseId, dayIndex) {
     const day = routine.days[dayIndex];
     if (day.exercises.find(e => e.id === exerciseId)) { alert('⚠️ Ya está en este día'); return; }
     const scrollPosition = window.scrollY;
-    day.exercises.push({ id: ex.id, name: ex.name, body_part: ex.body_part, equipment: ex.equipment, sets: '', reps: '', weight: '' });
+    day.exercises.push({ id: ex.id, name: ex.name, body_part: ex.body_part, equipment: ex.equipment, media_id: ex.media_id || '', sets: '', reps: '', weight: '' });
     saveRoutine();
     alert('✅ Añadido a ' + day.name);
     document.querySelector('div[style*="z-index:2000"]').remove();
@@ -769,26 +828,14 @@ function addExerciseToSpecificDay(exerciseId, dayIndex) {
 
 async function showMuscleGroupForDay(muscle) {
     currentMuscleForDay = muscle;
+    currentExerciseMuscle = muscle;
+    exerciseListMode = 'routine-day';
+    const search = document.getElementById('exercise-search');
+    if (search) search.value = '';
     document.getElementById('muscle-title').textContent = muscleNames[muscle] || muscle;
     const container = document.getElementById('exercise-list-container');
     if (!exercisesLoaded) { container.innerHTML = '<div class="loading">Cargando ejercicios...</div>'; await loadExercises(); }
-    const filtered = filterExercisesByMuscle(muscle);
-    container.innerHTML = '';
-    filtered.forEach(ex => {
-        const alreadyInDay = routine.days[currentDayIndex].exercises.find(e => e.id === ex.id);
-        const div = document.createElement('div');
-        div.className = 'exercise-item';
-        const imgContainer = document.createElement('div');
-        imgContainer.className = 'exercise-image';
-        const img = document.createElement('img');
-        img.src = getExerciseImage(ex);
-        img.alt = ex.name;
-        img.onerror = function() { this.parentElement.innerHTML = `<div class="placeholder">${createPlaceholder(muscle, ex.name)}</div>`; };
-        imgContainer.appendChild(img);
-        div.innerHTML += `<div class="exercise-info"><h3>${translateExerciseName(ex.name)}</h3><p>${translateEquipment(ex.equipment) || ''}</p><div class="exercise-actions"><a href="https://www.youtube.com/results?search_query=${encodeURIComponent(ex.name + ' exercise')}" target="_blank" class="btn btn-small btn-youtube">▶️ Ver</a><button class="btn btn-small ${alreadyInDay ? 'btn-warning' : 'btn-success'}" onclick="addExerciseToDay('${ex.id}')" ${alreadyInDay ? 'disabled' : ''}>${alreadyInDay ? '✓ Añadido' : '➕ Añadir'}</button></div></div>`;
-        div.insertBefore(imgContainer, div.firstChild);
-        container.appendChild(div);
-    });
+    renderExerciseResults(filterExercisesByMuscle(muscle));
     showScreen('screen-exercise-list');
 }
 
@@ -797,7 +844,7 @@ function addExerciseToDay(exerciseId) {
     const day = routine.days[currentDayIndex];
     if (day.exercises.find(e => e.id === exerciseId)) { alert('⚠️ Ya está en este día'); return; }
     const scrollPosition = window.scrollY;
-    day.exercises.push({ id: ex.id, name: ex.name, body_part: ex.body_part, equipment: ex.equipment, sets: '', reps: '', weight: '' });
+    day.exercises.push({ id: ex.id, name: ex.name, body_part: ex.body_part, equipment: ex.equipment, media_id: ex.media_id || '', sets: '', reps: '', weight: '' });
     saveRoutine();
     alert('✅ Añadido a ' + day.name);
     showMuscleGroupForDay(currentMuscleForDay);
@@ -807,33 +854,94 @@ function addExerciseToDay(exerciseId) {
 function goBackFromList() { showScreen(lastScreen); }
 
 function shareRoutine() {
-    if (!routine || !routine.days || routine.days.length === 0) { alert('⚠️ No tienes rutina'); return; }
+    if (!routine || !Array.isArray(routine.days) || routine.days.length === 0) {
+        alert('⚠️ No tienes una rutina para exportar.');
+        return;
+    }
+
     try {
-        const jsonStr = JSON.stringify(routine);
-        const encoder = new TextEncoder();
-        const data = encoder.encode(jsonStr);
-        let binary = '';
-        data.forEach(byte => binary += String.fromCharCode(byte));
-        const encoded = btoa(binary);
-        navigator.clipboard.writeText(encoded).then(() => { alert('✅ Código copiado (' + encoded.length + ' caracteres). Pégalo en WhatsApp.'); }).catch(() => { prompt('Copia este código:', encoded); });
-    } catch (e) { alert('❌ Error: ' + e.message); }
+        // Exportamos la rutina completa en JSON dentro de un archivo propio de Gembukai.
+        const exportData = {
+            app: 'Gembukai',
+            formatVersion: 1,
+            exportedAt: new Date().toISOString(),
+            routine: routine
+        };
+        const blob = new Blob([JSON.stringify(exportData, null, 2)], {
+            type: 'application/json;charset=utf-8'
+        });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        const date = new Date().toISOString().slice(0, 10);
+        link.href = url;
+        link.download = 'Rutina_Gembukai_' + date + '.gembukai';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+        alert('✅ Rutina exportada. Ya puedes enviar el archivo descargado al socio.');
+    } catch (e) {
+        console.error('Error al exportar la rutina:', e);
+        alert('❌ No se ha podido exportar la rutina: ' + e.message);
+    }
 }
 
 function importRoutine() {
-    const code = prompt('Pega el código de la rutina:');
-    if (code && code.trim() !== '') {
-        try {
-            const binary = atob(code.trim());
-            const bytes = new Uint8Array(binary.length);
-            for (let i = 0; i < binary.length; i++) { bytes[i] = binary.charCodeAt(i); }
-            const decoder = new TextDecoder();
-            const jsonStr = decoder.decode(bytes);
-            const imported = JSON.parse(jsonStr);
-            if (imported.days && Array.isArray(imported.days)) {
-                if (confirm('¿Importar esta rutina? Reemplazará la actual.')) { routine = imported; saveRoutine(); renderRoutineDays(); alert('✅ Rutina importada!'); }
-            } else { alert('❌ Código no válido.'); }
-        } catch (e) { alert('❌ Código no válido: ' + e.message); }
+    let input = document.getElementById('gembukai-routine-file');
+    if (!input) {
+        input = document.createElement('input');
+        input.type = 'file';
+        input.id = 'gembukai-routine-file';
+        input.accept = '.gembukai,.json,application/json';
+        input.style.display = 'none';
+        document.body.appendChild(input);
+        input.addEventListener('change', handleRoutineFileImport);
     }
+    // Permite volver a seleccionar el mismo archivo si hace falta.
+    input.value = '';
+    input.click();
+}
+
+function handleRoutineFileImport(event) {
+    const input = event.target;
+    const file = input.files && input.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function () {
+        try {
+            const parsed = JSON.parse(String(reader.result || ''));
+            // Formato nuevo: metadatos + rutina. También admitimos JSON de rutina antiguo.
+            const imported = parsed && parsed.app === 'Gembukai' && parsed.routine
+                ? parsed.routine
+                : parsed;
+
+            if (!imported || !Array.isArray(imported.days) ||
+                !imported.days.every(day => day && typeof day.name === 'string' && Array.isArray(day.exercises))) {
+                throw new Error('El archivo no contiene una rutina válida de Gembukai.');
+            }
+
+            if (!confirm('¿Importar la rutina del archivo "' + file.name + '"? Reemplazará la rutina actual.')) {
+                input.value = '';
+                return;
+            }
+
+            routine = imported;
+            saveRoutine();
+            renderRoutineDays();
+            alert('✅ Rutina importada correctamente.');
+        } catch (e) {
+            console.error('Error al importar la rutina:', e);
+            alert('❌ No se ha podido importar el archivo. Comprueba que sea un archivo de rutina de Gembukai y que no esté dañado.\\n\\nDetalle: ' + e.message);
+        } finally {
+            input.value = '';
+        }
+    };
+    reader.onerror = function () {
+        alert('❌ No se ha podido leer el archivo seleccionado.');
+        input.value = '';
+    };
+    reader.readAsText(file, 'UTF-8');
 }
 
 function renderRoutineDays() {
@@ -851,7 +959,7 @@ function renderRoutineDays() {
                 if (ex.sets) setsReps.push(ex.sets + ' series');
                 if (ex.reps) setsReps.push(ex.reps + ' reps');
                 if (ex.weight) setsReps.push(ex.weight + ' kg');
-                html += `<div class="day-exercise-item" onclick="openExerciseDetailInDay(${index}, ${exIndex})"><img class="routine-exercise-img" src="${getExerciseImage(ex)}" alt="${ex.name}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'60\' height=\'60\'><rect width=\'60\' height=\'60\' fill=\'%23ddd\'/><text x=\'30\' y=\'35\' font-size=\'24\' text-anchor=\'middle\'>️</text></svg>'"><div class="routine-exercise-info"><div class="day-exercise-name">${translateExerciseName(ex.name)}</div><div class="day-exercise-data">${setsReps.join(' | ') || 'Sin datos'}</div></div><button class="btn btn-delete-exercise" onclick="event.stopPropagation(); removeExerciseFromDay(${index}, ${exIndex})">🗑️</button></div>`;
+                html += `<div class="day-exercise-item" onclick="openExerciseDetailInDay(${index}, ${exIndex})"><img class="routine-exercise-img" src="${getRoutineExerciseImage(ex)}" alt="${ex.name}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'60\' height=\'60\'><rect width=\'60\' height=\'60\' fill=\'%23ddd\'/><text x=\'30\' y=\'35\' font-size=\'24\' text-anchor=\'middle\'>️</text></svg>'"><div class="routine-exercise-info"><div class="day-exercise-name">${translateExerciseName(ex.name)}</div><div class="day-exercise-data">${setsReps.join(' | ') || 'Sin datos'}</div></div><div class="exercise-order-controls"><button class="btn-move-exercise" title="Mover hacia arriba" aria-label="Mover ${translateExerciseName(ex.name)} hacia arriba" ${exIndex === 0 ? 'disabled' : ''} onclick="event.stopPropagation(); moveExerciseInDay(${index}, ${exIndex}, ${exIndex - 1})">↑</button><button class="btn-move-exercise" title="Mover hacia abajo" aria-label="Mover ${translateExerciseName(ex.name)} hacia abajo" ${exIndex === day.exercises.length - 1 ? 'disabled' : ''} onclick="event.stopPropagation(); moveExerciseInDay(${index}, ${exIndex}, ${exIndex + 1})">↓</button></div><button class="btn btn-delete-exercise" onclick="event.stopPropagation(); removeExerciseFromDay(${index}, ${exIndex})">🗑️</button></div>`;
             });
         }
         html += `</div><div class="day-actions"><button class="btn btn-small" onclick="openAddToDay(${index})"> Añadir</button><button class="btn btn-small ${day.completed ? 'btn-warning' : 'btn-success'}" onclick="toggleDayCompleted(${index})">${day.completed ? '↩️ Desmarcar' : '✅ Completado'}</button></div></div>`;
@@ -861,6 +969,14 @@ function renderRoutineDays() {
 
 function renameDay(index, newName) { routine.days[index].name = newName; saveRoutine(); }
 function openAddToDay(dayIndex) { currentDayIndex = dayIndex; document.getElementById('add-to-day-title').textContent = 'Añadir a: ' + routine.days[dayIndex].name; showScreen('screen-add-to-day'); }
+function moveExerciseInDay(dayIndex, fromIndex, toIndex) {
+    const day = routine && routine.days ? routine.days[dayIndex] : null;
+    if (!day || !Array.isArray(day.exercises) || fromIndex < 0 || toIndex < 0 || fromIndex >= day.exercises.length || toIndex >= day.exercises.length) return;
+    const movedExercise = day.exercises.splice(fromIndex, 1)[0];
+    day.exercises.splice(toIndex, 0, movedExercise);
+    saveRoutine();
+    renderRoutineDays();
+}
 function removeExerciseFromDay(dayIndex, exIndex) { if (confirm('¿Quitar este ejercicio?')) { routine.days[dayIndex].exercises.splice(exIndex, 1); saveRoutine(); renderRoutineDays(); } }
 function toggleDayCompleted(dayIndex) { routine.days[dayIndex].completed = !routine.days[dayIndex].completed; saveRoutine(); renderRoutineDays(); }
 
@@ -869,7 +985,8 @@ function openExerciseDetailInDay(dayIndex, exIndex) {
     currentExerciseDetail = { dayIndex, exIndex, exercise: ex };
     const imgContainer = document.getElementById('detail-image-container');
     const img = document.createElement('img');
-    img.src = getExerciseImage(ex);
+    // Buscar la imagen en el catálogo para recuperar media_id si falta en la rutina.
+    img.src = getRoutineExerciseImage(ex);
     img.alt = ex.name;
     img.onerror = function() { this.parentElement.innerHTML = `<div class="placeholder-big">${createPlaceholder(ex.body_part || 'chest', ex.name, 'big')}</div>`; };
     imgContainer.innerHTML = '';
@@ -1002,20 +1119,76 @@ function showAddUserForm() { document.getElementById('add-user-form').style.disp
 function hideAddUserForm() { document.getElementById('add-user-form').style.display = 'none'; }
 
 async function addNewUser() {
-    const name = document.getElementById('new-user-name').value.trim();
-    const expires = document.getElementById('new-user-expires').value;
-    if (!name || !expires) { alert('⚠️ Rellena todos los campos'); return; }
+    if (!isAdmin) {
+        alert('⛔ Solo el administrador puede crear usuarios.');
+        return;
+    }
+
+    const nameInput = document.getElementById('new-user-name');
+    const expiresInput = document.getElementById('new-user-expires');
+    const name = nameInput.value.trim();
+    const expires = expiresInput.value;
+
+    if (!name || !expires) {
+        alert('⚠️ Introduce el nombre y la fecha de caducidad.');
+        return;
+    }
+
     const code = generateRandomCode();
-    const newUser = { code, name, active: true, role: 'user', expires };
-    usersDB.users.push(newUser);
-    renderUserList();
+    if (usersDB.users.some(user => user.code === code)) {
+        alert('No se ha podido generar un código único. Inténtalo de nuevo.');
+        return;
+    }
+
+    const button = document.querySelector('#add-user-form button[onclick="addNewUser()"]');
+    if (button) {
+        button.disabled = true;
+        button.textContent = 'Guardando usuario…';
+    }
+
     try {
-        await fetch(APPS_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(newUser) });
-        alert(`✅ Usuario creado.\n Código: ${code}\nCópialo y dáselo al usuario.`);
-    } catch (error) { alert(`✅ Código: ${code}\n⚠️ No se pudo guardar en Sheets.`); }
-    hideAddUserForm();
-    document.getElementById('new-user-name').value = '';
-    document.getElementById('new-user-expires').value = '';
+        // Apps Script acepta addUser explícitamente. Con no-cors no podemos leer
+        // su respuesta; por eso después verificamos que la fila aparezca en Sheets.
+        await fetch(APPS_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({
+                action: 'addUser',
+                code: code,
+                name: name,
+                active: true,
+                role: 'user',
+                expires: expires
+            })
+        });
+
+        // Consultar de nuevo la hoja; no dar por creado el usuario solo porque
+        // fetch haya terminado.
+        await new Promise(resolve => setTimeout(resolve, 1200));
+        await loadUsers();
+
+        const savedUser = usersDB.users.find(user => user.code === code);
+        renderUserList();
+
+        if (!savedUser) {
+            alert('⚠️ No he podido confirmar que el usuario se haya guardado en Google Sheets. No entregues todavía el código. Revisa que la implementación de Apps Script esté actualizada y desplegada.');
+            return;
+        }
+
+        alert('✅ Usuario guardado y verificado en Google Sheets.\n\nNombre: ' + savedUser.name + '\nCódigo: ' + code + '\nCaducidad: ' + savedUser.expires + '\n\nCopia el código y dáselo al usuario.');
+        hideAddUserForm();
+        nameInput.value = '';
+        expiresInput.value = '';
+    } catch (error) {
+        console.error('Error al crear usuario:', error);
+        alert('❌ Ha ocurrido un error al crear el usuario. No se ha podido verificar en Google Sheets. Revisa la conexión y vuelve a intentarlo.');
+    } finally {
+        if (button) {
+            button.disabled = false;
+            button.textContent = '✅ Generar código y crear usuario';
+        }
+    }
 }
 
 if ('serviceWorker' in navigator) {
