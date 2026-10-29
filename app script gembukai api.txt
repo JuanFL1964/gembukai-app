@@ -1,0 +1,230 @@
+// Gembukai - API de usuarios y cuotas
+// IMPORTANTE: cambia el PIN de ejemplo por uno privado antes de guardar y desplegar.
+var SHEET_ID = '1Ngui-rgC76dPioIy4XLUo5Ene0QtoHl42rhntK5T6Po';
+var ADMIN_PIN = '1304Asdj$';
+
+function jsonOut(obj) {
+  return ContentService.createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function findUserRowByCode(sheet, code) {
+  var lastRow = sheet.getLastRow();
+  if (lastRow < 2) return -1;
+  var codes = sheet.getRange(2, 1, lastRow - 1, 1).getDisplayValues();
+  var wanted = String(code || '').trim().toUpperCase();
+  for (var i = 0; i < codes.length; i++) {
+    if (String(codes[i][0]).trim().toUpperCase() === wanted) return i + 2;
+  }
+  return -1;
+}
+
+function verifyAdmin(sheet, data) {
+  if (!ADMIN_PIN || ADMIN_PIN === 'CAMBIA-ESTE-TEXTO-POR-TU-PIN-PRIVADO') return false;
+  if (String(data.adminPin || '') !== ADMIN_PIN) return false;
+  var adminRow = findUserRowByCode(sheet, data.adminCode);
+  if (adminRow < 2) return false;
+  var role = String(sheet.getRange(adminRow, 4).getDisplayValue()).trim().toLowerCase();
+  var active = sheet.getRange(adminRow, 3).getValue();
+  return role === 'admin' && active !== false && String(active).toUpperCase() !== 'FALSE';
+}
+
+function parseExpiry(value) {
+  if (value instanceof Date && !isNaN(value.getTime())) {
+    return new Date(value.getFullYear(), value.getMonth(), value.getDate());
+  }
+  var str = String(value || '').trim();
+  var match = str.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (match) return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+  var parsed = new Date(str);
+  if (isNaN(parsed.getTime())) return null;
+  return new Date(parsed.getFullYear(), parsed.getMonth(), parsed.getDate());
+}
+
+function formatIsoDate(date) {
+  return Utilities.formatDate(date, Session.getScriptTimeZone(), 'yyyy-MM-dd');
+}
+
+function addOneMonth(date) {
+  var result = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  var originalDay = result.getDate();
+  result.setDate(1);
+  result.setMonth(result.getMonth() + 1);
+  var lastDay = new Date(result.getFullYear(), result.getMonth() + 1, 0).getDate();
+  result.setDate(Math.min(originalDay, lastDay));
+  return result;
+}
+
+function getPaymentsSheet() {
+  var ss = SpreadsheetApp.openById(SHEET_ID);
+  var sheet = ss.getSheetByName('Pagos');
+  if (!sheet) {
+    sheet = ss.insertSheet('Pagos');
+    sheet.appendRow(['Fecha y hora', 'Código usuario', 'Nombre usuario', 'Importe (€)', 'Meses', 'Caducidad anterior', 'Nueva caducidad', 'Administrador', 'Concepto']);
+    sheet.setFrozenRows(1);
+  }
+  return sheet;
+}
+
+function doPost(e) {
+  try {
+    if (!e || !e.postData || !e.postData.contents) {
+      return jsonOut({ result: 'error', message: 'No se recibieron datos' });
+    }
+    var data = JSON.parse(e.postData.contents);
+    var sheet = SpreadsheetApp.openById(SHEET_ID).getSheets()[0];
+    var action = data.action || 'addUser';
+
+    // ---- CREAR USUARIO: requiere PIN y código de administrador válidos ----
+    if (action === 'addUser') {
+      if (!verifyAdmin(sheet, data)) {
+        return jsonOut({ result: 'error', message: 'Autorización de administrador no válida' });
+      }
+      if (!data.code || !data.name || !data.expires) {
+        return jsonOut({ result: 'error', message: 'Faltan código, nombre o caducidad' });
+      }
+      if (findUserRowByCode(sheet, data.code) !== -1) {
+        return jsonOut({ result: 'error', message: 'Ya existe un usuario con ese código' });
+      }
+      sheet.appendRow([
+        String(data.code).trim().toUpperCase(),
+        String(data.name).trim(),
+        data.active !== false,
+        'user',
+        String(data.expires),
+        0
+      ]);
+      SpreadsheetApp.flush();
+      return jsonOut({ result: 'success', message: 'Usuario creado', code: data.code });
+    }
+
+    // ---- RENOVAR CUOTA Y REGISTRAR PAGO MANUAL ----
+    if (action === 'renewUser') {
+      if (!verifyAdmin(sheet, data)) {
+        return jsonOut({ result: 'error', message: 'Autorización de administrador no válida' });
+      }
+      var rowIndex = findUserRowByCode(sheet, data.code);
+      if (rowIndex < 2) return jsonOut({ result: 'error', message: 'Usuario no encontrado' });
+
+      var userValues = sheet.getRange(rowIndex, 1, 1, 6).getValues()[0];
+      var role = String(userValues[3] || 'user').toLowerCase();
+      if (role === 'admin') return jsonOut({ result: 'error', message: 'No se renuevan cuentas de administrador' });
+
+      var oldExpiryValue = userValues[4];
+      var oldExpiry = parseExpiry(oldExpiryValue);
+      if (oldExpiry && oldExpiry.getFullYear() >= 2090) {
+        return jsonOut({ result: 'error', message: 'Esta cuenta tiene acceso permanente' });
+      }
+      var today = new Date();
+      today = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      var baseDate = oldExpiry && oldExpiry > today ? oldExpiry : today;
+      var months = 12; // La cuota de 2 € cubre un año completo.
+      var newExpiry = new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate());
+      for (var m = 0; m < months; m++) newExpiry = addOneMonth(newExpiry);
+      var oldExpiryText = oldExpiry ? formatIsoDate(oldExpiry) : String(oldExpiryValue || '');
+      var newExpiryText = formatIsoDate(newExpiry);
+      var amount = 2;
+
+      // Actualiza vencimiento antes de registrar el pago.
+      sheet.getRange(rowIndex, 5).setValue(newExpiryText);
+      SpreadsheetApp.flush();
+      var payments = getPaymentsSheet();
+      payments.appendRow([
+        new Date(), String(userValues[0]), String(userValues[1]), amount, months,
+        oldExpiryText, newExpiryText, String(data.adminCode), 'Renovación anual confirmada manualmente'
+      ]);
+      SpreadsheetApp.flush();
+      return jsonOut({ result: 'success', message: 'Renovación registrada', expires: newExpiryText, amount: amount });
+    }
+
+    // ---- LOGIN / LOGOUT: reserva atómica de una única sesión por usuario ----
+    var rowIndex = findUserRowByCode(sheet, data.code);
+    if (rowIndex < 2) return jsonOut({ result: 'error', message: 'Código no encontrado' });
+
+    if (action === 'login') {
+      var sessionId = String(data.sessionId || '').trim();
+      if (!sessionId || sessionId.length < 20 || sessionId.length > 150) {
+        return jsonOut({ result: 'error', message: 'Identificador de sesión no válido' });
+      }
+      var lock = LockService.getScriptLock();
+      if (!lock.tryLock(10000)) {
+        return jsonOut({ result: 'error', message: 'No se ha podido comprobar la sesión. Inténtalo de nuevo.' });
+      }
+      try {
+        var sessionCell = sheet.getRange(rowIndex, 6);
+        var existingSession = String(sessionCell.getDisplayValue() || '').trim();
+        if (existingSession && existingSession !== '0' && existingSession !== sessionId) {
+          return jsonOut({ result: 'error', message: 'Este código ya está en uso en otro dispositivo. Cierra la sesión allí o pide al administrador que la libere.' });
+        }
+        sessionCell.setValue(sessionId);
+        SpreadsheetApp.flush();
+        return jsonOut({ result: 'success', message: 'Sesión reservada' });
+      } finally {
+        lock.releaseLock();
+      }
+    }
+
+    if (action === 'logout') {
+      var logoutSessionId = String(data.sessionId || '').trim();
+      var logoutLock = LockService.getScriptLock();
+      if (!logoutLock.tryLock(10000)) {
+        return jsonOut({ result: 'error', message: 'No se ha podido cerrar la sesión. Inténtalo de nuevo.' });
+      }
+      try {
+        var logoutCell = sheet.getRange(rowIndex, 6);
+        var storedSession = String(logoutCell.getDisplayValue() || '').trim();
+        // Un dispositivo solo puede liberar la sesión que él mismo reservó.
+        if (storedSession && storedSession === logoutSessionId) {
+          logoutCell.setValue(0);
+          SpreadsheetApp.flush();
+          return jsonOut({ result: 'success', message: 'Sesión cerrada' });
+        }
+        return jsonOut({ result: 'error', message: 'La sesión ya no corresponde a este dispositivo' });
+      } finally {
+        logoutLock.releaseLock();
+      }
+    }
+
+    return jsonOut({ result: 'error', message: 'Acción no válida' });
+  } catch (err) {
+    return jsonOut({ result: 'error', message: 'Error del servidor', error: String(err) });
+  }
+}
+// Añadir ESTA FUNCIÓN al final de Código.gs, sin reemplazar el código existente.
+// Permite a la aplicación comprobar el identificador de sesión mediante JSONP,
+// evitando depender de la caché de Google Sheets/GViz para confirmar el login.
+function doGet(e) {
+  var params = (e && e.parameter) ? e.parameter : {};
+  var action = String(params.action || '');
+  if (action !== 'checkSession') {
+    return ContentService.createTextOutput('Gembukai API activa')
+      .setMimeType(ContentService.MimeType.TEXT);
+  }
+
+  var callback = String(params.callback || '');
+  if (!/^__gembukaiSessionCB_[A-Za-z0-9_]+$/.test(callback)) {
+    return ContentService.createTextOutput('Callback no válido')
+      .setMimeType(ContentService.MimeType.TEXT);
+  }
+
+  var payload;
+  try {
+    var code = String(params.code || '').trim();
+    var sheet = SpreadsheetApp.openById(SHEET_ID).getSheets()[0];
+    var rowIndex = findUserRowByCode(sheet, code);
+    if (rowIndex < 2) {
+      payload = { result: 'error', message: 'Usuario no encontrado', sessionId: '' };
+    } else {
+      payload = {
+        result: 'success',
+        sessionId: String(sheet.getRange(rowIndex, 6).getDisplayValue() || '').trim()
+      };
+    }
+  } catch (err) {
+    payload = { result: 'error', message: String(err), sessionId: '' };
+  }
+
+  var js = callback + '(' + JSON.stringify(payload).replace(/</g, '\\u003c') + ');';
+  return ContentService.createTextOutput(js)
+    .setMimeType(ContentService.MimeType.JAVASCRIPT);
+}

@@ -41,11 +41,13 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 .btn-danger { background: #e74c3c; border-color: #e74c3c; }
 .btn-tiny { padding: 8px 12px; font-size: 13px; min-height: 38px; }
 .btn-delete-exercise { padding: 4px 8px !important; font-size: 11px !important; min-height: 28px !important; width: auto !important; flex: none !important; line-height: 1 !important; }
-.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #111111; display: flex; justify-content: space-around; gap: 4px; padding: 7px 5px max(10px, env(safe-area-inset-bottom)); border-top: 3px solid #DC143C; z-index: 100; }
-.nav-item { text-align: center; cursor: pointer; padding: 7px 5px; border-radius: 10px; flex: 1; color: #d5d5d5; transition: background .15s, color .15s; }
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #111111; display: flex; justify-content: space-around; gap: 2px; padding: 7px 5px max(10px, env(safe-area-inset-bottom)); border-top: 3px solid #DC143C; z-index: 100; }
+.nav-item { text-align: center; cursor: pointer; padding: 7px 3px; border-radius: 10px; flex: 1; min-width: 0; color: #d5d5d5; transition: background .15s, color .15s; }
 .nav-item .icon { display: flex; align-items: center; justify-content: center; height: 25px; margin-bottom: 3px; }
 .nav-item .icon svg { width: 23px; height: 23px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.nav-item .label { display: block; font-size: 11px; margin-top: 2px; color: inherit; }
+.nav-item .label { display: block; font-size: 10px; margin-top: 2px; color: inherit; }
+.nav-item.nav-logout { color: #ff6b6b; }
+.nav-item.nav-logout:active { background: #B5121B; color: #fff; }
 .nav-item.active { color: #ffffff; background: #B5121B; box-shadow: 0 0 0 1px rgba(255,255,255,.12) inset; }
 .nav-item:focus-visible { outline: 2px solid #ffffff; outline-offset: -2px; }
 .screen { display: none; }
@@ -129,7 +131,7 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 .login-container { max-width: 400px; margin: 50px auto; text-align: center; }
 .login-container h2 { font-size: 28px; margin-bottom: 20px; }
 .login-container p { margin-bottom: 30px; opacity: 0.9; }
-.login-input { width: 100%; padding: 15px; border: 3px solid white; border-radius: 12px; font-size: 18px; text-align: center; margin-bottom: 20px; background: rgba(255,255,255,0.95); color: #333; letter-spacing: 2px; text-transform: uppercase; }
+.login-input { width: 100%; padding: 15px; border: 3px solid white; border-radius: 12px; font-size: 18px; text-align: center; margin-bottom: 20px; background: rgba(255,255,255,0.95); color: #333; letter-spacing: 1px; }
 .login-error { color: #ff6b6b; margin-top: 15px; font-size: 14px; display: none; }
 .admin-panel { background: rgba(0,0,0,0.4); padding: 15px; border-radius: 12px; margin-top: 20px; }
 .admin-panel h3 { color: #ffd700; margin-bottom: 15px; }
@@ -171,10 +173,10 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 <div class="main-content">
 <div class="login-container">
 <div class="splash-logo" style="margin: 0 auto 20px;"><img src="logo.png" alt="Gembukai Logo"></div>
-<h2>Acceso restringido</h2>
-<p>Introduce tu código de acceso para continuar</p>
+<h2>Bienvenido a Gembu-Kai</h2>
+<p>Introduce tu código o contraseña para acceder a tu espacio del club</p>
 <div style="position:relative; margin-bottom:20px;">
-<input type="text" id="login-code" class="login-input" placeholder="GEMBU-XXXX-XXXX" autocomplete="off" onkeypress="if(event.key === 'Enter') validateCode()" style="padding-right:60px;">
+<input type="password" id="login-code" class="login-input" placeholder="Código o contraseña" autocomplete="off" onkeypress="if(event.key === 'Enter') validateCode()" style="padding-right:60px;">
 <button type="button" onclick="togglePasswordVisibility()" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; font-size:22px; cursor:pointer; padding:8px;" title="Mostrar/Ocultar código">👁️</button>
 </div>
 <button class="btn" onclick="validateCode()">Acceder</button>
@@ -431,10 +433,11 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 <div class="nav-item" onclick="showScreen('screen-exercises', this)"><span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12M6 8h12M6 12h8M6 16h8"/><path d="M4 2h16v20H4z"/></svg></span><span class="label">Ejercicios</span></div>
 <div class="nav-item" onclick="showScreen('screen-routines', this)"><span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6M6 6v12M9 10v4M15 10v4M18 6v12M21 9v6M6 12h12"/></svg></span><span class="label">Rutinas</span></div>
 <div class="nav-item" onclick="showScreen('screen-profile', this)"><span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2z"/></svg></span><span class="label">Perfil</span></div>
+<div class="nav-item nav-logout" onclick="confirmLogout()" title="Cerrar sesión"><span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5M15 12H3"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/></svg></span><span class="label">Salir</span></div>
 </div>
 
 <script>
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzceb4xqBaxWyV3VhkXo1PtYcN_GTQEwGCSt7db6IctPrOV2K7HF74LLXWNlYU9Jyw/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzYkYsXVXr-JAWToLyILI2wcDONoB5rbCD_WfvtpSAq3W1A7jMmu_gE6L0U6lGGCtGp/exec";
 const SHEET_ID = "1Ngui-rgC76dPioIy4XLUo5Ene0QtoHl42rhntK5T6Po";
 const EXERCISEDB_URL = "https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/main/data/exercises.json";
 const EXERCISEDB_BASE_URL = "https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/main";
@@ -458,6 +461,7 @@ const muscleEmojis = {
 
 let exercisesDB = [];
 let usersDB = [];
+let usersLoadSucceeded = false;
 let translationsDB = {};
 let profile = null;
 let routine = null;
@@ -470,6 +474,8 @@ let lastScreen = 'screen-exercises';
 let exercisesLoaded = false;
 let currentUser = null;
 let isAdmin = false;
+let sessionHeartbeatTimer = null;
+let sessionHeartbeatFailures = 0;
 
 function calculateAge(birthdate) {
     if (!birthdate) return 0;
@@ -527,28 +533,37 @@ function formatExpiryForDisplay(value) {
 
 async function loadUsers() {
     try {
-        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
-        const response = await fetch(url);
+        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&cacheBust=${Date.now()}`;
+        const response = await fetch(url, { cache: 'no-store' });
+        if (!response.ok) throw new Error(`Google Sheets respondió ${response.status}`);
         const text = await response.text();
-        const jsonString = text.substring(47).slice(0, -2);
-        const data = JSON.parse(jsonString);
+        // Extrae el JSON sin depender de que el prefijo de Google tenga una longitud fija.
+        const start = text.indexOf('(');
+        const end = text.lastIndexOf(')');
+        if (start < 0 || end <= start) throw new Error('Respuesta de Google Sheets no reconocida');
+        const data = JSON.parse(text.slice(start + 1, end));
+        if (!data.table || !Array.isArray(data.table.rows)) throw new Error('La respuesta no contiene la tabla de usuarios');
         usersDB = { users: [] };
-        const rows = data.table.rows;
-        rows.forEach(row => {
+        data.table.rows.forEach(row => {
             if (row.c && row.c.length >= 4) {
                 usersDB.users.push({
-                    code: row.c[0] ? String(row.c[0].v) : '',
-                    name: row.c[1] ? String(row.c[1].v) : '',
+                    code: row.c[0] && row.c[0].v != null ? String(row.c[0].v).trim() : '',
+                    name: row.c[1] && row.c[1].v != null ? String(row.c[1].v).trim() : '',
                     active: row.c[2] ? row.c[2].v : true,
-                    role: row.c[3] ? String(row.c[3].v) : 'user',
-                    expires: row.c[4] ? normalizeSheetDate(row.c[4].v) : '2099-12-31'
+                    role: row.c[3] ? String(row.c[3].v).trim() : 'user',
+                    expires: row.c[4] ? normalizeSheetDate(row.c[4].v) : '2099-12-31',
+                    sessionId: row.c[5] ? String(row.c[5].v || '').trim() : ''
                 });
             }
         });
         console.log(`✅ Cargados ${usersDB.users.length} usuarios desde Google Sheets`);
+        usersLoadSucceeded = true;
+        return true;
     } catch (error) {
-        console.error(' Error cargando usuarios:', error);
+        console.error('Error cargando usuarios desde Google Sheets:', error);
         usersDB = { users: [] };
+        usersLoadSucceeded = false;
+        return false;
     }
 }
 
@@ -636,7 +651,17 @@ async function enterApp() {
     const savedUser = localStorage.getItem('gembukai_current_user');
     if (savedUser) {
         currentUser = JSON.parse(savedUser);
-        checkUserAccess();
+        const savedSessionId = localStorage.getItem('gembukai_current_session_id');
+        await loadUsers();
+        const storedUser = usersDB.users.find(u => u.code === currentUser.code);
+        if (!savedSessionId || !storedUser || String(storedUser.sessionId || '') !== savedSessionId) {
+            localStorage.removeItem('gembukai_current_user');
+            localStorage.removeItem('gembukai_current_session_id');
+            currentUser = null;
+            showScreen('screen-login');
+        } else {
+            checkUserAccess();
+        }
     } else {
         showScreen('screen-login');
     }
@@ -654,22 +679,236 @@ function checkUserAccess() {
     showApp();
 }
 
-function validateCode() {
-    const code = document.getElementById('login-code').value.trim().toUpperCase();
-    const errorDiv = document.getElementById('login-error');
-    if (!code) { errorDiv.textContent = '⚠️ Introduce un código'; errorDiv.style.display = 'block'; return; }
-    const user = usersDB.users.find(u => u.code === code);
-    if (!user) { errorDiv.textContent = '❌ Código no válido'; errorDiv.style.display = 'block'; return; }
-    if (!user.active) { errorDiv.textContent = '⚠️ Desactivado'; errorDiv.style.display = 'block'; return; }
-    const today = new Date();
-    const expires = new Date(user.expires);
-    if (today > expires) { errorDiv.textContent = '⏰ Caducado'; errorDiv.style.display = 'block'; return; }
-    currentUser = user;
-    localStorage.setItem('gembukai_current_user', JSON.stringify(user));
-    isAdmin = user.role === 'admin';
-    errorDiv.style.display = 'none';
-    showApp();
+
+function getDeviceSessionId() {
+    let id = localStorage.getItem('gembukai_device_session_id');
+    if (!id) {
+        const bytes = new Uint8Array(24);
+        if (window.crypto && window.crypto.getRandomValues) {
+            window.crypto.getRandomValues(bytes);
+            id = Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
+        } else {
+            id = `${Date.now()}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`;
+        }
+        localStorage.setItem('gembukai_device_session_id', id);
+    }
+    return id;
 }
+
+function postSessionAction(payload) {
+    return fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+    }).catch(() => null);
+}
+
+function readServerSession(code, timeoutMs = 7000, action = 'checkSession', sessionId = '') {
+    return new Promise(resolve => {
+        const callbackName = `__gembukaiSessionCB_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+        const script = document.createElement('script');
+        let completed = false;
+        const finish = (result) => {
+            if (completed) return;
+            completed = true;
+            clearTimeout(timer);
+            try { delete window[callbackName]; } catch (_) { window[callbackName] = undefined; }
+            script.remove();
+            resolve(result || null);
+        };
+        window[callbackName] = finish;
+        const timer = setTimeout(() => finish(null), timeoutMs);
+        const params = new URLSearchParams({
+            action,
+            code: String(code || ''),
+            callback: callbackName,
+            cacheBust: String(Date.now())
+        });
+        if (sessionId) params.set('sessionId', sessionId);
+        script.src = `${APPS_SCRIPT_URL}?${params.toString()}`;
+        script.onerror = () => finish(null);
+        document.head.appendChild(script);
+    });
+}
+
+async function waitForSessionState(code, expectedSessionId, timeoutMs = 4500) {
+    // Una sola lectura de la sesión directamente desde Apps Script.
+    // Evita multiplicar esperas de 2,5 s cuando el endpoint no responde.
+    const response = await readServerSession(code, timeoutMs);
+    if (!response || response.result !== 'success') {
+        return { ok: false, actual: null, reason: 'server-unavailable' };
+    }
+    const actual = String(response.sessionId || '').trim();
+    if (expectedSessionId && actual === expectedSessionId) return { ok: true, actual };
+    if (expectedSessionId && actual && actual !== '0') {
+        return { ok: false, actual, reason: 'already-active' };
+    }
+    if (!expectedSessionId && (!actual || actual === '0')) return { ok: true, actual };
+    return { ok: false, actual, reason: 'not-confirmed' };
+}
+
+// Los códigos automáticos GEMBU-XXXX-XXXX admiten minúsculas al escribirlos.
+// Las contraseñas personalizadas se comparan exactamente, respetando mayúsculas y símbolos.
+function codesMatch(storedValue, enteredValue) {
+    const stored = String(storedValue || '').trim();
+    const entered = String(enteredValue || '').trim();
+    if (!stored || !entered) return false;
+    const generatedCodePattern = /^GEMBU-[A-Z0-9]{4}-[A-Z0-9]{4}$/i;
+    if (generatedCodePattern.test(stored)) {
+        return stored.toUpperCase() === entered.toUpperCase();
+    }
+    return stored === entered;
+}
+
+async function validateCode() {
+    const code = document.getElementById('login-code').value.trim();
+    const errorDiv = document.getElementById('login-error');
+    if (!code) { errorDiv.textContent = '⚠️ Introduce tu código o contraseña'; errorDiv.style.display = 'block'; return; }
+    errorDiv.style.display = 'none';
+    // La lista ya se carga al abrir la aplicación. No la descargamos otra vez
+    // cada vez que se pulsa Acceder: eso añadía varios segundos antes del bloqueo.
+    // Solo reintentamos la lectura si la carga inicial falló.
+    if (!usersLoadSucceeded) {
+        const loaded = await loadUsers();
+        if (!loaded) {
+            errorDiv.textContent = '⚠️ No hemos podido conectar con la lista de usuarios. Comprueba la conexión y vuelve a intentarlo.';
+            errorDiv.style.display = 'block';
+            return;
+        }
+    }
+    const user = usersDB.users.find(u => codesMatch(u.code, code));
+    if (!user) { errorDiv.textContent = '❌ No encontramos ese código o contraseña. Comprueba que esté escrito exactamente como te lo asignaron.'; errorDiv.style.display = 'block'; return; }
+    if (user.active === false || String(user.active).trim().toUpperCase() === 'FALSE') { errorDiv.textContent = '⚠️ Este usuario está desactivado'; errorDiv.style.display = 'block'; return; }
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const expires = new Date(user.expires); expires.setHours(23, 59, 59, 999);
+    if (!Number.isNaN(expires.getTime()) && today > expires) { errorDiv.textContent = '⏰ Tu acceso ha caducado'; errorDiv.style.display = 'block'; return; }
+
+    const sessionId = getDeviceSessionId();
+    const loginCode = user.code;
+
+    // Optimización: si la hoja ya muestra otra sesión activa, rechazar de inmediato.
+    // Apps Script sigue siendo la autoridad final para intentos simultáneos
+    // que hayan leído la celda vacía al mismo tiempo.
+    const existingSession = String(user.sessionId || '').trim();
+    if (existingSession && existingSession !== '0' && existingSession !== sessionId) {
+        errorDiv.textContent = '⛔ Este código ya tiene otra sesión activa. Cierra esa sesión o solicita al administrador que la libere.';
+        errorDiv.style.display = 'block';
+        return;
+    }
+
+    const loginButton = document.querySelector('#screen-login button[onclick="validateCode()"]');
+    if (loginButton) { loginButton.disabled = true; loginButton.textContent = 'Comprobando acceso…'; }
+    errorDiv.style.display = 'none';
+    try {
+        // Consultar primero el estado actual del servidor evita hacer un POST
+        // que sabemos que será rechazado cuando la hoja de este navegador esté anticuada.
+        const currentState = await readServerSession(loginCode, 4500);
+        if (!currentState || currentState.result !== 'success') {
+            errorDiv.textContent = '⚠️ No hemos podido comprobar la sesión en el servidor. No se ha concedido el acceso; inténtalo de nuevo.';
+            errorDiv.style.display = 'block';
+            return;
+        }
+
+        const serverSessionId = String(currentState.sessionId || '').trim();
+        if (serverSessionId && serverSessionId !== '0' && serverSessionId !== sessionId) {
+            errorDiv.textContent = '⛔ Este código ya tiene otra sesión activa. Cierra esa sesión o solicita al administrador que la libere.';
+            errorDiv.style.display = 'block';
+            return;
+        }
+
+        let reservation;
+        if (serverSessionId === sessionId) {
+            // Este mismo navegador ya tiene reservada la sesión.
+            reservation = { ok: true, actual: serverSessionId };
+        } else {
+            await postSessionAction({ action: 'login', code: loginCode, sessionId });
+            reservation = await waitForSessionState(loginCode, sessionId, 4500);
+        }
+
+        if (!reservation.ok) {
+            errorDiv.textContent = reservation.actual && reservation.actual !== sessionId
+                ? '⛔ Este código ya tiene otra sesión activa. Cierra esa sesión o solicita al administrador que la libere.'
+                : '⚠️ No hemos podido confirmar la sesión con el servidor. No se ha concedido el acceso; inténtalo de nuevo.';
+            errorDiv.style.display = 'block';
+            return;
+        }
+        currentUser = user;
+        localStorage.setItem('gembukai_current_user', JSON.stringify(user));
+        localStorage.setItem('gembukai_current_session_id', sessionId);
+        isAdmin = String(user.role || '').toLowerCase() === 'admin';
+        showApp();
+    } finally {
+        if (loginButton) { loginButton.disabled = false; loginButton.textContent = 'Acceder'; }
+    }
+}
+
+
+function stopSessionHeartbeat() {
+    if (sessionHeartbeatTimer) {
+        clearInterval(sessionHeartbeatTimer);
+        sessionHeartbeatTimer = null;
+    }
+    sessionHeartbeatFailures = 0;
+}
+
+function sessionWasLost() {
+    stopSessionHeartbeat();
+    localStorage.removeItem('gembukai_current_user');
+    localStorage.removeItem('gembukai_current_session_id');
+    currentUser = null;
+    isAdmin = false;
+    document.getElementById('main-header').style.display = 'none';
+    document.getElementById('bottom-nav').style.display = 'none';
+    showScreen('screen-login');
+    const errorDiv = document.getElementById('login-error');
+    errorDiv.textContent = 'Tu sesión ha caducado o se ha abierto en otro dispositivo. Vuelve a introducir tu código.';
+    errorDiv.style.display = 'block';
+}
+
+function startSessionHeartbeat() {
+    stopSessionHeartbeat();
+    const runHeartbeat = async () => {
+        const code = currentUser && currentUser.code;
+        const sessionId = localStorage.getItem('gembukai_current_session_id');
+        if (!code || !sessionId) {
+            stopSessionHeartbeat();
+            return;
+        }
+        const response = await readServerSession(code, 6000, 'heartbeat', sessionId);
+        if (response && response.result === 'success' && String(response.sessionId || '').trim() === sessionId) {
+            sessionHeartbeatFailures = 0;
+            return;
+        }
+        // Una respuesta explícita de sesión distinta/caducada indica que ya no somos el titular.
+        if (response && response.result === 'error') {
+            const actualSession = String(response.sessionId || '').trim();
+            if (response.message === 'Sesión caducada' || (actualSession && actualSession !== sessionId)) {
+                sessionWasLost();
+                return;
+            }
+        }
+        // Los fallos de red transitorios no expulsan inmediatamente al usuario.
+        sessionHeartbeatFailures++;
+    };
+    runHeartbeat();
+    sessionHeartbeatTimer = setInterval(runHeartbeat, 30000);
+}
+
+// Al volver a la pestaña o desbloquear el móvil, comprobar/renovar la sesión enseguida.
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && currentUser && localStorage.getItem('gembukai_current_session_id')) {
+        const code = currentUser.code;
+        const sessionId = localStorage.getItem('gembukai_current_session_id');
+        readServerSession(code, 6000, 'heartbeat', sessionId).then(response => {
+            if (response && response.result === 'success' && String(response.sessionId || '').trim() === sessionId) {
+                sessionHeartbeatFailures = 0;
+            } else if (response && response.result === 'error') {
+                sessionWasLost();
+            }
+        }).catch(() => {});
+    }
+});
 
 function togglePasswordVisibility() {
     const input = document.getElementById('login-code');
@@ -681,6 +920,7 @@ function togglePasswordVisibility() {
 }
 
 function showApp() {
+    startSessionHeartbeat();
     document.getElementById('main-header').style.display = 'block';
     document.getElementById('bottom-nav').style.display = 'flex';
     const savedProfile = localStorage.getItem('gembukai_profile');
@@ -717,8 +957,19 @@ function showApp() {
     }
 }
 
+function confirmLogout() {
+    if (confirm('¿Quieres cerrar la sesión de Gembu-Kai?')) logout();
+}
+
 function logout() {
+    stopSessionHeartbeat();
+    const userCode = currentUser && currentUser.code;
+    const sessionId = localStorage.getItem('gembukai_current_session_id');
+    if (userCode && sessionId) {
+        postSessionAction({ action: 'logout', code: userCode, sessionId });
+    }
     localStorage.removeItem('gembukai_current_user');
+    localStorage.removeItem('gembukai_current_session_id');
     currentUser = null; isAdmin = false;
     document.getElementById('main-header').style.display = 'none';
     document.getElementById('bottom-nav').style.display = 'none';
