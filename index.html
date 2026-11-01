@@ -28,6 +28,7 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 .logo-container img { width: 100%; height: 100%; object-fit: contain; }
 .header h1 { font-size: 28px; color: #fff; margin-bottom: 3px; letter-spacing: 2px; }
 .header p { font-size: 14px; color: #ffd700; }
+.app-version { display:inline-block; margin-top:8px; padding:4px 10px; border:1px solid rgba(255,255,255,.32); border-radius:20px; background:rgba(0,0,0,.22); color:#fff !important; font-size:11px !important; font-weight:600; letter-spacing:.45px; line-height:1.2; }
 .main-content { padding: 15px; }
 .card { background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border-radius: 15px; padding: 15px; margin-bottom: 15px; border: 2px solid rgba(255,255,255,0.3); }
 .card h2 { font-size: 20px; margin-bottom: 12px; color: #fff; border-bottom: 2px solid #DC143C; padding-bottom: 8px; }
@@ -75,6 +76,12 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 .day-exercise-item { background: #f5f5f5; padding: 10px; border-radius: 8px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
 .routine-exercise-img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; background: #ddd; flex-shrink: 0; }
 .routine-exercise-info { flex: 1; }
+.password-visibility-toggle { position:absolute; right:10px; top:50%; transform:translateY(-50%); width:44px; height:44px; display:flex; align-items:center; justify-content:center; background:transparent; border:0; border-radius:8px; color:#8B0000; cursor:pointer; padding:8px; }
+.password-visibility-toggle:focus-visible { outline:2px solid #8B0000; outline-offset:2px; }
+.password-eye-icon { width:23px; height:23px; fill:none; stroke:currentColor; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round; }
+.day-exercise-item.is-current { background:#fff0f2; box-shadow:inset 5px 0 0 #DC143C, 0 3px 12px rgba(139,0,0,.16); outline:2px solid rgba(220,20,60,.65); outline-offset:-2px; }
+.day-exercise-item.is-current .routine-exercise-img { outline:2px solid #DC143C; outline-offset:1px; }
+.routine-current-badge { display:inline-block; margin-left:6px; padding:2px 6px; border-radius:10px; background:#B5121B; color:#fff; font-size:9px; font-weight:800; letter-spacing:.35px; vertical-align:middle; white-space:nowrap; }
 
 .weight-progress-panel {
     margin-top: 14px; padding: 12px; border-radius: 10px;
@@ -177,9 +184,15 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 <p>Introduce tu código o contraseña para acceder a tu espacio del club</p>
 <div style="position:relative; margin-bottom:20px;">
 <input type="password" id="login-code" class="login-input" placeholder="Código o contraseña" autocomplete="off" onkeypress="if(event.key === 'Enter') validateCode()" style="padding-right:60px;">
-<button type="button" onclick="togglePasswordVisibility()" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; font-size:22px; cursor:pointer; padding:8px;" title="Mostrar/Ocultar código">👁️</button>
+<button type="button" id="toggle-password-visibility-btn" class="password-visibility-toggle" onclick="togglePasswordVisibility()" aria-label="Mostrar contraseña" title="Mostrar contraseña">
+    <svg class="password-eye-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3 21 21"></path><path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"></path><path d="M9.9 5.2A10.8 10.8 0 0 1 12 5c6.4 0 10 7 10 7a16.5 16.5 0 0 1-4 4.8"></path><path d="M6.6 6.6C3.7 8.5 2 12 2 12s3.6 7 10 7a10 10 0 0 0 3.2-.5"></path></svg>
+</button>
 </div>
 <button class="btn" onclick="validateCode()">Acceder</button>
+<label style="display:flex;align-items:center;justify-content:center;gap:9px;margin-top:14px;font-size:13px;color:#ddd;">
+<input type="checkbox" id="remember-session" checked style="width:17px;height:17px;accent-color:#DC143C;">
+Mantener la sesión iniciada
+</label>
 <div id="login-error" class="login-error"></div>
 <p style="margin-top: 30px; font-size: 12px; opacity: 0.7;">¿No tienes código? Contacta con el gimnasio</p>
 </div>
@@ -190,6 +203,7 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 <div class="logo-container"><img src="logo.png" alt="Gembukai Logo"></div>
 <h1>GEMBU-KAI</h1>
 <p>Club Sportiu Bonavista</p>
+<p class="app-version" id="app-version-label">Versión 1.1.3</p>
 </div>
 
 <div id="screen-register" class="screen">
@@ -365,6 +379,35 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 </div>
 </div>
 
+
+<div id="personal-password-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:2100;overflow-y:auto;padding:20px;">
+  <div style="background:linear-gradient(135deg,#8B0000 0%,#DC143C 100%);max-width:440px;margin:40px auto;border-radius:15px;padding:24px;border:2px solid white;">
+    <h2 style="color:white;text-align:center;margin-bottom:12px;">🔑 Contraseña personal</h2>
+    <p style="color:white;font-size:13px;line-height:1.5;margin-bottom:16px;">Elige la contraseña que quieras. No exigimos mayúsculas, números ni símbolos. Tu código original seguirá apareciendo en el perfil.</p>
+    <div class="form-group">
+        <label style="color:white;">Nueva contraseña</label>
+        <div style="position:relative;">
+            <input type="password" id="personal-password-new" autocomplete="new-password" style="width:100%;padding:12px 60px 12px 12px;border-radius:8px;border:0;">
+            <button type="button" id="toggle-personal-password-new" class="password-visibility-toggle" style="top:50%;right:5px;" onclick="togglePersonalPasswordVisibility('personal-password-new','toggle-personal-password-new')" aria-label="Mostrar contraseña" title="Mostrar contraseña">
+                <svg class="password-eye-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3 21 21"></path><path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"></path><path d="M9.9 5.2A10.8 10.8 0 0 1 12 5c6.4 0 10 7 10 7a16.5 16.5 0 0 1-4 4.8"></path><path d="M6.6 6.6C3.7 8.5 2 12 2 12s3.6 7 10 7a10 10 0 0 0 3.2-.5"></path></svg>
+            </button>
+        </div>
+    </div>
+    <div class="form-group">
+        <label style="color:white;">Repite la contraseña</label>
+        <div style="position:relative;">
+            <input type="password" id="personal-password-confirm" autocomplete="new-password" style="width:100%;padding:12px 60px 12px 12px;border-radius:8px;border:0;" onkeypress="if(event.key==='Enter') savePersonalPassword()">
+            <button type="button" id="toggle-personal-password-confirm" class="password-visibility-toggle" style="top:50%;right:5px;" onclick="togglePersonalPasswordVisibility('personal-password-confirm','toggle-personal-password-confirm')" aria-label="Mostrar contraseña" title="Mostrar contraseña">
+                <svg class="password-eye-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3 21 21 3 3"></path><path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"></path><path d="M9.9 5.2A10.8 10.8 0 0 1 12 5c6.4 0 10 7 10 7a16.5 16.5 0 0 1-4 4.8"></path><path d="M6.6 6.6C3.7 8.5 2 12 2 12s3.6 7 10 7a10 10 0 0 0 3.2-.5"></path></svg>
+            </button>
+        </div>
+    </div>
+    <div id="personal-password-error" style="display:none;color:#fff;background:rgba(0,0,0,.25);padding:9px;border-radius:7px;font-size:13px;margin:10px 0;"></div>
+    <button class="btn" id="personal-password-save" onclick="savePersonalPassword()">Guardar contraseña</button>
+    <button class="btn btn-secondary" style="margin-top:8px;" onclick="closePersonalPasswordModal()">Cancelar</button>
+  </div>
+</div>
+
 <div id="edit-profile-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.8); z-index:2000; overflow-y:auto; padding:20px;">
 <div style="background:linear-gradient(135deg, #8B0000 0%, #DC143C 100%); max-width:500px; margin:30px auto; border-radius:15px; padding:25px; border:2px solid white;">
 <h2 style="color:white; text-align:center; margin-bottom:20px;">✏️ Editar perfil</h2>
@@ -466,6 +509,8 @@ let translationsDB = {};
 let profile = null;
 let routine = null;
 let currentExerciseDetail = null;
+// Mantiene marcado el último ejercicio abierto al regresar al listado de la rutina.
+let currentRoutineSelection = null;
 let currentDayIndex = null;
 let currentMuscleForDay = null;
 let exerciseListMode = 'general';
@@ -648,15 +693,17 @@ async function enterApp() {
     await loadExercises();
     await loadUsers();
     await loadTranslations();
-    const savedUser = localStorage.getItem('gembukai_current_user');
+    const savedUser = localStorage.getItem('gembukai_current_user') || sessionStorage.getItem('gembukai_current_user');
     if (savedUser) {
         currentUser = JSON.parse(savedUser);
-        const savedSessionId = localStorage.getItem('gembukai_current_session_id');
+        const savedSessionId = getCurrentSessionId();
         await loadUsers();
         const storedUser = usersDB.users.find(u => u.code === currentUser.code);
         if (!savedSessionId || !storedUser || String(storedUser.sessionId || '') !== savedSessionId) {
             localStorage.removeItem('gembukai_current_user');
             localStorage.removeItem('gembukai_current_session_id');
+            sessionStorage.removeItem('gembukai_current_user');
+            sessionStorage.removeItem('gembukai_current_session_id');
             currentUser = null;
             showScreen('screen-login');
         } else {
@@ -679,6 +726,11 @@ function checkUserAccess() {
     showApp();
 }
 
+
+function getCurrentSessionId() {
+    return localStorage.getItem('gembukai_current_session_id') ||
+        sessionStorage.getItem('gembukai_current_session_id');
+}
 
 function getDeviceSessionId() {
     let id = localStorage.getItem('gembukai_device_session_id');
@@ -761,6 +813,77 @@ function codesMatch(storedValue, enteredValue) {
     return stored === entered;
 }
 
+
+// Comunicación JSONP para las operaciones de contraseña. El secreto nunca se
+// incluye en la URL: solo se envían pruebas HMAC de un desafío de un solo uso.
+function readPasswordApi(params, timeoutMs = 7000) {
+    return new Promise(resolve => {
+        const callbackName = `__gembukaiSessionCB_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+        const script = document.createElement('script');
+        let finished = false;
+        const finish = value => {
+            if (finished) return;
+            finished = true;
+            clearTimeout(timer);
+            try { delete window[callbackName]; } catch (_) { window[callbackName] = undefined; }
+            script.remove();
+            resolve(value || null);
+        };
+        window[callbackName] = finish;
+        const timer = setTimeout(() => finish(null), timeoutMs);
+        const query = new URLSearchParams({...params, callback: callbackName, cacheBust: String(Date.now())});
+        script.src = `${APPS_SCRIPT_URL}?${query.toString()}`;
+        script.onerror = () => finish(null);
+        document.head.appendChild(script);
+    });
+}
+
+function bytesToHex(bytes) {
+    return Array.from(new Uint8Array(bytes), b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function sha256Hex(text) {
+    const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+    return bytesToHex(digest);
+}
+
+async function hmacHex(keyText, message) {
+    const key = await crypto.subtle.importKey(
+        'raw', new TextEncoder().encode(keyText), {name: 'HMAC', hash: 'SHA-256'}, false, ['sign']
+    );
+    const signature = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(message));
+    return bytesToHex(signature);
+}
+
+async function verifyPasswordLogin(password) {
+    if (!window.crypto || !crypto.subtle) throw new Error('Este navegador no permite verificar contraseñas de forma segura.');
+    const challenge = await readPasswordApi({action: 'passwordChallenge'}, 8000);
+    if (!challenge || challenge.result !== 'success' || !challenge.challengeId || !challenge.nonce) {
+        throw new Error('No se ha podido iniciar la comprobación de contraseña.');
+    }
+    if (!Array.isArray(challenge.users) || !challenge.users.length) {
+        return {ok: false};
+    }
+    const proofs = [];
+    for (const account of challenge.users) {
+        if (!account.code || !account.salt) continue;
+        const derived = await sha256Hex(`${account.salt}|${password}`);
+        proofs.push({code: account.code, proof: await hmacHex(derived, challenge.nonce)});
+    }
+    await fetch(APPS_SCRIPT_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: {'Content-Type': 'text/plain;charset=utf-8'},
+        body: JSON.stringify({action: 'verifyPassword', challengeId: challenge.challengeId, proofs})
+    });
+    for (let attempt = 0; attempt < 12; attempt++) {
+        await new Promise(resolve => setTimeout(resolve, 650));
+        const result = await readPasswordApi({action: 'passwordResult', challengeId: challenge.challengeId}, 5000);
+        if (result && result.result === 'success' && result.code) return {ok: true, code: result.code};
+        if (result && result.result === 'error') return {ok: false};
+    }
+    throw new Error('La comprobación ha tardado demasiado. Inténtalo de nuevo.');
+}
+
 async function validateCode() {
     const code = document.getElementById('login-code').value.trim();
     const errorDiv = document.getElementById('login-error');
@@ -777,8 +900,21 @@ async function validateCode() {
             return;
         }
     }
-    const user = usersDB.users.find(u => codesMatch(u.code, code));
-    if (!user) { errorDiv.textContent = '❌ No encontramos ese código o contraseña. Comprueba que esté escrito exactamente como te lo asignaron.'; errorDiv.style.display = 'block'; return; }
+    let user = usersDB.users.find(u => codesMatch(u.code, code));
+    if (!user) {
+        try {
+            const passwordResult = await verifyPasswordLogin(code);
+            if (passwordResult && passwordResult.ok) {
+                user = usersDB.users.find(u => String(u.code).trim().toUpperCase() === String(passwordResult.code).trim().toUpperCase());
+            }
+        } catch (passwordError) {
+            console.warn('No se pudo verificar la contraseña personal:', passwordError);
+            errorDiv.textContent = '⚠️ No se ha podido comprobar la contraseña. Revisa la conexión e inténtalo de nuevo.';
+            errorDiv.style.display = 'block';
+            return;
+        }
+    }
+    if (!user) { errorDiv.textContent = '❌ Código o contraseña incorrectos.'; errorDiv.style.display = 'block'; return; }
     if (user.active === false || String(user.active).trim().toUpperCase() === 'FALSE') { errorDiv.textContent = '⚠️ Este usuario está desactivado'; errorDiv.style.display = 'block'; return; }
     const today = new Date(); today.setHours(0, 0, 0, 0);
     const expires = new Date(user.expires); expires.setHours(23, 59, 59, 999);
@@ -834,8 +970,13 @@ async function validateCode() {
             return;
         }
         currentUser = user;
-        localStorage.setItem('gembukai_current_user', JSON.stringify(user));
-        localStorage.setItem('gembukai_current_session_id', sessionId);
+        const keepSession = !!document.getElementById('remember-session')?.checked;
+        const sessionStore = keepSession ? localStorage : sessionStorage;
+        const otherStore = keepSession ? sessionStorage : localStorage;
+        sessionStore.setItem('gembukai_current_user', JSON.stringify(user));
+        sessionStore.setItem('gembukai_current_session_id', sessionId);
+        otherStore.removeItem('gembukai_current_user');
+        otherStore.removeItem('gembukai_current_session_id');
         isAdmin = String(user.role || '').toLowerCase() === 'admin';
         showApp();
     } finally {
@@ -854,8 +995,11 @@ function stopSessionHeartbeat() {
 
 function sessionWasLost() {
     stopSessionHeartbeat();
+    gembukaiScreenHistory = [];
     localStorage.removeItem('gembukai_current_user');
     localStorage.removeItem('gembukai_current_session_id');
+    sessionStorage.removeItem('gembukai_current_user');
+    sessionStorage.removeItem('gembukai_current_session_id');
     currentUser = null;
     isAdmin = false;
     document.getElementById('main-header').style.display = 'none';
@@ -870,7 +1014,7 @@ function startSessionHeartbeat() {
     stopSessionHeartbeat();
     const runHeartbeat = async () => {
         const code = currentUser && currentUser.code;
-        const sessionId = localStorage.getItem('gembukai_current_session_id');
+        const sessionId = getCurrentSessionId();
         if (!code || !sessionId) {
             stopSessionHeartbeat();
             return;
@@ -897,9 +1041,9 @@ function startSessionHeartbeat() {
 
 // Al volver a la pestaña o desbloquear el móvil, comprobar/renovar la sesión enseguida.
 document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible' && currentUser && localStorage.getItem('gembukai_current_session_id')) {
+    if (document.visibilityState === 'visible' && currentUser && getCurrentSessionId()) {
         const code = currentUser.code;
-        const sessionId = localStorage.getItem('gembukai_current_session_id');
+        const sessionId = getCurrentSessionId();
         readServerSession(code, 6000, 'heartbeat', sessionId).then(response => {
             if (response && response.result === 'success' && String(response.sessionId || '').trim() === sessionId) {
                 sessionHeartbeatFailures = 0;
@@ -912,11 +1056,20 @@ document.addEventListener('visibilitychange', () => {
 
 function togglePasswordVisibility() {
     const input = document.getElementById('login-code');
-    if (input.type === 'text') {
-        input.type = 'password';
-    } else {
-        input.type = 'text';
-    }
+    const button = document.getElementById('toggle-password-visibility-btn');
+    if (!input || !button) return;
+
+    const isVisible = input.type === 'text';
+    input.type = isVisible ? 'password' : 'text';
+    const passwordIsVisible = input.type === 'text';
+
+    // Contraseña oculta: ojo tachado/cerrado. Contraseña visible: ojo abierto.
+    button.innerHTML = passwordIsVisible
+        ? '<svg class="password-eye-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>'
+        : '<svg class="password-eye-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3 21 21"></path><path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"></path><path d="M9.9 5.2A10.8 10.8 0 0 1 12 5c6.4 0 10 7 10 7a16.5 16.5 0 0 1-4 4.8"></path><path d="M6.6 6.6C3.7 8.5 2 12 2 12s3.6 7 10 7a10 10 0 0 0 3.2-.5"></path></svg>';
+    const label = passwordIsVisible ? 'Ocultar contraseña' : 'Mostrar contraseña';
+    button.setAttribute('aria-label', label);
+    button.title = label;
 }
 
 function showApp() {
@@ -945,6 +1098,7 @@ function showApp() {
         }
         updateHome();
         showScreen('screen-home');
+        schedulePendingGembukaiRoutineImport();
         return;
     }
     
@@ -954,6 +1108,7 @@ function showApp() {
         if (!routine) createRoutineFromProfile();
         updateHome();
         showScreen('screen-home');
+        schedulePendingGembukaiRoutineImport();
     }
 }
 
@@ -963,13 +1118,16 @@ function confirmLogout() {
 
 function logout() {
     stopSessionHeartbeat();
+    gembukaiScreenHistory = [];
     const userCode = currentUser && currentUser.code;
-    const sessionId = localStorage.getItem('gembukai_current_session_id');
+    const sessionId = getCurrentSessionId();
     if (userCode && sessionId) {
         postSessionAction({ action: 'logout', code: userCode, sessionId });
     }
     localStorage.removeItem('gembukai_current_user');
     localStorage.removeItem('gembukai_current_session_id');
+    sessionStorage.removeItem('gembukai_current_user');
+    sessionStorage.removeItem('gembukai_current_session_id');
     currentUser = null; isAdmin = false;
     document.getElementById('main-header').style.display = 'none';
     document.getElementById('bottom-nav').style.display = 'none';
@@ -998,6 +1156,7 @@ function saveProfile() {
     alert('✅ ¡Perfil creado, ' + name + '!');
     updateHome();
     showScreen('screen-home');
+    schedulePendingGembukaiRoutineImport();
 }
 
 function createRoutineFromProfile() {
@@ -1022,15 +1181,156 @@ function updateHome() {
     document.getElementById('stat-exercises').textContent = totalExercises;
 }
 
-function showScreen(screenId, navElement) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(screenId).classList.add('active');
-    if (navElement) { document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); navElement.classList.add('active'); }
+// Historial interno de pantallas. No sustituye al menú inferior: añade
+// comportamiento coherente al botón/gesto Atrás del navegador y Android.
+const GEMBUKAI_ROOT_SCREENS = new Set([
+    'screen-home', 'screen-exercises', 'screen-routines', 'screen-profile', 'screen-login'
+]);
+let gembukaiScreenHistory = [];
+let gembukaiCurrentScreen = null;
+let gembukaiRoutineScrollY = 0;
+let gembukaiHandlingBack = false;
+let gembukaiIsNativeApp = false;
+let gembukaiNativeBackRegistered = false;
+
+function restoreGembukaiScroll(position) {
+    const targetY = Math.max(0, Number(position) || 0);
+    let attempts = 0;
+    const restore = () => {
+        window.scrollTo(0, targetY);
+        attempts++;
+        if (attempts < 3) requestAnimationFrame(restore);
+    };
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+        restore();
+        // WebView puede terminar de recalcular la altura tras volver a mostrar
+        // una pantalla que se ha reconstruido dinámicamente.
+        setTimeout(() => window.scrollTo(0, targetY), 140);
+    }));
+}
+
+function showScreen(screenId, navElement, options = {}) {
+    const target = document.getElementById(screenId);
+    if (!target) return;
+
+    const previousScreen = gembukaiCurrentScreen || document.querySelector('.screen.active')?.id;
+    const previousScroll = window.scrollY || document.documentElement.scrollTop || 0;
+
+    if (!options.fromBack && previousScreen && previousScreen !== screenId) {
+        if (previousScreen === 'screen-routines') gembukaiRoutineScrollY = previousScroll;
+
+        // Las pestañas principales son raíces independientes. Al cambiar de
+        // pestaña no se acumulan pantallas antiguas en la pila de Atrás.
+        if (GEMBUKAI_ROOT_SCREENS.has(screenId)) {
+            gembukaiScreenHistory = [];
+        } else {
+            gembukaiScreenHistory.push({ screenId: previousScreen, scrollY: previousScroll });
+            // El historial del navegador solo se usa fuera de Capacitor.
+            // En Android gobierna exclusivamente el evento nativo backButton.
+            if (!gembukaiIsNativeApp) {
+                try { history.pushState({ gembukaiScreen: screenId }, '', location.href); } catch (_) {}
+            }
+        }
+    }
+
+    document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
+    target.classList.add('active');
+
+    if (navElement) {
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        navElement.classList.add('active');
+    }
+
     if (screenId === 'screen-routines') renderRoutineDays();
     if (screenId === 'screen-profile') renderProfile();
     if (screenId === 'screen-home') updateHome();
-    window.scrollTo(0, 0);
+
+    gembukaiCurrentScreen = screenId;
+
+    if (options.fromBack && Number.isFinite(Number(options.restoreScrollY))) {
+        restoreGembukaiScroll(Number(options.restoreScrollY));
+    } else if (options.restoreRoutine) {
+        restoreGembukaiScroll(gembukaiRoutineScrollY);
+    } else if (!options.keepScroll) {
+        window.scrollTo(0, 0);
+    }
 }
+
+function gembukaiExitNativeApp() {
+    const cap = window.Capacitor;
+    if (cap && typeof cap.nativePromise === 'function') {
+        cap.nativePromise('App', 'exitApp', {}).catch(error => console.warn('No se pudo cerrar Gembukai:', error));
+    }
+}
+
+function gembukaiGoBack() {
+    if (gembukaiHandlingBack) return;
+
+    const previous = gembukaiScreenHistory.pop();
+    if (previous) {
+        gembukaiHandlingBack = true;
+        if (gembukaiCurrentScreen === 'screen-exercise-detail') currentExerciseDetail = null;
+        showScreen(previous.screenId, null, {
+            fromBack: true,
+            restoreScrollY: previous.scrollY,
+            restoreRoutine: previous.screenId === 'screen-routines'
+        });
+        gembukaiHandlingBack = false;
+        return;
+    }
+
+    // En las pantallas principales, Atrás cierra la aplicación Android.
+    if (gembukaiIsNativeApp) gembukaiExitNativeApp();
+}
+
+function initializeGembukaiNativeEvents() {
+    const cap = window.Capacitor;
+    if (!cap || typeof cap.getPlatform !== 'function' || cap.getPlatform() === 'web') return;
+
+    gembukaiIsNativeApp = true;
+
+    if (cap.getPlatform() === 'android' && typeof cap.addListener === 'function' && !gembukaiNativeBackRegistered) {
+        try {
+            // Registro directo en el puente de Capacitor 8. No depende de la
+            // antigua API Capacitor.Plugins, que no se expone en este proyecto.
+            cap.addListener('App', 'backButton', () => gembukaiGoBack());
+            gembukaiNativeBackRegistered = true;
+        } catch (error) {
+            console.error('No se pudo registrar el botón Atrás nativo:', error);
+        }
+    }
+
+    if (typeof cap.addListener === 'function') {
+        cap.addListener('App', 'appUrlOpen', () => {
+            // Se lee la URI del Intent nativo, no se intenta hacer fetch(content://).
+            setTimeout(captureIncomingGembukaiRoutine, 150);
+        });
+        cap.addListener('App', 'appStateChange', state => {
+            if (state && state.isActive) setTimeout(captureIncomingGembukaiRoutine, 200);
+        });
+    }
+
+    // Comprueba también el Intent inicial cuando Android arranca la Activity
+    // desde cero al elegir «Abrir con Gembukai».
+    setTimeout(captureIncomingGembukaiRoutine, 300);
+}
+
+window.addEventListener('popstate', () => {
+    if (!gembukaiIsNativeApp) gembukaiGoBack();
+});
+window.addEventListener('scroll', () => {
+    if (gembukaiCurrentScreen === 'screen-routines') {
+        gembukaiRoutineScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+    }
+}, { passive: true });
+window.addEventListener('DOMContentLoaded', () => {
+    const active = document.querySelector('.screen.active');
+    gembukaiCurrentScreen = active ? active.id : 'screen-login';
+    if (!gembukaiIsNativeApp) {
+        try { history.replaceState({ gembukaiScreen: gembukaiCurrentScreen }, '', location.href); } catch (_) {}
+    }
+    initializeGembukaiNativeEvents();
+});
 
 async function showMuscleGroup(muscle) {
     lastScreen = 'screen-exercises';
@@ -1167,7 +1467,7 @@ function shareRoutine() {
         const link = document.createElement('a');
         const date = new Date().toISOString().slice(0, 10);
         link.href = url;
-        link.download = 'Rutina_Gembukai_' + date + '.gembukai';
+        link.download = 'Rutina_Gembukai_' + date + '.gembukai.json';
         document.body.appendChild(link);
         link.click();
         link.remove();
@@ -1185,14 +1485,49 @@ function importRoutine() {
         input = document.createElement('input');
         input.type = 'file';
         input.id = 'gembukai-routine-file';
-        input.accept = '.gembukai,.json,application/json';
+        input.accept = '.gembukai.json,.gembukai,.json,application/json';
         input.style.display = 'none';
         document.body.appendChild(input);
         input.addEventListener('change', handleRoutineFileImport);
     }
-    // Permite volver a seleccionar el mismo archivo si hace falta.
     input.value = '';
     input.click();
+}
+
+function importRoutineText(fileText, sourceName) {
+    try {
+        const parsed = JSON.parse(String(fileText || '').replace(/^\uFEFF/, ''));
+        // Formato nuevo: metadatos + rutina. También admitimos JSON antiguo.
+        const imported = parsed && parsed.app === 'Gembukai' && parsed.routine
+            ? parsed.routine
+            : parsed;
+
+        if (!imported || !Array.isArray(imported.days) ||
+            !imported.days.every(day => day && typeof day.name === 'string' && Array.isArray(day.exercises))) {
+            throw new Error('El archivo no contiene una rutina válida de Gembukai.');
+        }
+
+        if (!confirm('¿Importar la rutina de "' + (sourceName || 'archivo recibido') + '"? Reemplazará la rutina actual.')) {
+            return false;
+        }
+
+        // Corrige nombres de días con codificación antigua antes de guardar,
+        // no solo al dibujarlos. El resto de los datos de ejercicios se conserva.
+        imported.days.forEach(day => {
+            day.name = normalizeRoutineDayName(day.name);
+        });
+        routine = imported;
+        saveRoutine();
+
+        const routineNav = document.querySelector('#bottom-nav .nav-item:nth-child(3)');
+        showScreen('screen-routines', routineNav);
+        alert('✅ Rutina importada correctamente.');
+        return true;
+    } catch (error) {
+        console.error('Error al importar la rutina:', error);
+        alert('❌ No se ha podido importar el archivo. Comprueba que sea una rutina de Gembukai y que no esté dañada.\n\nDetalle: ' + error.message);
+        return false;
+    }
 }
 
 function handleRoutineFileImport(event) {
@@ -1201,42 +1536,80 @@ function handleRoutineFileImport(event) {
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = function () {
-        try {
-            const parsed = JSON.parse(String(reader.result || ''));
-            // Formato nuevo: metadatos + rutina. También admitimos JSON de rutina antiguo.
-            const imported = parsed && parsed.app === 'Gembukai' && parsed.routine
-                ? parsed.routine
-                : parsed;
-
-            if (!imported || !Array.isArray(imported.days) ||
-                !imported.days.every(day => day && typeof day.name === 'string' && Array.isArray(day.exercises))) {
-                throw new Error('El archivo no contiene una rutina válida de Gembukai.');
-            }
-
-            if (!confirm('¿Importar la rutina del archivo "' + file.name + '"? Reemplazará la rutina actual.')) {
-                input.value = '';
-                return;
-            }
-
-            routine = imported;
-            saveRoutine();
-            renderRoutineDays();
-            alert('✅ Rutina importada correctamente.');
-        } catch (e) {
-            console.error('Error al importar la rutina:', e);
-            alert('❌ No se ha podido importar el archivo. Comprueba que sea un archivo de rutina de Gembukai y que no esté dañado.\\n\\nDetalle: ' + e.message);
-        } finally {
-            input.value = '';
-        }
+    reader.onload = () => {
+        importRoutineText(reader.result, file.name);
+        input.value = '';
     };
-    reader.onerror = function () {
+    reader.onerror = () => {
         alert('❌ No se ha podido leer el archivo seleccionado.');
         input.value = '';
     };
     reader.readAsText(file, 'UTF-8');
 }
 
+// Android entrega los archivos externos mediante una URI content://. Esa URI
+// no se puede leer con fetch() desde el WebView: la lee el plugin nativo usando
+// ContentResolver y devuelve el texto JSON a esta parte de la aplicación.
+let pendingGembukaiRoutineFile = null;
+let processingGembukaiRoutineFile = false;
+let lastGembukaiRoutineContent = '';
+let lastGembukaiRoutineAt = 0;
+
+function hashGembukaiFileContent(value) {
+    let hash = 2166136261;
+    for (let i = 0; i < value.length; i++) {
+        hash ^= value.charCodeAt(i);
+        hash = Math.imul(hash, 16777619);
+    }
+    return (hash >>> 0).toString(16);
+}
+
+async function captureIncomingGembukaiRoutine() {
+    const cap = window.Capacitor;
+    if (!cap || typeof cap.nativePromise !== 'function' ||
+        typeof cap.getPlatform !== 'function' || cap.getPlatform() !== 'android') return;
+
+    try {
+        const result = await cap.nativePromise('GembukaiFiles', 'readSharedRoutine', {});
+        if (!result || !result.found || typeof result.content !== 'string') return;
+
+        // Evita dobles entregas cuando Android notifica la misma apertura por
+        // appUrlOpen y appStateChange.
+        const fingerprint = result.name + ':' + result.content.length + ':' + hashGembukaiFileContent(result.content);
+        const now = Date.now();
+        if (fingerprint === lastGembukaiRoutineContent && now - lastGembukaiRoutineAt < 5000) return;
+        lastGembukaiRoutineContent = fingerprint;
+        lastGembukaiRoutineAt = now;
+
+        pendingGembukaiRoutineFile = {
+            content: result.content,
+            name: result.name || 'rutina recibida desde WhatsApp'
+        };
+        schedulePendingGembukaiRoutineImport();
+    } catch (error) {
+        console.error('No se ha podido leer el archivo recibido desde Android:', error);
+        alert('❌ Gembukai se ha abierto, pero Android no ha permitido leer el archivo compartido.\n\nDetalle: ' + (error.message || error));
+    }
+}
+
+function schedulePendingGembukaiRoutineImport() {
+    if (!pendingGembukaiRoutineFile || !currentUser || !profile || processingGembukaiRoutineFile) return;
+    setTimeout(processPendingGembukaiRoutineImport, 250);
+}
+
+async function processPendingGembukaiRoutineImport() {
+    if (!pendingGembukaiRoutineFile || !currentUser || !profile || processingGembukaiRoutineFile) return;
+    const file = pendingGembukaiRoutineFile;
+    pendingGembukaiRoutineFile = null;
+    processingGembukaiRoutineFile = true;
+
+    try {
+        importRoutineText(file.content, file.name);
+    } finally {
+        processingGembukaiRoutineFile = false;
+        if (pendingGembukaiRoutineFile) schedulePendingGembukaiRoutineImport();
+    }
+}
 
 function getWeightHistory(ex) {
     if (!Array.isArray(ex.weightHistory)) ex.weightHistory = [];
@@ -1304,6 +1677,12 @@ function renderWeightProgress(ex, targetId) {
         <ul class="weight-history-list">${historyItems || '<li>Sin cambios registrados todavía</li>'}</ul>`;
 }
 
+function normalizeRoutineDayName(name) {
+    let value = String(name || '').trim();
+    value = value.replace(/DÃƒÂ­a/gi, 'Día').replace(/DÃ­a/gi, 'Día').replace(/^D�(?:a|í)?(\s*\d*)$/i, 'Día$1').replace(/^Dia(\s*\d*)$/i, 'Día$1');
+    return value;
+}
+
 function renderRoutineDays() {
     const container = document.getElementById('routine-days-container');
     if (!routine || !routine.days || routine.days.length === 0) { container.innerHTML = '<div class="empty-state"><div class="icon">🏋️</div><p>No tienes rutina</p></div>'; return; }
@@ -1311,7 +1690,9 @@ function renderRoutineDays() {
     routine.days.forEach((day, index) => {
         const exerciseCount = day.exercises ? day.exercises.length : 0;
         const isCompleted = day.completed ? 'day-completed' : '';
-        html += `<div class="day-card ${isCompleted}"><div class="day-header"><input class="day-title-input" value="${day.name}" onchange="renameDay(${index}, this.value)" onclick="event.stopPropagation()"><span class="day-badge">${exerciseCount} ejercicios</span></div><div class="day-exercises">`;
+        const safeDayName = normalizeRoutineDayName(day.name);
+        if (safeDayName !== day.name) day.name = safeDayName;
+        html += `<div class="day-card ${isCompleted}"><div class="day-header"><input class="day-title-input" value="${safeDayName.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}" onchange="renameDay(${index}, this.value)" onclick="event.stopPropagation()"><span class="day-badge">${exerciseCount} ejercicios</span></div><div class="day-exercises">`;
         if (!day.exercises || day.exercises.length === 0) { html += '<p style="color:#999;font-size:13px;text-align:center;padding:10px;">Sin ejercicios</p>'; }
         else {
             day.exercises.forEach((ex, exIndex) => {
@@ -1319,12 +1700,14 @@ function renderRoutineDays() {
                 if (ex.sets) setsReps.push(ex.sets + ' series');
                 if (ex.reps) setsReps.push(ex.reps + ' reps');
                 if (ex.weight) setsReps.push(ex.weight + ' kg');
-                html += `<div class="day-exercise-item" onclick="openExerciseDetailInDay(${index}, ${exIndex})"><img class="routine-exercise-img" src="${getRoutineExerciseImage(ex)}" alt="${ex.name}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'60\' height=\'60\'><rect width=\'60\' height=\'60\' fill=\'%23ddd\'/><text x=\'30\' y=\'35\' font-size=\'24\' text-anchor=\'middle\'>️</text></svg>'"><div class="routine-exercise-info"><div class="day-exercise-name">${translateExerciseName(ex.name)}</div><div class="day-exercise-data">${setsReps.join(' | ') || 'Sin datos'}${renderRoutineWeightChip(ex)}</div></div><div class="exercise-order-controls"><button class="btn-move-exercise" title="Mover hacia arriba" aria-label="Mover ${translateExerciseName(ex.name)} hacia arriba" ${exIndex === 0 ? 'disabled' : ''} onclick="event.stopPropagation(); moveExerciseInDay(${index}, ${exIndex}, ${exIndex - 1})">↑</button><button class="btn-move-exercise" title="Mover hacia abajo" aria-label="Mover ${translateExerciseName(ex.name)} hacia abajo" ${exIndex === day.exercises.length - 1 ? 'disabled' : ''} onclick="event.stopPropagation(); moveExerciseInDay(${index}, ${exIndex}, ${exIndex + 1})">↓</button></div><button class="btn btn-delete-exercise" onclick="event.stopPropagation(); removeExerciseFromDay(${index}, ${exIndex})">🗑️</button></div>`;
+                const isCurrentExercise = !!(currentRoutineSelection && currentRoutineSelection.dayIndex === index && currentRoutineSelection.exercise === ex);
+                html += `<div class="day-exercise-item${isCurrentExercise ? ' is-current' : ''}" ${isCurrentExercise ? 'aria-current="true"' : ''} onclick="openExerciseDetailInDay(${index}, ${exIndex})"><img class="routine-exercise-img" src="${getRoutineExerciseImage(ex)}" alt="${ex.name}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'60\' height=\'60\'><rect width=\'60\' height=\'60\' fill=\'%23ddd\'/><text x=\'30\' y=\'35\' font-size=\'24\' text-anchor=\'middle\'>️</text></svg>'"><div class="routine-exercise-info"><div class="day-exercise-name">${translateExerciseName(ex.name)}${isCurrentExercise ? '<span class="routine-current-badge">EN CURSO</span>' : ''}</div><div class="day-exercise-data">${setsReps.join(' | ') || 'Sin datos'}${renderRoutineWeightChip(ex)}</div></div><div class="exercise-order-controls"><button class="btn-move-exercise" title="Mover hacia arriba" aria-label="Mover ${translateExerciseName(ex.name)} hacia arriba" ${exIndex === 0 ? 'disabled' : ''} onclick="event.stopPropagation(); moveExerciseInDay(${index}, ${exIndex}, ${exIndex - 1})">↑</button><button class="btn-move-exercise" title="Mover hacia abajo" aria-label="Mover ${translateExerciseName(ex.name)} hacia abajo" ${exIndex === day.exercises.length - 1 ? 'disabled' : ''} onclick="event.stopPropagation(); moveExerciseInDay(${index}, ${exIndex}, ${exIndex + 1})">↓</button></div><button class="btn btn-delete-exercise" onclick="event.stopPropagation(); removeExerciseFromDay(${index}, ${exIndex})">🗑️</button></div>`;
             });
         }
         html += `</div><div class="day-actions"><button class="btn btn-small" onclick="openAddToDay(${index})"> Añadir</button><button class="btn btn-small ${day.completed ? 'btn-warning' : 'btn-success'}" onclick="toggleDayCompleted(${index})">${day.completed ? '↩️ Desmarcar' : '✅ Completado'}</button></div></div>`;
     });
     container.innerHTML = html;
+    saveRoutine();
 }
 
 function renameDay(index, newName) { routine.days[index].name = newName; saveRoutine(); }
@@ -1343,6 +1726,7 @@ function toggleDayCompleted(dayIndex) { routine.days[dayIndex].completed = !rout
 function openExerciseDetailInDay(dayIndex, exIndex) {
     const ex = routine.days[dayIndex].exercises[exIndex];
     currentExerciseDetail = { dayIndex, exIndex, exercise: ex };
+    currentRoutineSelection = { dayIndex, exercise: ex };
     const imgContainer = document.getElementById('detail-image-container');
     const img = document.createElement('img');
     // Buscar la imagen en el catálogo para recuperar media_id si falta en la rutina.
@@ -1402,7 +1786,85 @@ function saveExerciseData() {
     backFromDetail();
 }
 
-function backFromDetail() { currentExerciseDetail = null; showScreen('screen-routines'); }
+function backFromDetail() { gembukaiGoBack(); }
+
+
+function togglePersonalPasswordVisibility(inputId, buttonId) {
+    const input = document.getElementById(inputId);
+    const button = document.getElementById(buttonId);
+    if (!input || !button) return;
+
+    const isVisible = input.type === 'text';
+    input.type = isVisible ? 'password' : 'text';
+    const visibleIcon = '<svg class="password-eye-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+    const hiddenIcon = '<svg class="password-eye-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3 21 21"></path><path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"></path><path d="M9.9 5.2A10.8 10.8 0 0 1 12 5c6.4 0 10 7 10 7a16.5 16.5 0 0 1-4 4.8"></path><path d="M6.6 6.6C3.7 8.5 2 12 2 12s3.6 7 10 7a10 10 0 0 0 3.2-.5"></path></svg>';
+    button.innerHTML = input.type === 'text' ? visibleIcon : hiddenIcon;
+    button.setAttribute('aria-label', input.type === 'text' ? 'Ocultar contraseña' : 'Mostrar contraseña');
+    button.title = input.type === 'text' ? 'Ocultar contraseña' : 'Mostrar contraseña';
+}
+
+function openPersonalPasswordModal() {
+    const modal = document.getElementById('personal-password-modal');
+    if (!currentUser || !getCurrentSessionId()) {
+        alert('Tu sesión no está activa. Vuelve a iniciar sesión.');
+        return;
+    }
+    document.getElementById('personal-password-new').value = '';
+    document.getElementById('personal-password-confirm').value = '';
+    document.getElementById('personal-password-error').style.display = 'none';
+    modal.style.display = 'block';
+}
+
+function closePersonalPasswordModal() {
+    document.getElementById('personal-password-modal').style.display = 'none';
+}
+
+async function savePersonalPassword() {
+    const password = document.getElementById('personal-password-new').value;
+    const confirmation = document.getElementById('personal-password-confirm').value;
+    const error = document.getElementById('personal-password-error');
+    const button = document.getElementById('personal-password-save');
+    const showError = message => { error.textContent = message; error.style.display = 'block'; };
+    if (!password.trim()) { showError('Escribe una contraseña.'); return; }
+    if (password.length > 200) { showError('La contraseña no puede superar los 200 caracteres.'); return; }
+    if (password !== confirmation) { showError('Las contraseñas no coinciden.'); return; }
+    const sessionId = getCurrentSessionId();
+    if (!currentUser || !sessionId) { showError('La sesión ha caducado. Vuelve a entrar.'); return; }
+    const requestId = (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`);
+    button.disabled = true;
+    button.textContent = 'Guardando…';
+    error.style.display = 'none';
+    try {
+        await fetch(APPS_SCRIPT_URL, {
+            method: 'POST', mode: 'no-cors',
+            headers: {'Content-Type': 'text/plain;charset=utf-8'},
+            body: JSON.stringify({
+                action: 'setPassword',
+                code: currentUser.code,
+                sessionId,
+                password,
+                requestId
+            })
+        });
+        let result = null;
+        for (let attempt = 0; attempt < 12; attempt++) {
+            await new Promise(resolve => setTimeout(resolve, 650));
+            result = await readPasswordApi({action: 'passwordStatus', requestId}, 5000);
+            if (result && result.result !== 'pending') break;
+        }
+        if (!result || result.result !== 'success') {
+            showError(result && result.message ? result.message : 'No se ha podido confirmar el cambio. Comprueba la conexión e inténtalo de nuevo.');
+            return;
+        }
+        closePersonalPasswordModal();
+        alert('✅ Contraseña personal guardada. Ya puedes utilizarla para iniciar sesión.');
+    } catch (err) {
+        showError('No se ha podido guardar la contraseña. Comprueba la conexión.');
+    } finally {
+        button.disabled = false;
+        button.textContent = 'Guardar contraseña';
+    }
+}
 
 function renderProfile() {
     if (!profile) { document.getElementById('profile-display').innerHTML = '<p>Sin perfil</p>'; return; }
@@ -1424,6 +1886,11 @@ function renderProfile() {
         <div class="profile-info"><div class="label">Objetivo</div><div class="value">${goals[profile.goal] || profile.goal}</div></div>
         <div class="profile-info"><div class="label">Días de entreno</div><div class="value">${profile.days} días/semana</div></div>
         <div class="profile-info"><div class="label">Código de acceso</div><div class="value">${currentUser ? currentUser.code : 'N/A'}</div></div>
+        <div class="profile-info" style="margin-top:14px;">
+            <div class="label">Contraseña personal</div>
+            <div class="value" style="font-size:13px;font-weight:normal;">Configura una contraseña para acceder sin tener que escribir tu código original.</div>
+            <button class="btn btn-secondary" style="margin-top:10px;width:100%;" onclick="openPersonalPasswordModal()">🔑 Configurar / cambiar contraseña</button>
+        </div>
     `;
     if (isAdmin) { document.getElementById('admin-section').style.display = 'block'; renderUserList(); }
     else { document.getElementById('admin-section').style.display = 'none'; }
@@ -1627,8 +2094,6 @@ if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('./service-worker.js').then(reg => console.log('✅ SW registrado')).catch(err => console.log('❌ Error SW:', err));
     });
-    history.pushState(null, null, location.href);
-    window.onpopstate = function () { history.go(1); };
 }
 </script>
 </body>

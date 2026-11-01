@@ -1,8 +1,11 @@
-const CACHE_NAME = 'gembukai-v1';
+const CACHE_NAME = 'gembukai-v8-version-1.1.3';
 const urlsToCache = [
   './',
   './index.html',
   './logo.png',
+  './icons/icon-192.png',
+  './icons/icon-512.png',
+  './icons/icon-512-maskable.png',
   './translations.json',
   './users.json',
   './data/exercises.json'
