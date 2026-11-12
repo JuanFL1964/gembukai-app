@@ -190,8 +190,8 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 </div>
 <button class="btn" onclick="validateCode()">Acceder</button>
 <label style="display:flex;align-items:center;justify-content:center;gap:9px;margin-top:14px;font-size:13px;color:#ddd;">
-<input type="checkbox" id="remember-session" checked style="width:17px;height:17px;accent-color:#DC143C;">
-Mantener la sesión iniciada
+<input type="checkbox" id="remember-session" checked onchange="handleRememberPreferenceChange(this.checked)" style="width:17px;height:17px;accent-color:#DC143C;">
+Recordar contraseña
 </label>
 <div id="login-error" class="login-error"></div>
 <p style="margin-top: 30px; font-size: 12px; opacity: 0.7;">¿No tienes código? Contacta con el gimnasio</p>
@@ -688,29 +688,161 @@ function filterExercisesByMuscle(muscle) {
     });
 }
 
+
+function getRememberToken() {
+    return localStorage.getItem('gembukai_remember_token') || '';
+}
+function createRememberToken() {
+    const bytes = new Uint8Array(32);
+    if (window.crypto && window.crypto.getRandomValues) {
+        window.crypto.getRandomValues(bytes);
+        return Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
+    }
+    throw new Error('Este dispositivo no permite generar una credencial segura.');
+}
+function rememberRequest(payload) {
+    return fetch(APPS_SCRIPT_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+    }).catch(() => null);
+}
+function readRememberResult(requestId, timeoutMs = 8000) {
+    return new Promise(resolve => {
+        const callbackName = `__gembukaiSessionCB_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+        const script = document.createElement('script');
+        let done = false;
+        const finish = value => {
+            if (done) return;
+            done = true; clearTimeout(timer);
+            try { delete window[callbackName]; } catch (_) { window[callbackName] = undefined; }
+            script.remove(); resolve(value || null);
+        };
+        window[callbackName] = finish;
+        const timer = setTimeout(() => finish(null), timeoutMs);
+        const params = new URLSearchParams({action:'rememberStatus', requestId, callback:callbackName, cacheBust:String(Date.now())});
+        script.src = `${APPS_SCRIPT_URL}?${params.toString()}`;
+        script.onerror = () => finish(null);
+        document.head.appendChild(script);
+    });
+}
+async function saveRememberCredential(code, sessionId) {
+    const token = getRememberToken() || createRememberToken();
+    const requestId = `remember_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+    await rememberRequest({action:'rememberSet', code, token, sessionId:sessionId || getCurrentSessionId(), requestId});
+    const result = await readRememberResult(requestId);
+    if (!result || result.result !== 'success') throw new Error((result && result.message) || 'No se pudo guardar la credencial recordada.');
+    localStorage.setItem('gembukai_remember_token', token);
+}
+async function revokeRememberCredential() {
+    const token = getRememberToken();
+    localStorage.removeItem('gembukai_remember_token');
+    if (!token) return;
+    const requestId = `forget_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+    await rememberRequest({action:'rememberRemove', token, requestId});
+    await readRememberResult(requestId, 5000);
+}
+function handleRememberPreferenceChange(checked) {
+    localStorage.setItem('gembukai_remember_preference', checked ? 'true' : 'false');
+    if (!checked) revokeRememberCredential().catch(err => console.warn('No se pudo revocar la credencial recordada:', err));
+}
+
+async function restoreRememberedLogin() {
+    const token = getRememberToken();
+    if (!token) return false;
+    const deviceSessionId = getDeviceSessionId();
+    const requestId = `restore_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+    await rememberRequest({action:'rememberRestore', token, sessionId:deviceSessionId, requestId});
+    const result = await readRememberResult(requestId, 10000);
+    if (!result || result.result !== 'success' || !result.code) {
+        if (result && result.result === 'invalid') localStorage.removeItem('gembukai_remember_token');
+        return false;
+    }
+    const user = usersDB.users.find(u => String(u.code).trim().toUpperCase() === String(result.code).trim().toUpperCase());
+    if (!user || user.active === false || String(user.active).toUpperCase() === 'FALSE') return false;
+    const expiry = new Date(user.expires); expiry.setHours(23,59,59,999);
+    if (!Number.isNaN(expiry.getTime()) && Date.now() > expiry.getTime()) return false;
+    currentUser = user;
+    localStorage.setItem('gembukai_current_user', JSON.stringify(user));
+    localStorage.setItem('gembukai_current_session_id', deviceSessionId);
+    sessionStorage.removeItem('gembukai_current_user');
+    sessionStorage.removeItem('gembukai_current_session_id');
+    isAdmin = String(user.role || '').toLowerCase() === 'admin';
+    return true;
+}
+
 async function enterApp() {
-    document.getElementById('splash-screen').classList.add('hidden');
-    await loadExercises();
-    await loadUsers();
-    await loadTranslations();
-    const savedUser = localStorage.getItem('gembukai_current_user') || sessionStorage.getItem('gembukai_current_user');
-    if (savedUser) {
-        currentUser = JSON.parse(savedUser);
-        const savedSessionId = getCurrentSessionId();
+    const splash = document.getElementById('splash-screen');
+    const enterButton = splash ? splash.querySelector('.splash-btn') : null;
+
+    // Mantener la pantalla inicial visible mientras se cargan los datos y se
+    // comprueba la sesión. Así nunca se muestra el panel principal vacío
+    // durante unos segundos antes de presentar el acceso.
+    if (enterButton) {
+        enterButton.disabled = true;
+        enterButton.textContent = 'INICIALIZANDO...';
+        enterButton.setAttribute('aria-busy', 'true');
+    }
+
+    try {
+        await loadExercises();
         await loadUsers();
-        const storedUser = usersDB.users.find(u => u.code === currentUser.code);
-        if (!savedSessionId || !storedUser || String(storedUser.sessionId || '') !== savedSessionId) {
-            localStorage.removeItem('gembukai_current_user');
-            localStorage.removeItem('gembukai_current_session_id');
-            sessionStorage.removeItem('gembukai_current_user');
-            sessionStorage.removeItem('gembukai_current_session_id');
-            currentUser = null;
-            showScreen('screen-login');
-        } else {
-            checkUserAccess();
+        await loadTranslations();
+
+        // Si hay credencial recordada, el servidor valida al usuario y reserva una sesión nueva.
+        if (getRememberToken()) {
+            const restored = await restoreRememberedLogin();
+            if (restored) {
+                if (splash) splash.classList.add('hidden');
+                checkUserAccess();
+                return;
+            }
         }
-    } else {
+
+        const savedUser = localStorage.getItem('gembukai_current_user') || sessionStorage.getItem('gembukai_current_user');
+        if (savedUser) {
+            try {
+                currentUser = JSON.parse(savedUser);
+            } catch (parseError) {
+                currentUser = null;
+            }
+
+            const savedSessionId = getCurrentSessionId();
+            if (currentUser && currentUser.code) {
+                await loadUsers();
+                const storedUser = usersDB.users.find(u => u.code === currentUser.code);
+                if (!savedSessionId || !storedUser || String(storedUser.sessionId || '') !== savedSessionId) {
+                    localStorage.removeItem('gembukai_current_user');
+                    localStorage.removeItem('gembukai_current_session_id');
+                    sessionStorage.removeItem('gembukai_current_user');
+                    sessionStorage.removeItem('gembukai_current_session_id');
+                    currentUser = null;
+                }
+            } else {
+                currentUser = null;
+            }
+        }
+
+        // Solo se retira la pantalla inicial cuando ya sabemos qué pantalla
+        // corresponde mostrar: acceso o aplicación con sesión recordada.
+        if (splash) splash.classList.add('hidden');
+
+        if (currentUser) {
+            checkUserAccess();
+        } else {
+            showScreen('screen-login');
+        }
+    } catch (error) {
+        console.error('Error al iniciar Gembukai:', error);
+        currentUser = null;
+        if (splash) splash.classList.add('hidden');
         showScreen('screen-login');
+    } finally {
+        if (enterButton) {
+            enterButton.disabled = false;
+            enterButton.textContent = 'ENTRAR';
+            enterButton.removeAttribute('aria-busy');
+        }
     }
 }
 
@@ -971,12 +1103,24 @@ async function validateCode() {
         }
         currentUser = user;
         const keepSession = !!document.getElementById('remember-session')?.checked;
-        const sessionStore = keepSession ? localStorage : sessionStorage;
-        const otherStore = keepSession ? sessionStorage : localStorage;
-        sessionStore.setItem('gembukai_current_user', JSON.stringify(user));
-        sessionStore.setItem('gembukai_current_session_id', sessionId);
-        otherStore.removeItem('gembukai_current_user');
-        otherStore.removeItem('gembukai_current_session_id');
+        if (keepSession) {
+            try {
+                await saveRememberCredential(loginCode, sessionId);
+            } catch (rememberError) {
+                console.warn('No se pudo guardar la credencial recordada:', rememberError);
+                // No impedir el acceso normal si falla el guardado de la opción.
+            }
+            localStorage.setItem('gembukai_current_user', JSON.stringify(user));
+            localStorage.setItem('gembukai_current_session_id', sessionId);
+            sessionStorage.removeItem('gembukai_current_user');
+            sessionStorage.removeItem('gembukai_current_session_id');
+        } else {
+            await revokeRememberCredential();
+            sessionStorage.setItem('gembukai_current_user', JSON.stringify(user));
+            sessionStorage.setItem('gembukai_current_session_id', sessionId);
+            localStorage.removeItem('gembukai_current_user');
+            localStorage.removeItem('gembukai_current_session_id');
+        }
         isAdmin = String(user.role || '').toLowerCase() === 'admin';
         showApp();
     } finally {
@@ -2095,6 +2239,15 @@ if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('./service-worker.js').then(reg => console.log('✅ SW registrado')).catch(err => console.log('❌ Error SW:', err));
     });
 }
+
+// Mantener la preferencia elegida por el usuario entre aperturas. Por defecto está activada.
+(function initRememberPreference() {
+    const checkbox = document.getElementById('remember-session');
+    if (!checkbox) return;
+    const saved = localStorage.getItem('gembukai_remember_preference');
+    checkbox.checked = saved === null ? true : saved === 'true';
+})();
+
 </script>
 </body>
 </html>

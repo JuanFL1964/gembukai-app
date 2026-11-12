@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gembukai-v8-version-1.1.3';
+const CACHE_NAME = 'gembukai-v9-version-1.1.3-remember';
 const urlsToCache = [
   './',
   './index.html',
