@@ -1,46 +1,62 @@
-const CACHE_NAME = 'gembukai-v1';
+const CACHE_NAME = 'gembukai-v15-version-1.1.3-descargar-compartir';
 const urlsToCache = [
   './',
   './index.html',
   './logo.png',
+  './icons/icon-192.png',
+  './icons/icon-512.png',
+  './icons/icon-512-maskable.png',
   './translations.json',
   './users.json',
   './data/exercises.json'
 ];
 
-// Instalar el service worker y cachear los archivos
+// Activar la nueva versión sin esperar a que se cierren todas las ventanas.
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => {
-        console.log('✅ Cache abierta');
-        return cache.addAll(urlsToCache);
-      })
-      .catch(err => console.log('Error cacheando:', err))
+      .then(cache => cache.addAll(urlsToCache))
+      .then(() => self.skipWaiting())
   );
 });
 
-// Interceptar peticiones y servirlas desde la cache si es posible
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        if (response) {
-          return response;
-        }
-        return fetch(event.request);
-      })
-  );
-});
-
-// Actualizar la cache cuando cambie la versión
+// La nueva versión toma el control de las ventanas abiertas.
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.filter(cacheName => cacheName !== CACHE_NAME)
-          .map(cacheName => caches.delete(cacheName))
-      );
-    })
+    caches.keys()
+      .then(names => Promise.all(
+        names.filter(name => name !== CACHE_NAME).map(name => caches.delete(name))
+      ))
+      .then(() => self.clients.claim())
+  );
+});
+
+// Para la página principal, intenta obtener primero el HTML actual.
+// Los demás recursos conservan la estrategia de caché para uso sin conexión.
+self.addEventListener('fetch', event => {
+  if (event.request.method !== 'GET') return;
+
+  const url = new URL(event.request.url);
+  const isAppDocument = event.request.mode === 'navigate' ||
+    url.pathname.endsWith('/index.html') ||
+    url.pathname.endsWith('/');
+
+  if (isAppDocument) {
+    event.respondWith(
+      fetch(event.request)
+        .then(response => {
+          if (response && response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
+          }
+          return response;
+        })
+        .catch(() => caches.match(event.request).then(cached => cached || caches.match('./index.html')))
+    );
+    return;
+  }
+
+  event.respondWith(
+    caches.match(event.request).then(cached => cached || fetch(event.request))
   );
 });
