@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gembukai-v15-version-1.1.3-descargar-compartir';
+const CACHE_NAME = 'gembukai-v14-version-1.1.3-web-session-1min';
 const urlsToCache = [
   './',
   './index.html',

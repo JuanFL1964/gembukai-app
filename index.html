@@ -77,6 +77,9 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 .routine-exercise-img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; background: #ddd; flex-shrink: 0; }
 .routine-exercise-info { flex: 1; }
 .password-visibility-toggle { position:absolute; right:10px; top:50%; transform:translateY(-50%); width:44px; height:44px; display:flex; align-items:center; justify-content:center; background:transparent; border:0; border-radius:8px; color:#8B0000; cursor:pointer; padding:8px; }
+/* Evita duplicar el botón de ojo propio con el control nativo de Microsoft Edge. */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear { display:none; }
 .password-visibility-toggle:focus-visible { outline:2px solid #8B0000; outline-offset:2px; }
 .password-eye-icon { width:23px; height:23px; fill:none; stroke:currentColor; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round; }
 .day-exercise-item.is-current { background:#fff0f2; box-shadow:inset 5px 0 0 #DC143C, 0 3px 12px rgba(139,0,0,.16); outline:2px solid rgba(220,20,60,.65); outline-offset:-2px; }
@@ -313,7 +316,7 @@ Recordar contraseña
 <div class="card">
 <h2>🏋️ Mi Rutina Semanal <span id="routine-start-date" class="routine-start-date"></span></h2>
 <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-<button class="btn btn-small btn-warning" onclick="shareRoutine()" style="flex:1;">📥 Descargar</button>
+<button class="btn btn-small btn-success" onclick="downloadRoutine()" style="flex:1;">📥 Descargar</button>
 <button class="btn btn-small btn-success" onclick="importRoutine()" style="flex:1;">📥 Importar</button>
 </div>
 <div id="routine-days-container"></div>
@@ -711,11 +714,18 @@ function createRememberToken() {
     }
     throw new Error('Este dispositivo no permite generar una credencial segura.');
 }
+function getGembukaiClientType() {
+    const cap = window.Capacitor;
+    return cap && typeof cap.getPlatform === 'function' && cap.getPlatform() === 'android'
+        ? 'ANDROID'
+        : 'WEB';
+}
+
 function rememberRequest(payload) {
     return fetch(APPS_SCRIPT_URL, {
         method: 'POST', mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({ ...payload, clientType: payload.clientType || getGembukaiClientType() })
     }).catch(() => null);
 }
 function readRememberResult(requestId, timeoutMs = 8000) {
@@ -912,7 +922,7 @@ function postSessionAction(payload) {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({ ...payload, clientType: payload.clientType || getGembukaiClientType() })
     }).catch(() => null);
 }
 
@@ -934,6 +944,7 @@ function readServerSession(code, timeoutMs = 7000, action = 'checkSession', sess
         const params = new URLSearchParams({
             action,
             code: String(code || ''),
+            clientType: getGembukaiClientType(),
             callback: callbackName,
             cacheBust: String(Date.now())
         });
@@ -1208,7 +1219,10 @@ function startSessionHeartbeat() {
         sessionHeartbeatFailures++;
     };
     runHeartbeat();
-    sessionHeartbeatTimer = setInterval(runHeartbeat, 30000);
+    // La web renueva cada 20 s para que no caduque mientras está abierta.
+    // Android conserva el intervalo original de 30 s.
+    const heartbeatInterval = getGembukaiClientType() === 'WEB' ? 20000 : 30000;
+    sessionHeartbeatTimer = setInterval(runHeartbeat, heartbeatInterval);
 }
 
 // Al volver a la pestaña o desbloquear el móvil, comprobar/renovar la sesión enseguida.
@@ -1746,11 +1760,10 @@ function showRoutineExportDialog() {
         modal.style.cssText = 'position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;padding:18px;';
         modal.innerHTML = `
             <div role="dialog" aria-modal="true" aria-labelledby="routine-export-title" style="width:100%;max-width:390px;background:var(--card-bg,#fff);color:var(--text-color,#222);border-radius:14px;padding:20px;box-shadow:0 10px 35px rgba(0,0,0,.3);">
-                <h3 id="routine-export-title" style="margin:0 0 8px;">📥 Descargar o compartir rutina</h3>
+                <h3 id="routine-export-title" style="margin:0 0 8px;">📥 Descargar rutina</h3>
                 <p style="margin:0 0 14px;font-size:14px;">Nombre del socio (opcional):</p>
                 <input id="routine-export-member" type="text" maxlength="80" placeholder="Ej. Juan o María López" style="box-sizing:border-box;width:100%;padding:12px;border:1px solid #aaa;border-radius:8px;margin-bottom:16px;font-size:16px;">
                 <button id="routine-export-save" class="btn btn-success" style="width:100%;margin-bottom:9px;">📥 Descargar</button>
-                <button id="routine-export-share" class="btn btn-warning" style="width:100%;margin-bottom:9px;">📤 Compartir</button>
                 <button id="routine-export-cancel" class="btn" style="width:100%;background:#777;color:white;">Cancelar</button>
             </div>`;
         document.body.appendChild(modal);
@@ -1766,11 +1779,6 @@ function showRoutineExportDialog() {
             const name = memberInput.value;
             lastRoutineExportMemberName = name;
             await exportRoutineAction('save', name, modal);
-        });
-        modal.querySelector('#routine-export-share').addEventListener('click', async () => {
-            const name = memberInput.value;
-            lastRoutineExportMemberName = name;
-            await exportRoutineAction('share', name, modal);
         });
     }
     modal.style.display = 'flex';
@@ -1818,16 +1826,29 @@ async function exportRoutineAction(action, memberName, modal) {
         }
 
         const blob = new Blob([content], { type: 'application/json;charset=utf-8' });
-        if (action === 'share' && navigator.share && typeof File !== 'undefined') {
-            const file = new File([blob], fileName, { type: 'application/json' });
-            if (!navigator.canShare || navigator.canShare({ files: [file] })) {
-                await navigator.share({ files: [file], title: 'Rutina de entrenamiento' });
-                if (modal) modal.remove();
+
+        // En web, Compartir solo abre el selector nativo si el navegador admite
+        // compartir archivos. No debe convertirse silenciosamente en Descargar.
+        if (action === 'share') {
+            if (typeof navigator.share !== 'function' ||
+                typeof navigator.canShare !== 'function' ||
+                typeof File === 'undefined') {
+                alert('Este navegador no permite compartir archivos directamente desde Gembukai. Pulsa Descargar para guardar el JSON y adjuntarlo manualmente en WhatsApp o por correo.');
                 return;
             }
+
+            const file = new File([blob], fileName, { type: 'application/json' });
+            if (!navigator.canShare({ files: [file] })) {
+                alert('Este navegador o dispositivo no admite compartir este archivo directamente. Pulsa Descargar y adjúntalo manualmente en WhatsApp o por correo.');
+                return;
+            }
+
+            await navigator.share({ files: [file], title: 'Rutina de entrenamiento' });
+            if (modal) modal.remove();
+            return;
         }
 
-        // Guardar en web, o alternativa cuando el navegador no permite compartir archivos.
+        // Descargar en web: genera el archivo JSON en el dispositivo.
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
@@ -1837,11 +1858,7 @@ async function exportRoutineAction(action, memberName, modal) {
         link.remove();
         setTimeout(() => URL.revokeObjectURL(url), 1500);
         if (modal) modal.remove();
-        if (action === 'share') {
-            alert('Este navegador no permite compartir archivos directamente. Se ha descargado la rutina; puedes adjuntarla desde WhatsApp o el correo.');
-        } else {
-            alert('✅ Descarga iniciada: ' + fileName);
-        }
+        alert('✅ Descarga iniciada: ' + fileName);
     } catch (error) {
         if (error && error.name === 'AbortError') return;
         console.error('Error al exportar la rutina:', error);
@@ -1853,7 +1870,7 @@ async function exportRoutineAction(action, memberName, modal) {
     }
 }
 
-function shareRoutine() {
+function downloadRoutine() {
     showRoutineExportDialog();
 }
 
