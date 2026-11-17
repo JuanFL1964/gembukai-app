@@ -758,11 +758,7 @@ function handleRememberPreferenceChange(checked) {
     if (!checked) revokeRememberCredential().catch(err => console.warn('No se pudo revocar la credencial recordada:', err));
 }
 
-<<<<<<< HEAD
 async function restoreRememberedLogin(usersReadyPromise) {
-=======
-async function restoreRememberedLogin() {
->>>>>>> df8938e1e8b3c78992065475ab2d298605eb1377
     const token = getRememberToken();
     if (!token) return false;
     const deviceSessionId = getDeviceSessionId();
@@ -773,12 +769,9 @@ async function restoreRememberedLogin() {
         if (result && result.result === 'invalid') localStorage.removeItem('gembukai_remember_token');
         return false;
     }
-<<<<<<< HEAD
     // La comprobación del servidor se ejecuta en paralelo con la lectura de
     // usuarios. Esperamos a que esa lectura termine antes de buscar la cuenta.
     if (usersReadyPromise) await usersReadyPromise;
-=======
->>>>>>> df8938e1e8b3c78992065475ab2d298605eb1377
     const user = usersDB.users.find(u => String(u.code).trim().toUpperCase() === String(result.code).trim().toUpperCase());
     if (!user || user.active === false || String(user.active).toUpperCase() === 'FALSE') return false;
     const expiry = new Date(user.expires); expiry.setHours(23,59,59,999);
@@ -806,7 +799,6 @@ async function enterApp() {
     }
 
     try {
-<<<<<<< HEAD
         // El catálogo remoto de ejercicios no es necesario para mostrar Inicio.
         // Lo descargamos desde ya, pero sin bloquear la entrada a la aplicación.
         // Si el usuario entra en Ejercicios antes de que termine, loadExercises()
@@ -831,20 +823,6 @@ async function enterApp() {
             if (splash) splash.classList.add('hidden');
             checkUserAccess();
             return;
-=======
-        await loadExercises();
-        await loadUsers();
-        await loadTranslations();
-
-        // Si hay credencial recordada, el servidor valida al usuario y reserva una sesión nueva.
-        if (getRememberToken()) {
-            const restored = await restoreRememberedLogin();
-            if (restored) {
-                if (splash) splash.classList.add('hidden');
-                checkUserAccess();
-                return;
-            }
->>>>>>> df8938e1e8b3c78992065475ab2d298605eb1377
         }
 
         const savedUser = localStorage.getItem('gembukai_current_user') || sessionStorage.getItem('gembukai_current_user');
@@ -857,13 +835,9 @@ async function enterApp() {
 
             const savedSessionId = getCurrentSessionId();
             if (currentUser && currentUser.code) {
-<<<<<<< HEAD
                 // usersDB ya se acaba de actualizar durante el arranque. Solo
                 // repetimos la petición si la lectura inicial falló.
                 if (!usersLoadSucceeded) await loadUsers();
-=======
-                await loadUsers();
->>>>>>> df8938e1e8b3c78992065475ab2d298605eb1377
                 const storedUser = usersDB.users.find(u => u.code === currentUser.code);
                 if (!savedSessionId || !storedUser || String(storedUser.sessionId || '') !== savedSessionId) {
                     localStorage.removeItem('gembukai_current_user');
@@ -1519,7 +1493,6 @@ function showScreen(screenId, navElement, options = {}) {
     }
 }
 
-<<<<<<< HEAD
 // Acceso directo al puente nativo de Capacitor.
 // Este proyecto usa HTML/JavaScript tradicional y no carga el runtime modular
 // de @capacitor/core; por eso las llamadas al plugin se hacen con nativePromise.
@@ -1537,8 +1510,6 @@ function getGembukaiNativePlugin(pluginName) {
     };
 }
 
-=======
->>>>>>> df8938e1e8b3c78992065475ab2d298605eb1377
 function gembukaiExitNativeApp() {
     const cap = window.Capacitor;
     if (cap && typeof cap.nativePromise === 'function') {
@@ -1860,11 +1831,7 @@ async function exportRoutineAction(action, memberName, modal) {
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-<<<<<<< HEAD
         link.download = fileName;
-=======
-        link.download = 'Rutina_Gembukai_' + date + '.gembukai.json';
->>>>>>> df8938e1e8b3c78992065475ab2d298605eb1377
         document.body.appendChild(link);
         link.click();
         link.remove();
@@ -1977,20 +1944,12 @@ function hashGembukaiFileContent(value) {
 
 async function captureIncomingGembukaiRoutine() {
     const cap = window.Capacitor;
-<<<<<<< HEAD
     if (!cap || typeof cap.getPlatform !== 'function' || cap.getPlatform() !== 'android') return;
     const nativeFiles = getGembukaiNativePlugin('GembukaiFiles');
     if (!nativeFiles || typeof nativeFiles.readSharedRoutine !== 'function') return;
 
     try {
         const result = await nativeFiles.readSharedRoutine({});
-=======
-    if (!cap || typeof cap.nativePromise !== 'function' ||
-        typeof cap.getPlatform !== 'function' || cap.getPlatform() !== 'android') return;
-
-    try {
-        const result = await cap.nativePromise('GembukaiFiles', 'readSharedRoutine', {});
->>>>>>> df8938e1e8b3c78992065475ab2d298605eb1377
         if (!result || !result.found || typeof result.content !== 'string') return;
 
         // Evita dobles entregas cuando Android notifica la misma apertura por
@@ -2110,16 +2069,9 @@ function renderRoutineDays() {
     let html = '';
     routine.days.forEach((day, index) => {
         const exerciseCount = day.exercises ? day.exercises.length : 0;
-<<<<<<< HEAD
         const safeDayName = normalizeRoutineDayName(day.name);
         if (safeDayName !== day.name) day.name = safeDayName;
         html += `<div class="day-card"><div class="day-header"><input class="day-title-input" value="${safeDayName.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}" onchange="renameDay(${index}, this.value)" onclick="event.stopPropagation()"><span class="day-badge">${exerciseCount} ejercicios</span></div><div class="day-exercises">`;
-=======
-        const isCompleted = day.completed ? 'day-completed' : '';
-        const safeDayName = normalizeRoutineDayName(day.name);
-        if (safeDayName !== day.name) day.name = safeDayName;
-        html += `<div class="day-card ${isCompleted}"><div class="day-header"><input class="day-title-input" value="${safeDayName.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}" onchange="renameDay(${index}, this.value)" onclick="event.stopPropagation()"><span class="day-badge">${exerciseCount} ejercicios</span></div><div class="day-exercises">`;
->>>>>>> df8938e1e8b3c78992065475ab2d298605eb1377
         if (!day.exercises || day.exercises.length === 0) { html += '<p style="color:#999;font-size:13px;text-align:center;padding:10px;">Sin ejercicios</p>'; }
         else {
             day.exercises.forEach((ex, exIndex) => {
