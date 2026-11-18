@@ -77,9 +77,6 @@ body { background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); min-height
 .routine-exercise-img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; background: #ddd; flex-shrink: 0; }
 .routine-exercise-info { flex: 1; }
 .password-visibility-toggle { position:absolute; right:10px; top:50%; transform:translateY(-50%); width:44px; height:44px; display:flex; align-items:center; justify-content:center; background:transparent; border:0; border-radius:8px; color:#8B0000; cursor:pointer; padding:8px; }
-/* Evita duplicar el botón de ojo propio con el control nativo de Microsoft Edge. */
-input[type="password"]::-ms-reveal,
-input[type="password"]::-ms-clear { display:none; }
 .password-visibility-toggle:focus-visible { outline:2px solid #8B0000; outline-offset:2px; }
 .password-eye-icon { width:23px; height:23px; fill:none; stroke:currentColor; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round; }
 .day-exercise-item.is-current { background:#fff0f2; box-shadow:inset 5px 0 0 #DC143C, 0 3px 12px rgba(139,0,0,.16); outline:2px solid rgba(220,20,60,.65); outline-offset:-2px; }
@@ -168,6 +165,28 @@ input[type="password"]::-ms-clear { display:none; }
 .splash-logo { width: 250px; height: 250px; }
 .splash-title { font-size: 64px; }
 }
+
+
+/* Acceso rápido a la ayuda desde cualquier pantalla */
+.help-shortcut-wrap { display:flex; justify-content:flex-end; margin:0 0 12px; }
+.help-shortcut { display:inline-flex; align-items:center; gap:6px; border:1px solid rgba(220,20,60,.42); border-radius:20px; background:rgba(255,255,255,.96); color:#9b102c; padding:7px 12px; font-size:12px; font-weight:700; cursor:pointer; box-shadow:0 2px 7px rgba(0,0,0,.08); }
+.help-shortcut:active { transform:scale(.98); }
+
+/* Ayuda integrada Gembukai */
+.help-intro { color:#fff; font-size:14px; line-height:1.55; margin-bottom:14px; }
+.help-search { width:100%; padding:13px 14px; border:2px solid #DC143C; border-radius:10px; font-size:16px; background:#fff; color:#333; margin:4px 0 14px; }
+.help-topic { background:#fff; color:#333; border-radius:11px; margin:0 0 10px; overflow:hidden; box-shadow:0 3px 12px rgba(0,0,0,.18); }
+.help-topic summary { list-style:none; cursor:pointer; padding:15px 42px 15px 14px; position:relative; color:#8B0000; font-weight:700; font-size:15px; }
+.help-topic summary::-webkit-details-marker { display:none; }
+.help-topic summary::after { content:'＋'; position:absolute; right:15px; top:12px; font-size:22px; color:#DC143C; }
+.help-topic[open] summary::after { content:'−'; }
+.help-topic-content { padding:0 15px 15px; font-size:13px; line-height:1.6; color:#3f3f3f; }
+.help-topic-content p { margin:7px 0; }
+.help-topic-content ol,.help-topic-content ul { padding-left:21px; margin:8px 0; }
+.help-topic-content li { margin:5px 0; }
+.help-tip { background:#fff2f4; border-left:4px solid #DC143C; padding:10px 12px; border-radius:5px; margin-top:10px !important; }
+.help-empty { display:none; background:#fff; color:#555; padding:14px; border-radius:9px; text-align:center; font-size:13px; }
+
 </style>
 <script src="funciones.js"></script>
 </head>
@@ -206,7 +225,7 @@ Recordar contraseña
 <div class="logo-container"><img src="logo.png" alt="Gembukai Logo"></div>
 <h1>GEMBU-KAI</h1>
 <p>Club Sportiu Bonavista</p>
-<p class="app-version" id="app-version-label">Versión 1.1.3</p>
+<p class="app-version" id="app-version-label">Versión 1.1.5</p>
 </div>
 
 <div id="screen-register" class="screen">
@@ -316,7 +335,7 @@ Recordar contraseña
 <div class="card">
 <h2>🏋️ Mi Rutina Semanal <span id="routine-start-date" class="routine-start-date"></span></h2>
 <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-<button class="btn btn-small btn-success" onclick="downloadRoutine()" style="flex:1;">📥 Descargar</button>
+<button class="btn btn-small btn-warning" onclick="shareRoutine()" style="flex:1;">📥 Descargar</button>
 <button class="btn btn-small btn-success" onclick="importRoutine()" style="flex:1;">📥 Importar</button>
 </div>
 <div id="routine-days-container"></div>
@@ -354,6 +373,7 @@ Recordar contraseña
 <button class="btn btn-danger" onclick="resetProfile()">🔄 Reiniciar todo</button>
 <button class="btn btn-secondary" onclick="logout()">🚪 Cerrar sesión</button>
 </div>
+<button class="btn btn-secondary" onclick="openHelp()">❓ Ayuda y manual de usuario</button>
 </div>
 <div id="admin-section" style="display:none;">
 <div class="card">
@@ -382,6 +402,48 @@ Recordar contraseña
 </div>
 </div>
 
+
+<div id="screen-help" class="screen">
+<div class="main-content">
+<button class="back-btn" onclick="closeHelp()">← Volver</button>
+<div class="card">
+<h2>❓ Ayuda y manual de usuario</h2>
+<p class="help-intro">Aquí encontrarás instrucciones para utilizar Gembukai. Pulsa sobre cada apartado para consultar sus pasos.</p>
+<input class="help-search" id="help-search" type="search" placeholder="🔎 Buscar una duda..." oninput="filterHelpTopics()" aria-label="Buscar en la ayuda">
+<div id="help-topics">
+<details class="help-topic"><summary>🔐 1. Acceder a Gembukai</summary><div class="help-topic-content">
+<p>Para entrar necesitas el código de acceso que te ha facilitado el gimnasio.</p><ol><li>Abre Gembukai y pulsa para acceder.</li><li>Escribe tu código en la pantalla de inicio de sesión.</li><li>Si quieres que la aplicación recuerde la contraseña para próximos accesos, deja marcada la opción «Recordar contraseña».</li><li>Pulsa «Acceder».</li></ol>
+<p>Si no tienes código o no es válido, contacta con el gimnasio.</p></div></details>
+<details class="help-topic"><summary>👤 2. Crear y completar mi perfil</summary><div class="help-topic-content">
+<p>La primera vez que entres, la aplicación te pedirá tus datos para configurar tu perfil y tu planificación de entrenamiento.</p><ol><li>Introduce nombre y fecha de nacimiento.</li><li>Indica sexo, peso y altura.</li><li>Selecciona tu nivel: principiante, intermedio o avanzado.</li><li>Escoge tu objetivo: fuerza, hipertrofia, definición, resistencia, salud o perder peso.</li><li>Selecciona cuántos días a la semana quieres entrenar y pulsa «Crear perfil».</li></ol>
+<p>Más adelante puedes modificar estos datos desde «Perfil» → «Editar».</p><p class="help-tip">La opción «Reiniciar todo» borra el perfil y la rutina guardada en ese dispositivo. No la utilices para corregir un dato: para eso está «Editar».</p></div></details>
+<details class="help-topic"><summary>🔎 3. Buscar y consultar ejercicios</summary><div class="help-topic-content">
+<ol><li>Entra en la pestaña «Ejercicios».</li><li>Selecciona un grupo muscular: pecho, espalda, hombros, brazos, piernas, pantorrillas, core o cardio.</li><li>También puedes escribir el nombre de un ejercicio o del material en el buscador para localizarlo entre todos los grupos.</li><li>En cada resultado puedes consultar la imagen y el material, y utilizar «Ver» para buscar vídeos del ejercicio en YouTube.</li></ol>
+<p>El buscador admite parte del nombre y no distingue entre mayúsculas y minúsculas ni entre letras con o sin tilde.</p></div></details>
+<details class="help-topic"><summary>🏋️ 4. Crear y organizar mi rutina semanal</summary><div class="help-topic-content">
+<ol><li>Entra en «Rutinas» para ver los días de entrenamiento creados según los días que configuraste en tu perfil.</li><li>Puedes cambiar el nombre de cada día escribiendo directamente en su campo.</li><li>Pulsa «Añadir ejercicio» en el día donde quieras incorporarlo.</li><li>Selecciona el grupo muscular y localiza el ejercicio.</li><li>Pulsa «Añadir» para incorporarlo al día correspondiente.</li><li>Repite el proceso para completar tu planificación.</li></ol>
+<p>En la lista de cada día, utiliza las flechas ↑ y ↓ para cambiar el orden de los ejercicios. El botón de papelera permite quitar un ejercicio, previa confirmación.</p>
+<p class="help-tip">Añadir ejercicios o crear la rutina no significa que ya hayas empezado a entrenar. La fecha de inicio se registra cuando guardas por primera vez datos de un ejercicio de la rutina.</p></div></details>
+<details class="help-topic"><summary>📝 5. Registrar series, repeticiones y peso</summary><div class="help-topic-content">
+<ol><li>En «Rutinas», pulsa sobre el ejercicio que vas a realizar.</li><li>Introduce el número de series.</li><li>Indica las repeticiones que realizas.</li><li>Escribe el peso utilizado en kilogramos, si corresponde.</li><li>Pulsa «Guardar datos» para conservar los cambios.</li></ol>
+<p>Si no pulsas «Guardar datos», los cambios que hayas escrito no quedarán registrados. Puedes volver a entrar en el ejercicio para actualizar los datos en otro entrenamiento.</p></div></details>
+<details class="help-topic"><summary>📈 6. Consultar mi progreso de peso</summary><div class="help-topic-content">
+<p>Cuando guardas cambios de peso en un ejercicio, Gembukai conserva un historial de los pesos registrados.</p><ul><li>En la ficha del ejercicio puedes consultar la progresión.</li><li>Se muestra el peso actual y la variación porcentual respecto al peso de referencia disponible.</li><li>También aparece el historial de registros con sus fechas.</li></ul>
+<p>Para que exista una evolución, debes guardar el peso cada vez que quieras registrar una nueva marca.</p></div></details>
+<details class="help-topic"><summary>📥 7. Descargar, compartir y recuperar una rutina</summary><div class="help-topic-content">
+<p><strong>Guardar una copia:</strong></p><ol><li>Entra en «Rutinas».</li><li>Pulsa «Descargar».</li><li>Escribe el nombre que quieras asociar al archivo si la aplicación lo solicita.</li><li>En Android, la rutina se guarda en la carpeta Descargas. En la versión web se inicia la descarga del archivo.</li></ol>
+<p><strong>Recuperar una copia:</strong></p><ol><li>Pulsa «Importar» en la pantalla de Rutinas.</li><li>Busca y selecciona el archivo de rutina que quieras recuperar.</li><li>Lee el aviso y confirma la importación.</li></ol>
+<p class="help-tip">Importar una rutina sustituye la rutina que tienes actualmente. Si quieres conservarla, descarga primero una copia antes de importar otra.</p></div></details>
+<details class="help-topic"><summary>🔑 8. Cambiar mi contraseña o cerrar sesión</summary><div class="help-topic-content">
+<p>Desde «Perfil» puedes configurar o cambiar una contraseña personal para acceder sin tener que escribir el código original.</p><p>Para salir de la aplicación, utiliza «Cerrar sesión» en Perfil o la opción «Salir» del menú inferior. Si has activado «Recordar contraseña», la aplicación puede conservar esa preferencia para el siguiente acceso.</p></div></details>
+<details class="help-topic"><summary>🛠️ 9. Problemas frecuentes</summary><div class="help-topic-content">
+<ul><li><strong>No puedo acceder:</strong> comprueba que has escrito correctamente el código. Si sigue sin funcionar, contacta con el gimnasio.</li><li><strong>No encuentro un ejercicio:</strong> prueba con una palabra más corta o busca por el grupo muscular.</li><li><strong>No aparecen mis cambios:</strong> vuelve a abrir el ejercicio y comprueba que pulsaste «Guardar datos».</li><li><strong>No puedo importar una rutina:</strong> comprueba que has seleccionado un archivo de rutina Gembukai válido y que no está dañado.</li><li><strong>He importado otra rutina y ya no veo la anterior:</strong> la importación reemplaza la rutina actual. Solo podrás recuperarla si conservabas una copia descargada.</li></ul>
+<p>Si el problema continúa, pide ayuda al monitor del gimnasio.</p></div></details>
+</div>
+<div id="help-empty" class="help-empty">No se han encontrado apartados relacionados con esa búsqueda.</div>
+</div>
+</div>
+</div>
 
 <div id="personal-password-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:2100;overflow-y:auto;padding:20px;">
   <div style="background:linear-gradient(135deg,#8B0000 0%,#DC143C 100%);max-width:440px;margin:40px auto;border-radius:15px;padding:24px;border:2px solid white;">
@@ -714,18 +776,11 @@ function createRememberToken() {
     }
     throw new Error('Este dispositivo no permite generar una credencial segura.');
 }
-function getGembukaiClientType() {
-    const cap = window.Capacitor;
-    return cap && typeof cap.getPlatform === 'function' && cap.getPlatform() === 'android'
-        ? 'ANDROID'
-        : 'WEB';
-}
-
 function rememberRequest(payload) {
     return fetch(APPS_SCRIPT_URL, {
         method: 'POST', mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ ...payload, clientType: payload.clientType || getGembukaiClientType() })
+        body: JSON.stringify(payload)
     }).catch(() => null);
 }
 function readRememberResult(requestId, timeoutMs = 8000) {
@@ -922,7 +977,7 @@ function postSessionAction(payload) {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ ...payload, clientType: payload.clientType || getGembukaiClientType() })
+        body: JSON.stringify(payload)
     }).catch(() => null);
 }
 
@@ -944,7 +999,6 @@ function readServerSession(code, timeoutMs = 7000, action = 'checkSession', sess
         const params = new URLSearchParams({
             action,
             code: String(code || ''),
-            clientType: getGembukaiClientType(),
             callback: callbackName,
             cacheBust: String(Date.now())
         });
@@ -1219,10 +1273,7 @@ function startSessionHeartbeat() {
         sessionHeartbeatFailures++;
     };
     runHeartbeat();
-    // La web renueva cada 20 s para que no caduque mientras está abierta.
-    // Android conserva el intervalo original de 30 s.
-    const heartbeatInterval = getGembukaiClientType() === 'WEB' ? 20000 : 30000;
-    sessionHeartbeatTimer = setInterval(runHeartbeat, heartbeatInterval);
+    sessionHeartbeatTimer = setInterval(runHeartbeat, 30000);
 }
 
 // Al volver a la pestaña o desbloquear el móvil, comprobar/renovar la sesión enseguida.
@@ -1458,6 +1509,29 @@ function restoreGembukaiScroll(position) {
         // una pantalla que se ha reconstruido dinámicamente.
         setTimeout(() => window.scrollTo(0, targetY), 140);
     }));
+}
+
+let gembukaiHelpReturnScreen = 'screen-profile';
+
+function openHelp() {
+    const active = document.querySelector('.screen.active');
+    if (active && active.id !== 'screen-help') gembukaiHelpReturnScreen = active.id;
+    showScreen('screen-help');
+}
+
+function closeHelp() {
+    const destination = document.getElementById(gembukaiHelpReturnScreen);
+    showScreen(destination ? gembukaiHelpReturnScreen : 'screen-home');
+}
+
+function ensureHelpShortcuts() {
+    document.querySelectorAll('.screen:not(#screen-help) .main-content').forEach(container => {
+        if (container.querySelector(':scope > .help-shortcut-wrap')) return;
+        const wrap = document.createElement('div');
+        wrap.className = 'help-shortcut-wrap';
+        wrap.innerHTML = '<button type="button" class="help-shortcut" onclick="openHelp()" aria-label="Abrir ayuda y manual de usuario">❓ ¿Necesitas ayuda?</button>';
+        container.insertBefore(wrap, container.firstChild);
+    });
 }
 
 function showScreen(screenId, navElement, options = {}) {
@@ -1760,10 +1834,11 @@ function showRoutineExportDialog() {
         modal.style.cssText = 'position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;padding:18px;';
         modal.innerHTML = `
             <div role="dialog" aria-modal="true" aria-labelledby="routine-export-title" style="width:100%;max-width:390px;background:var(--card-bg,#fff);color:var(--text-color,#222);border-radius:14px;padding:20px;box-shadow:0 10px 35px rgba(0,0,0,.3);">
-                <h3 id="routine-export-title" style="margin:0 0 8px;">📥 Descargar rutina</h3>
+                <h3 id="routine-export-title" style="margin:0 0 8px;">📥 Descargar o compartir rutina</h3>
                 <p style="margin:0 0 14px;font-size:14px;">Nombre del socio (opcional):</p>
                 <input id="routine-export-member" type="text" maxlength="80" placeholder="Ej. Juan o María López" style="box-sizing:border-box;width:100%;padding:12px;border:1px solid #aaa;border-radius:8px;margin-bottom:16px;font-size:16px;">
                 <button id="routine-export-save" class="btn btn-success" style="width:100%;margin-bottom:9px;">📥 Descargar</button>
+                <button id="routine-export-share" class="btn btn-warning" style="width:100%;margin-bottom:9px;">📤 Compartir</button>
                 <button id="routine-export-cancel" class="btn" style="width:100%;background:#777;color:white;">Cancelar</button>
             </div>`;
         document.body.appendChild(modal);
@@ -1779,6 +1854,11 @@ function showRoutineExportDialog() {
             const name = memberInput.value;
             lastRoutineExportMemberName = name;
             await exportRoutineAction('save', name, modal);
+        });
+        modal.querySelector('#routine-export-share').addEventListener('click', async () => {
+            const name = memberInput.value;
+            lastRoutineExportMemberName = name;
+            await exportRoutineAction('share', name, modal);
         });
     }
     modal.style.display = 'flex';
@@ -1826,29 +1906,16 @@ async function exportRoutineAction(action, memberName, modal) {
         }
 
         const blob = new Blob([content], { type: 'application/json;charset=utf-8' });
-
-        // En web, Compartir solo abre el selector nativo si el navegador admite
-        // compartir archivos. No debe convertirse silenciosamente en Descargar.
-        if (action === 'share') {
-            if (typeof navigator.share !== 'function' ||
-                typeof navigator.canShare !== 'function' ||
-                typeof File === 'undefined') {
-                alert('Este navegador no permite compartir archivos directamente desde Gembukai. Pulsa Descargar para guardar el JSON y adjuntarlo manualmente en WhatsApp o por correo.');
-                return;
-            }
-
+        if (action === 'share' && navigator.share && typeof File !== 'undefined') {
             const file = new File([blob], fileName, { type: 'application/json' });
-            if (!navigator.canShare({ files: [file] })) {
-                alert('Este navegador o dispositivo no admite compartir este archivo directamente. Pulsa Descargar y adjúntalo manualmente en WhatsApp o por correo.');
+            if (!navigator.canShare || navigator.canShare({ files: [file] })) {
+                await navigator.share({ files: [file], title: 'Rutina de entrenamiento' });
+                if (modal) modal.remove();
                 return;
             }
-
-            await navigator.share({ files: [file], title: 'Rutina de entrenamiento' });
-            if (modal) modal.remove();
-            return;
         }
 
-        // Descargar en web: genera el archivo JSON en el dispositivo.
+        // Guardar en web, o alternativa cuando el navegador no permite compartir archivos.
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
@@ -1858,7 +1925,11 @@ async function exportRoutineAction(action, memberName, modal) {
         link.remove();
         setTimeout(() => URL.revokeObjectURL(url), 1500);
         if (modal) modal.remove();
-        alert('✅ Descarga iniciada: ' + fileName);
+        if (action === 'share') {
+            alert('Este navegador no permite compartir archivos directamente. Se ha descargado la rutina; puedes adjuntarla desde WhatsApp o el correo.');
+        } else {
+            alert('✅ Descarga iniciada: ' + fileName);
+        }
     } catch (error) {
         if (error && error.name === 'AbortError') return;
         console.error('Error al exportar la rutina:', error);
@@ -1870,7 +1941,7 @@ async function exportRoutineAction(action, memberName, modal) {
     }
 }
 
-function downloadRoutine() {
+function shareRoutine() {
     showRoutineExportDialog();
 }
 
@@ -2275,6 +2346,20 @@ async function savePersonalPassword() {
     }
 }
 
+function filterHelpTopics() {
+    const query = String(document.getElementById('help-search')?.value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+    const topics = Array.from(document.querySelectorAll('#help-topics .help-topic'));
+    let visible = 0;
+    topics.forEach(topic => {
+        const text = topic.textContent.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+        const match = !query || text.includes(query);
+        topic.style.display = match ? '' : 'none';
+        if (match) visible++;
+    });
+    const empty = document.getElementById('help-empty');
+    if (empty) empty.style.display = visible ? 'none' : 'block';
+}
+
 function renderProfile() {
     if (!profile) { document.getElementById('profile-display').innerHTML = '<p>Sin perfil</p>'; return; }
     const age = calculateAge(profile.birthdate);
@@ -2514,5 +2599,6 @@ if ('serviceWorker' in navigator) {
 })();
 
 </script>
+<script>ensureHelpShortcuts();</script>
 </body>
 </html>
